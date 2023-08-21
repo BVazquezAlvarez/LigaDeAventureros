@@ -51,7 +51,7 @@ class Login extends BaseController {
                 $user = $this->UserModel->getUserByEmail($email);
             }
             if ($user->banned) {
-                $session->setFlashdata('login_error', 'El usuario ha sido bloqueado');
+                session()->setFlashdata('login_error', 'El usuario ha sido bloqueado');
             } else {
                 session()->set(['user_uid' => $user->uid]);
             }
