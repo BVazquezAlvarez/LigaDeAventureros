@@ -52,6 +52,21 @@
 						<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
 							<li class="nav-item"><a class="nav-link" href="https://liga-de-aventureros-vigo.fandom.com/es/" target="_blank">Wiki</a></li>
 						</ul>
+						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+							<? if (isset($userdata)) : ?>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+										<?= $userdata['display_name'] ?>
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="#">Mis datos</a></li>
+										<li><a class="dropdown-item" href="#">Mis personajes</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item" href="<?= base_url('/login/logout') ?>">Cerrar Sesión</a></li>
+									</ul>
+								</li>
+							<? endif; ?>
+						</ul>
 					</div>
 				</div>
 			</nav>
@@ -73,6 +88,9 @@
 			data-login_uri="<?= base_url('login/onetap') ?>"
 			data-cancel_on_tap_outside="false">
 		</div>
+		<script>
+			document.cookie = "g_state=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		</script>
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 	<? endif; ?>
 </html>
