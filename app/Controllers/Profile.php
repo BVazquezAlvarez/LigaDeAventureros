@@ -64,7 +64,7 @@ class Profile extends BaseController {
             $data = array(
                 'display_name' => $this->request->getVar('display_name'),
             );
-            $this->UserModel->update(session('user_uid'), $data);
+            $this->UserModel->updateUser(session('user_uid'), $data);
             session()->setFlashdata('success', 'Configuración actualizada.');
             return redirect()->to('profile');
         } else {
@@ -87,7 +87,7 @@ class Profile extends BaseController {
                 'name'           => $this->request->getVar('name'),
                 'class'          => $this->request->getVar('class'),
                 'level'          => $this->request->getVar('level'),
-                'uploaded_sheet' => str_replace(' ', '_', $this->request->getVar('name')) . '_' . $this->request->getVar('level') . '_' . date('Ymd') . '.pdf',
+                'uploaded_sheet' => str_replace(' ', '_', $this->request->getVar('name')) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
                 'date_uploaded'  => date('c'),
                 'active'         => 1,
             );
@@ -103,6 +103,48 @@ class Profile extends BaseController {
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
         }
+    }
+
+    public function update_character() {
+        $uid = $this->request->getVar('uid');
+        $character = $this->CharacterModel->getCharacter($uid);
+
+        if (!$character) {
+            session()->setFlashdata('error', 'No se ha encontrado el personaje.');
+            return redirect()->back();
+        }
+
+        if ($character->user_uid != session('user_uid')) {
+            session()->setFlashdata('error', 'Ese personaje no te pertenece.');
+            return redirect()->back();
+        }
+
+        $validation = \Config\Services::validation();
+        $validation->setRule('class', 'clase', 'trim|required');
+        $validation->setRule('level', 'Nivel', 'trim|required|greater_than_equal_to[1]|less_than_equal_to[20]');
+        $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,5120]');
+
+        if (!$validation->withRequest($this->request)->run()) {    
+            session()->setFlashdata('error', 'No se ha podido actualizar el personaje.');
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+    
+        $data = array(
+            'class'          => $this->request->getVar('class'),
+            'level'          => $this->request->getVar('level'),
+            'uploaded_sheet' => str_replace(' ', '_', $character->name) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
+            'date_uploaded'  => date('c'),
+            'active'         => 1,
+        );
+
+        $characterSheet = $this->request->getFile('character_sheet');
+        $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
+
+        $this->CharacterModel->updateCharacter($uid, $data);
+        session()->setFlashdata('success', 'Se ha actualizado el personaje ' . $character->name . '.');
+        return redirect()->to('profile');
+    
     }
 
 }

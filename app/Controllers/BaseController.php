@@ -98,6 +98,16 @@ abstract class BaseController extends Controller {
 		return (bool) session('user_uid');
 	}
 
+    protected function isMaster() {
+        $userdata = $this->getUserData();
+        return $userdata && $userdata['master'];
+    }
+
+    protected function isAdmin() {
+        $userdata = $this->getUserData();
+        return $userdata && $userdata['admin'];
+    }
+
     protected function getUserData() {
 		if (isset($this->data['userdata'])) {
 			return $this->data['userdata'];

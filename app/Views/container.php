@@ -36,7 +36,7 @@
 			baseUrl = "<?= base_url() ?>";
 		</script>
 
-		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>?v=<?= date('Ymdhis') ?>"></script>
 		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>">
 	</head>
 
@@ -50,6 +50,32 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+							<? if (isset($userdata) && $userdata['master']) : ?>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+										Master
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="<?= base_url('master') ?>">Panel de Control</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item" href="<?= base_url('master/sheets') ?>">Validar hojas de personaje</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('master/adventures') ?>">Aventuras y sesiones</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('master/new-session') ?>">Nueva sesión</a></li>
+									</ul>
+								</li>
+							<? endif; ?>
+							<? if (isset($userdata) && $userdata['admin']) : ?>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+										Administrador
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="<?= base_url('admin') ?>">Panel de Control</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<!-- TODO -->
+									</ul>
+								</li>
+							<? endif; ?>
 							<li class="nav-item"><a class="nav-link" href="https://liga-de-aventureros-vigo.fandom.com/es/" target="_blank">Wiki</a></li>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
@@ -92,7 +118,7 @@
 			<?= view($view) ?>
 		</main>
 
-		<footer>
+		<footer class="text-center">
 			footer
 		</footer>
 

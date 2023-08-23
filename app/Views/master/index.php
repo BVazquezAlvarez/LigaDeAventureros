@@ -16,16 +16,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<form class="col-md-6 offset-md-3" method="post">
-    <div class="col-12">
-        <div class="form-group">
-            <label for="display_name">Nombre</label>
-            <input type="text" name="display_name" id="display_name" class="form-control" value="<?= $user->display_name ?>" required>
-        </div>
+<div class="row">
+    <div class="col-md-6">
+        <a href="<?= base_url('master/sheets') ?>" class="btn btn-primary btn-lg btn-block">
+            Validar hojas de personaje
+            <span class="badge badge-light"><?= $sheets_pending_count ?></span>
+        </a>
+        <a href="<?= base_url('master/adventures') ?>" class="btn btn-primary btn-lg btn-block">
+            Aventuras y sesiones
+        </a>
+        <a href="<?= base_url('master/new-session') ?>" class="btn btn-primary btn-lg btn-block">
+            Nueva sesión
+        </a>
     </div>
-    <div class="col-12">
-        <div class="form-group text-right">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </div>
+    <div class="col-md-6">
+        
     </div>
-</form> 
+</div>

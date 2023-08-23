@@ -40,6 +40,15 @@ $routes->get('profile/(:any)','Profile::index/$1');
 $routes->get('profile','Profile::index');
 
 $routes->post('new-character', 'Profile::new_character');
+$routes->post('update-character', 'Profile::update_character');
+
+$routes->get('master', 'Master::index');
+$routes->get('master/sheets', 'Master::sheets');
+$routes->post('master/validate-sheet', 'Master::validate_sheet');
+$routes->get('master/adventures', 'Master::adventures');
+$routes->get('master/new-session', 'Master::new_session');
+
+$routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 
 /*
  * --------------------------------------------------------------------

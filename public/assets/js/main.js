@@ -17,5 +17,27 @@
   */
 
 $(function() {
+    $('.js-validate-btn').on('click', function() {
+        let uid = $(this).data("uid");
+        let name = $(this).data("name");
+        
+        $("#modal-character-name").text(name);
+        $("#modal-uid").val(uid);
 
+        $('#validate-sheet-modal').modal('show');
+    });
+
+    $('.js-update-character-btn').on('click', function() {
+        let uid = $(this).data("uid");
+        let name = $(this).data("name");
+        let cclass = $(this).data("class");
+        let level = $(this).data("level");
+        
+        $("#modal-character-name").text(name);
+        $("#update-character-modal #uid").val(uid);
+        $("#update-character-modal #class").val(cclass);
+        $("#update-character-modal #level").val(level);
+
+        $('#update-character-modal').modal('show');
+    });
 });

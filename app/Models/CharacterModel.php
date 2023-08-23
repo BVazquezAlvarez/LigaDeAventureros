@@ -36,6 +36,12 @@ class CharacterModel extends Model {
         'active',
 	];
 
+    public function getCharacter($uid) {
+        $builder = $this->db->table('player_character');
+        $builder->where('uid', $uid);
+        return $builder->get()->getRow();
+    }
+
     public function getPlayerCharacters($user_uid) {
         $builder = $this->db->table('player_character');
         $builder->where('user_uid', $user_uid);
@@ -48,5 +54,39 @@ class CharacterModel extends Model {
 		$this->db->table('player_character')->insert($data);
 		return $this->db->affectedRows();
 	}
+
+    public function updateCharacter($uid, $data) {
+        $builder = $this->db->table('player_character');
+        $builder->where('uid', $uid);
+        $builder->update($data);
+    }
+
+    public function getCharactersValidationPending() {
+        $builder = $this->db->table('player_character');
+        $builder->select('player_character.*, user.display_name, user.confirmed');
+        $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->groupStart();
+        $builder->where('player_character.uploaded_sheet != player_character.validated_sheet');
+        $builder->orWhere('player_character.validated_sheet IS NULL');
+        $builder->groupEnd();
+        $builder->where('user.banned', 0);
+        $builder->where('player_character.active', 1);
+        $builder->orderBy('user.confirmed', 'DESC');
+        $builder->orderBy('player_character.date_uploaded', 'ASC');
+        return $builder->get()->getResult();
+    }
+
+    public function getCharactersValidationPendingCount() {
+        $builder = $this->db->table('player_character');
+        $builder->select('player_character.*, user.display_name, user.confirmed');
+        $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->groupStart();
+        $builder->where('player_character.uploaded_sheet != player_character.validated_sheet');
+        $builder->orWhere('player_character.validated_sheet IS NULL');
+        $builder->groupEnd();
+        $builder->where('user.banned', 0);
+        $builder->where('player_character.active', 1);
+        return $builder->countAllResults();
+    }
 
 }
