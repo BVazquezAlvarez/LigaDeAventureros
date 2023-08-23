@@ -24,20 +24,20 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<link rel="shortcut icon" type="image/png" href="<?= base_url('/favicon.ico') ?>"/>
+		<link rel="shortcut icon" type="image/png" href="<?= base_url('favicon.ico') ?>"/>
 
-		<script type="text/javascript" src="<?= base_url('/assets/js/jquery-3.6.0.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('/assets/js/jquery-ui.min.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery-3.6.0.min.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui.min.js') ?>"></script>
 
-		<link rel="stylesheet" type="text/css" href="<?= base_url('/assets/css/bootstrap.min.css') ?>">
-		<script type="text/javascript" src="<?= base_url('/assets/js/bootstrap.bundle.min.js') ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
+		<script type="text/javascript" src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 
 		<script>
 			baseUrl = "<?= base_url() ?>";
 		</script>
 
-		<script type="text/javascript" src="<?= base_url('/assets/js/main.js') ?>"></script>
-		<link rel="stylesheet" type="text/css" href="<?= base_url('/assets/css/main.css') ?>">
+		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>">
 	</head>
 
 	<body>
@@ -59,10 +59,10 @@
 										<?= $userdata['display_name'] ?>
 									</a>
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" href="#">Mis datos</a></li>
-										<li><a class="dropdown-item" href="#">Mis personajes</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('profile') ?>">Mi perfil</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('settings') ?>">Configuración</a></li>
 										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item" href="<?= base_url('/login/logout') ?>">Cerrar Sesión</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('logout') ?>">Cerrar Sesión</a></li>
 									</ul>
 								</li>
 							<? endif; ?>
@@ -73,7 +73,23 @@
 		</header>
 
 		<main class="container container-l">
-			<?= view($view, $data ?? []) ?>
+			<? if (session('error')) : ?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<?= session('error') ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<? endif; ?>
+			<? if (session('success')) : ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<?= session('success') ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<? endif; ?>
+			<?= view($view) ?>
 		</main>
 
 		<footer>

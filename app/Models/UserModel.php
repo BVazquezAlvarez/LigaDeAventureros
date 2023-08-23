@@ -31,7 +31,7 @@ class UserModel extends Model {
         'master',
 		'admin',
         'date_created',
-        'banned'
+        'banned',
 	];
 
 	public function getUsers() {
@@ -46,6 +46,18 @@ class UserModel extends Model {
 	public function addUser($data) {
 		$this->db->table('user')->insert($data);
 		return $this->db->affectedRows();
+	}
+
+	public function updateUser($uid, $data) {
+		$builder = $this->db->table('user');
+		$builder->where('uid', $uid);
+    	$builder->update($data);
+	}
+
+	public function getUser($uid) {
+		$builder = $this->db->table('user');
+        $builder->where('uid', $uid);
+        return $builder->get()->getRow();
 	}
 
     public function getValidUser($uid) {

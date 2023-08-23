@@ -42,16 +42,16 @@ class Login extends BaseController {
         if ($payload) {
             $email = $payload['email'];
             $user = $this->UserModel->getUserByEmail($email);
-            while (!$user) {
+            if (!$user) {
                 $this->UserModel->addUser([
-                    'uid' => uid_generate(),
+                    'uid' => uid_generate_unique('user'),
                     'email' => $email,
                     'display_name' => $payload['given_name'],
                 ]);
                 $user = $this->UserModel->getUserByEmail($email);
             }
             if ($user->banned) {
-                session()->setFlashdata('login_error', 'El usuario ha sido bloqueado');
+                session()->setFlashdata('error', 'El usuario con el que intenta iniciar sesión ha sido bloqueado. Si cree que se trata de un error, póngase en contacto con los administradores.');
             } else {
                 session()->set(['user_uid' => $user->uid]);
             }

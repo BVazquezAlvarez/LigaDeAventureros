@@ -15,21 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function uid_generate(): string {
-    $bytes = random_bytes(8);
-    $base64 = base64_encode($bytes);
-    return rtrim(strtr($base64, '+/', '-_'), '=');
+function rank_get($level): int {
+    if ($level <= 4) return 1;
+    if ($level <= 10) return 2;
+    if ($level <= 16) return 3;
+    return 4;
 }
 
-function uid_generate_unique($table): string {
-    $valid_uid = false;
-    while (!$valid_uid) {
-        $uid = uid_generate();
-        $db = \Config\Database::connect();
-        $row = $db->table($table)->where('uid',$uid)->get()->getRow();
-        if (!$row) {
-            $valid_uid = true;
-        }
-    }
-    return $uid;
+function rank_name($rank) : string {
+    if ($rank == 1) return 'Bronce';
+    if ($rank == 2) return 'Plata';
+    if ($rank == 3) return 'Oro';
+    if ($rank == 4) return 'Mithril';
+    return 'Error';
 }

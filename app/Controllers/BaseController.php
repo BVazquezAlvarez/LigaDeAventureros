@@ -49,7 +49,7 @@ abstract class BaseController extends Controller {
      *
      * @var array
      */
-    protected $helpers = ['uid','setting'];
+    protected $helpers = ['uid','setting','rank'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -65,7 +65,7 @@ abstract class BaseController extends Controller {
         parent::initController($request, $response, $logger);
 
         $this->data = array();
-        $this->data['data'] = array();
+        $this->modal = false;
 
         // Preload any models, libraries, etc, here.
 
@@ -74,8 +74,16 @@ abstract class BaseController extends Controller {
     }
 
     protected function loadView(string $view) {
-        $this->data['view'] = $view;
-        return view('container', $this->data);
+        if ($this->modal) {
+            return view($view, $this->data['data']);
+        } else {
+            $this->data['view'] = $view;
+            return view('container', $this->data);
+        }
+    }
+
+    protected function setModal(bool $modal = true) {
+        $this->modal = $modal;
     }
 
     protected function setTitle(string $title) {
@@ -83,7 +91,7 @@ abstract class BaseController extends Controller {
     }
 
     protected function setData(string $key, $value) {
-        $this->data['data'][$key] = $value;
+        $this->data[$key] = $value;
     }
 
 	protected function isUserLoggedIn() {
@@ -108,7 +116,7 @@ abstract class BaseController extends Controller {
                     'admin'        => $data->admin,
                 ];
             } else {
-                log_message('error', 'Error fetching user ' . session('id'));
+                log_message('error', 'Error fetching user ' . session('user_uid'));
                 session()->destroy();
                 return NULL;
             }
