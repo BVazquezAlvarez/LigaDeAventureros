@@ -14,18 +14,27 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-?>
 
-<form class="col-md-6 offset-md-3" method="post">
-    <div class="col-12">
-        <div class="form-group">
-            <label for="display_name">Nombre <span class="text-danger">*</span></label>
-            <input type="text" name="display_name" id="display_name" class="form-control" value="<?= $user->display_name ?>" required>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="form-group text-right">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </div>
-    </div>
-</form> 
+namespace App\Controllers;
+
+class Adventure extends BaseController {
+
+    public function __construct() {
+        $this->AdventureModel = model('AdventureModel');
+    }
+
+    public function data_ajax() {
+        $uid = $this->request->getVar('uid');
+        $adventure = $this->AdventureModel->getAdventure($uid);
+
+        if ($adventure) {
+            $adventure->rank_text = rank_full_text($adventure->rank);
+        }
+        
+        echo json_encode([
+            'error' => !$adventure,
+            'adventure' => $adventure,
+        ]);
+    }
+
+}

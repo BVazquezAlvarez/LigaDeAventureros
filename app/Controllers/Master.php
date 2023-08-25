@@ -26,6 +26,7 @@ class Master extends BaseController {
         }
         $this->UserModel = model('UserModel');
         $this->CharacterModel = model('CharacterModel');
+        $this->AdventureModel = model('AdventureModel');
     }
 
     protected function setTitle(string $title) {
@@ -65,13 +66,109 @@ class Master extends BaseController {
     }
 
     public function adventures() {
+        $filters = [
+            'q'        => session('adventures.filters.q'),
+            'rank'     => session('adventures.filters.rank'),
+            'my_games' => session('adventures.filters.my_games'),
+            'unplayed' => session('adventures.filters.unplayed'),
+        ];
+
+        $this->setData('filters', $filters);
+        $this->setData('adventures', $this->AdventureModel->getAdventuresWithSessionData($filters));
         $this->setTitle('Aventuras y sesiones');
         return $this->loadView('master/adventures');
     }
 
+    public function adventures_post() {
+        session()->set('adventures.filters.q',        $this->request->getPost('q'));
+        session()->set('adventures.filters.rank',     $this->request->getPost('rank'));
+        session()->set('adventures.filters.my_games', $this->request->getPost('my_games'));
+        session()->set('adventures.filters.unplayed', $this->request->getPost('unplayed'));
+        return redirect()->to('master/adventures');
+    }
+
+    public function adventure($uid) {
+        session()->setFlashdata('error', 'La página de aventura todavía no está disponible.');
+        return redirect()->to('master/adventures');
+    }
+
     public function new_session() {
+        $this->setData('adventures', $this->AdventureModel->getAdventureList());
+        $this->setData('masters', $this->UserModel->getMasters());
         $this->setTitle('Nueva sesión');
         return $this->loadView('master/newsession');
+    }
+
+    public function new_session_post() {
+        $isNewAdventure = ($this->request->getVar('adventure') == '__new');
+    
+        $validation = \Config\Services::validation();
+        $validation->setRule('adventure', 'aventura', 'trim|required');
+        if ($isNewAdventure) {
+            $validation->setRule('adventure_name', 'nombre', 'trim|required');
+            $validation->setRule('adventure_rank', 'rango', 'trim');
+            $validation->setRule('adventure_players_min_recommended', 'mínimo de jugadores recomendado', 'trim|required');
+            $validation->setRule('adventure_players_max_recommended', 'máximo de jugadores recomendado', 'trim|required');
+            $validation->setRule('adventure_duration', 'duración', 'trim|required');
+            $validation->setRule('adventure_themes', 'temas', 'trim');
+            $validation->setRule('adventure_description', 'descripción', 'trim|required');
+            $validation->setRule('adventure_rewards', 'recompensas', 'trim');
+            if ($_FILES['adventure_thumbnail']['name']) {
+                $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png]|max_size[adventure_thumbnail,51200]');
+            }
+        }
+        $validation->setRule('session_master', 'master', 'trim|required');
+        $validation->setRule('session_date', 'fecha', 'trim|required');
+        $validation->setRule('session_time', 'hora', 'trim|required');
+        $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
+        $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
+
+        if (!$validation->withRequest($this->request)->run()) {    
+            session()->setFlashdata('error', 'Se ha producido un error al crear la sesión.');
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+
+        if ($isNewAdventure) {
+            $adventureUid = uid_generate_unique('adventure');
+
+            if ($_FILES['adventure_thumbnail']['name']) {
+                $thumbnail = $this->request->getFile('adventure_thumbnail');
+                $thumbnailExtension = pathinfo($thumbnail->getName(), PATHINFO_EXTENSION);
+                $thumbnailName = "adv_$adventureUid.$thumbnailExtension";
+                $thumbnail->move(ROOTPATH . 'public/img/adventures', $thumbnailName);
+            } else {
+                $thumbnailName = NULL;
+            }
+
+            $this->AdventureModel->addAdventure([
+                'uid' => $adventureUid,
+                'name' => $this->request->getVar('adventure_name'),
+                'rank' => $this->request->getVar('adventure_rank') ?: NULL,
+                'players_min_recommended' => $this->request->getVar('adventure_players_min_recommended'),
+                'players_max_recommended' => $this->request->getVar('adventure_players_max_recommended'),
+                'duration' => $this->request->getVar('adventure_duration'),
+                'themes' => $this->request->getVar('adventure_themes') ?: NULL,
+                'description' => $this->request->getVar('adventure_description'),
+                'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
+                'thumbnail' => $thumbnailName,
+            ]);
+        } else {
+            $adventureUid = $this->request->getVar('adventure');
+        }
+
+        $this->AdventureModel->addSession([
+            'uid' => uid_generate_unique('session'),
+            'adventure_uid' => $adventureUid,
+            'master_uid' => $this->request->getVar('session_master'),
+            'date' => $this->request->getVar('session_date'),
+            'time' => $this->request->getVar('session_time'),
+            'players_min' => $this->request->getVar('session_min_players'),
+            'players_max' => $this->request->getVar('session_max_players'),
+        ]);
+
+        session()->setFlashdata('success', 'Se ha creado una nueva sesión.');
+        return redirect()->to('master/adventures');
     }
 
 }

@@ -28,19 +28,19 @@
             <div class="modal-body row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label for="class">Clase</label>
+                        <label for="class">Clase <span class="text-danger">*</span></label>
                         <input type="text" name="class" id="class" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="level">Nivel</label>
+                        <label for="level">Nivel <span class="text-danger">*</span></label>
                         <input type="number" min="1" max="20" name="level" id="level" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>)</label>
+                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>) <span class="text-danger">*</span></label>
                         <input type="file" name="character_sheet" id="character_sheet" class="form-control-file" accept=".pdf" required>
                     </div>
                 </div>

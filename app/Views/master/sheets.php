@@ -17,12 +17,6 @@
 ?>
 
 <? if ($sheets) : ?>
-    <div class="d-md-none">
-        <div class="alert alert-warning" role="alert">
-            No se recomienda usar este apartado en dispositivos móviles.
-        </div>
-    </div>
-
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -38,7 +32,7 @@
             <tbody>
                 <? foreach ($sheets as $sheet) : ?>
                     <tr>
-                        <th class="align-middle"scope="row"><?= $sheet->name ?></th>
+                        <th class="align-middle" scope="row"><?= $sheet->name ?></th>
                         <td class="align-middle"><?= $sheet->class ?> <strong><?= $sheet->level ?></strong> (<?= rank_name(rank_get($sheet->level)) ?>)</td>
                         <td class="align-middle"><a href="<?= base_url('profile') ?>/<?= $sheet->user_uid ?>" target="_blank"><?= $sheet->display_name ?></a></td>
                         <td class="align-middle"><a href="<?= base_url('character_sheets') ?>/<?= $sheet->uploaded_sheet ?>" target="_blank">Ver</a></td>

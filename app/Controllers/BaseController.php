@@ -65,7 +65,6 @@ abstract class BaseController extends Controller {
         parent::initController($request, $response, $logger);
 
         $this->data = array();
-        $this->modal = false;
 
         // Preload any models, libraries, etc, here.
 
@@ -74,16 +73,12 @@ abstract class BaseController extends Controller {
     }
 
     protected function loadView(string $view) {
-        if ($this->modal) {
-            return view($view, $this->data['data']);
+        if ($this->request->isAJAX()) {
+            return view($view, $this->data);
         } else {
             $this->data['view'] = $view;
             return view('container', $this->data);
         }
-    }
-
-    protected function setModal(bool $modal = true) {
-        $this->modal = $modal;
     }
 
     protected function setTitle(string $title) {

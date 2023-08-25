@@ -36,7 +36,7 @@ $routes->get('logout', 'Login::logout');
 
 $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
-$routes->get('profile/(:any)','Profile::index/$1');
+$routes->get('profile/(:segment)','Profile::index/$1');
 $routes->get('profile','Profile::index');
 
 $routes->post('new-character', 'Profile::new_character');
@@ -46,9 +46,15 @@ $routes->get('master', 'Master::index');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->get('master/adventures', 'Master::adventures');
+$routes->post('master/adventures', 'Master::adventures_post');
+$routes->get('master/adventure/(:segment)', 'Master::adventure/$1');
 $routes->get('master/new-session', 'Master::new_session');
+$routes->post('master/new-session', 'Master::new_session_post');
+
+$routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
+$routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 
 /*
  * --------------------------------------------------------------------

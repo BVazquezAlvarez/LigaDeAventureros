@@ -37,6 +37,12 @@ class UserModel extends Model {
 	public function getUsers() {
 		return $this->db->table('user')->get()->getResult();
 	}
+
+	public function getMasters() {
+		$builder = $this->db->table('user');
+        $builder->where('master', 1);
+        return $builder->get()->getResult();
+	}
 	
 	public function checkEmailExists($email) {
 		$user = $this->where('email', $email)->first();
@@ -71,7 +77,6 @@ class UserModel extends Model {
         $builder = $this->db->table('user');
         $builder->where('email', $email);
         return $builder->get()->getRow();
-
 	}
 
 }

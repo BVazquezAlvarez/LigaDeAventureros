@@ -36,7 +36,7 @@
 			baseUrl = "<?= base_url() ?>";
 		</script>
 
-		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>?v=<?= date('Ymdhis') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>"></script>
 		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>">
 	</head>
 
@@ -107,6 +107,7 @@
 					</button>
 				</div>
 			<? endif; ?>
+
 			<? if (session('success')) : ?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
 					<?= session('success') ?>
@@ -115,6 +116,7 @@
 					</button>
 				</div>
 			<? endif; ?>
+
 			<?= view($view) ?>
 		</main>
 

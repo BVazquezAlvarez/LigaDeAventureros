@@ -49,7 +49,41 @@ class Cron extends BaseController {
                 $count++;
             }
         }
-        echo "$count ficheros eliminados.";
+        echo "$count hojas de personaje eliminadas.";
+    }
+
+    public function delete_adventure_thumbnails() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('adventure');
+        $builder->select('thumbnail');
+        $advs = $builder->get()->getResult();
+
+        $thumbnails = array();
+        foreach ($advs as $adv) {
+            $thumbnails[] = $adv->thumbnail;
+        }
+        $thumbnails = array_unique(array_filter($thumbnails, function($thumbnail) {
+            return $thumbnail !== null;
+        }));
+
+        $folderPath = ROOTPATH . 'public/img/adventures';
+        $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
+            $extension = pathinfo($fileInFolder, PATHINFO_EXTENSION);
+            $imageExtensions = ['jpg', 'jpeg', 'png'];
+            return in_array($extension, $imageExtensions);
+        });
+        $filesToDelete = array_diff($filesInFolder, $thumbnails);
+
+        $count = 0;
+        foreach ($filesToDelete as $fileToDelete) {
+            $filePathToDelete = $folderPath . DIRECTORY_SEPARATOR . $fileToDelete;
+            if (file_exists($filePathToDelete)) {
+                unlink($filePathToDelete);
+                echo "Eliminado: $fileToDelete.<br>";
+                $count++;
+            }
+        }
+        echo "$count thumbnails eliminados.";
     }
 
 }

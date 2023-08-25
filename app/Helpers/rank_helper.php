@@ -29,3 +29,11 @@ function rank_name($rank) : string {
     if ($rank == 4) return 'Mithril';
     return 'Error';
 }
+
+function rank_full_text($rank) : string {
+    if ($rank == 1) return 'Bronce (1-4)';
+    if ($rank == 2) return 'Plata (5-10)';
+    if ($rank == 3) return 'Oro (11-16)';
+    if ($rank == 4) return 'Mithril (17-20)';
+    return 'Todos los rangos';
+}
