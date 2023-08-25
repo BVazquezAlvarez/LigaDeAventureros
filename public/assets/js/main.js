@@ -107,4 +107,62 @@ $(function() {
     $('#adventure_players_max_recommended').on('keyup', function() {
         $('#session_max_players').val($(this).val());
     });
+
+    $('.js-select-join-session').on('change', function() {
+        let session_uid = $(this).data('session-uid');
+        let adventure_name = $(this).data('adventure-name');
+        let joined = $(this).data('joined');
+        let adventure_rank = $(this).data('adventure-rank');
+
+        let char_uid = $(this).val();
+        let char_name = $(this).find('option:selected').text();
+        let char_rank = $(this).find('option:selected').data('rank');
+    
+        if (char_uid == '__cancel') {
+            var modal = '#cancel-inscription-modal';
+        } else if (joined) {
+            var modal = '#swap-inscription-modal';
+        } else {
+            var modal = '#join-inscription-modal';
+        }
+
+        $(`${modal} #adventure-name`).text(adventure_name);
+        $(`${modal} .js-char-name`).text(char_name);
+        $(`${modal} #adventure-rank`).text(adventure_rank);
+        $(`${modal} #char-rank`).text(char_rank);
+        if (adventure_rank == 'Error' || adventure_rank == char_rank) {
+            $(`${modal} .alert`).hide();
+        } else {
+            $(`${modal} .alert`).show();
+        }
+
+        $(`${modal} #session-uid`).val(session_uid);
+        $(`${modal} #char-uid`).val(char_uid);
+
+        let element = $(this).attr('id');
+        $(modal).modal('show');
+        $(modal).on('hidden.bs.modal', function () {
+            var option = joined || '__default';
+            $(`#${element}`).val(option);
+        });
+
+    });
+
+    $('.js-adventure-info').on('click', function() {
+        let uid = $(this).data('uid');
+        $.ajax({
+            method: "POST",
+            url: baseUrl + "adventure/data-ajax",
+            dataType:'json',
+            data: {
+                uid: uid,
+            },
+            success: function(data) {
+                if (!data.error) {
+                    loadAdventure(data.adventure);
+                    $('#adventure-info-modal').modal('show');
+                }
+            }  
+        });
+    })
 });

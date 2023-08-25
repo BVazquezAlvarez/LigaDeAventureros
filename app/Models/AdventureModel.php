@@ -89,9 +89,4 @@ class AdventureModel extends Model {
 		$this->db->table('adventure')->insert($data);
 		return $this->db->affectedRows();
 	}
-
-    public function addSession($data) {
-		$this->db->table('session')->insert($data);
-		return $this->db->affectedRows();
-	}
 }

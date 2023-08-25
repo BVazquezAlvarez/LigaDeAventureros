@@ -17,7 +17,7 @@
 ?>
 
 <div class="modal fade" id="update-character-modal" tabindex="-1">
-    <form class="modal-dialog" method="post" action="<?= base_url('update-character') ?>" enctype="multipart/form-data">
+    <form class="modal-dialog modal-dialog-centered" method="post" action="<?= base_url('update-character') ?>" enctype="multipart/form-data">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Actualizar <span id="modal-character-name"></span></h5>

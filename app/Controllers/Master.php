@@ -27,6 +27,7 @@ class Master extends BaseController {
         $this->UserModel = model('UserModel');
         $this->CharacterModel = model('CharacterModel');
         $this->AdventureModel = model('AdventureModel');
+        $this->SessionModel = model('SessionModel');
     }
 
     protected function setTitle(string $title) {
@@ -157,7 +158,7 @@ class Master extends BaseController {
             $adventureUid = $this->request->getVar('adventure');
         }
 
-        $this->AdventureModel->addSession([
+        $this->SessionModel->addSession([
             'uid' => uid_generate_unique('session'),
             'adventure_uid' => $adventureUid,
             'master_uid' => $this->request->getVar('session_master'),

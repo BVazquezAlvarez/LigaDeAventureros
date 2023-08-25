@@ -37,3 +37,38 @@ footer {
     padding-top: 1em;
     padding-bottom: 1em;
 }
+
+.badge-player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: .25rem;
+    height: 3.5em;
+    padding: 0.5em;
+}
+
+.badge-player a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.badge-player a:hover {
+    text-decoration: underline;
+}
+
+.badge-player div:first-child {
+    margin-bottom: 0.25em;
+}
+
+.card-join-session .card-footer {
+    min-height: 4em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+select option:disabled {
+    display: none;
+}

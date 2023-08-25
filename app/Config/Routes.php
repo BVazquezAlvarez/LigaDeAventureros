@@ -53,6 +53,10 @@ $routes->post('master/new-session', 'Master::new_session_post');
 
 $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 
+$routes->post('session/join', 'Session::join');
+$routes->post('session/swap', 'Session::swap');
+$routes->post('session/cancel', 'Session::cancel');
+
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 
