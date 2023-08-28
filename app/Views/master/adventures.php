@@ -44,11 +44,11 @@
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="my_games" name="my_games" value="1" <?= $filters['my_games'] ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="my_games">Solo partidas que he dirigido</label>
+                            <label class="form-check-label" for="my_games">Solo aventuras que he dirigido</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="unplayed" name="unplayed" value="1" <?= $filters['unplayed'] ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="unplayed">Solo partidas sin sesiones jugadas</label>
+                            <label class="form-check-label" for="unplayed">Solo aventuras sin sesiones jugadas</label>
                         </div>
                     </div>
                 </div>
@@ -79,25 +79,25 @@
             <? foreach ($adventures as $adv) : ?>
                 <tr>
                     <th class="align-middle" scope="row"><a href="<?= base_url('master/adventure') ?>/<?= $adv->uid ?>"><?= $adv->name ?></a></th>
-                        <td class="align-middle"><?= rank_full_text($adv->rank) ?></td>
-                        <td class="align-middle"><?= $adv->duration ?></td>
-                        <td class="align-middle"><?= $adv->players_min_recommended ?> a <?= $adv->players_max_recommended ?></td>
-                        <td class="align-middle"><?= $adv->total_past ?></td>
-                        <td class="align-middle">
-                            <? if ($adv->last_session_datetime) : ?>
-                                <?= date('d/m/Y H:i', strtotime($adv->last_session_datetime)) ?>
-                            <? else : ?>
-                                <span class="text-danger">Ninguna</span>
-                            <? endif; ?>
-                        </td>
-                        <td class="align-middle"><?= $adv->total_future ?></td>
-                        <td class="align-middle">
-                            <? if ($adv->next_session_datetime) : ?>
-                                <?= date('d/m/Y H:i', strtotime($adv->next_session_datetime)) ?>
-                            <? else : ?>
-                                <span class="text-danger">Ninguna</span>
-                            <? endif; ?>
-                        </td>
+                    <td class="align-middle"><?= rank_full_text($adv->rank) ?></td>
+                    <td class="align-middle"><?= $adv->duration ?></td>
+                    <td class="align-middle"><?= $adv->players_min_recommended ?> a <?= $adv->players_max_recommended ?></td>
+                    <td class="align-middle"><?= $adv->total_past ?></td>
+                    <td class="align-middle">
+                        <? if ($adv->last_session_datetime) : ?>
+                            <?= date('d/m/Y H:i', strtotime($adv->last_session_datetime)) ?>
+                        <? else : ?>
+                            <span class="text-danger">Ninguna</span>
+                        <? endif; ?>
+                    </td>
+                    <td class="align-middle"><?= $adv->total_future ?></td>
+                    <td class="align-middle">
+                        <? if ($adv->next_session_datetime) : ?>
+                            <?= date('d/m/Y H:i', strtotime($adv->next_session_datetime)) ?>
+                        <? else : ?>
+                            <span class="text-danger">Ninguna</span>
+                        <? endif; ?>
+                    </td>
                 </tr>
             <? endforeach; ?>
             <? if (!$adventures) : ?>

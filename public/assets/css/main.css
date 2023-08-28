@@ -72,3 +72,26 @@ footer {
 select option:disabled {
     display: none;
 }
+
+.registered-players-block {
+    max-height: 17.75em;
+    overflow-y: auto;
+}
+
+@media (min-width: 576px) {
+    .border-join-session {
+        border-right: 1px solid #dee2e6 !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .border-join-session {
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+}
+
+.badge-lg {
+    font-size: 1em;
+    padding: 0.5rem ;
+    width: 4em;
+}

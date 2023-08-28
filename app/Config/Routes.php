@@ -37,7 +37,6 @@ $routes->get('logout', 'Login::logout');
 $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
 $routes->get('profile/(:segment)','Profile::index/$1');
-$routes->get('profile','Profile::index');
 
 $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
@@ -50,6 +49,19 @@ $routes->post('master/adventures', 'Master::adventures_post');
 $routes->get('master/adventure/(:segment)', 'Master::adventure/$1');
 $routes->get('master/new-session', 'Master::new_session');
 $routes->post('master/new-session', 'Master::new_session_post');
+
+$routes->get('admin', 'Admin::index');
+$routes->get('admin/logs', 'Admin::logs');
+$routes->get('admin/logs/(:segment)', 'Admin::logs/$1');
+$routes->post('admin/logs', 'Admin::logs_post');
+$routes->get('admin/settings', 'Admin::settings');
+$routes->post('admin/settings', 'Admin::settings_post');
+$routes->get('admin/users', 'Admin::users');
+$routes->get('admin/users/(:segment)', 'Admin::users/$1');
+$routes->post('admin/user-toggle-master', 'Admin::user_toggle_master');
+$routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
+$routes->post('admin/user-ban', 'Admin::user_ban');
+$routes->post('admin/user-unban', 'Admin::user_unban');
 
 $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 

@@ -15,33 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function setting($id): string {
-    global $settings;
-    if (isset($settings[$id])) {
-        return $settings[$id];
-    }
+function upload_log($directory, $file) {
     $db = \Config\Database::connect();
-    $builder = $db->table('settings');
-    $builder->where('id',$id);
-    $result = $builder->get()->getRow();
-    if ($result) {
-        $settings[$id] = $result->value;
-        return $result->value;
-    } else {
-        return '';
-    }    
-}
-
-function setting_all() {
-    $db = \Config\Database::connect();
-    $builder = $db->table('settings');
-    return $builder->get()->getResult();
-}
-
-function setting_update($id, $value) {
-    $db = \Config\Database::connect();
-    $builder = $db->table('settings');
-    $builder->where('id', $id)->update(['value' => $value]);
-    global $settings;
-    $settings[$id] = $value;
+    $data = [
+        'user_uid' => session('user_uid'),
+        'directory' => $directory,
+        'file' => $file,
+        'remote_addr' => $_SERVER['REMOTE_ADDR'],
+        'http_x_forwarded_for' => isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : NULL,
+    ];
+    $db->table('upload_log')->insert($data);
 }

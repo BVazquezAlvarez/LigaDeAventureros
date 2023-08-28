@@ -34,8 +34,37 @@ class UserModel extends Model {
         'banned',
 	];
 
-	public function getUsers() {
-		return $this->db->table('user')->get()->getResult();
+	public function getUsers($offset = NULL, $limit = NULL) {
+		$builder = $this->db->table('user');
+		if ($limit) {
+			$builder->limit($limit, $offset);
+		}
+		return $builder->get()->getResult();
+	}
+
+	public function getTotalUsers() {
+		$builder = $this->db->table('user');
+        return $builder->get()->getNumRows();
+	}
+
+	public function getTotalUsersConfirmed() {
+		$builder = $this->db->table('user');
+        $builder->where('banned', 0);
+        $builder->where('confirmed', 1);
+        return $builder->get()->getNumRows();
+	}
+
+	public function getTotalUsersUnconfirmed() {
+		$builder = $this->db->table('user');
+        $builder->where('banned', 0);
+        $builder->where('confirmed', 0);
+        return $builder->get()->getNumRows();
+	}
+
+	public function getTotalUsersBanned() {
+		$builder = $this->db->table('user');
+        $builder->where('banned', 1);
+        return $builder->get()->getNumRows();
 	}
 
 	public function getMasters() {

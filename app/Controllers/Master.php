@@ -138,6 +138,7 @@ class Master extends BaseController {
                 $thumbnailExtension = pathinfo($thumbnail->getName(), PATHINFO_EXTENSION);
                 $thumbnailName = "adv_$adventureUid.$thumbnailExtension";
                 $thumbnail->move(ROOTPATH . 'public/img/adventures', $thumbnailName);
+                upload_log('public/img/adventures', $thumbnailName);
             } else {
                 $thumbnailName = NULL;
             }

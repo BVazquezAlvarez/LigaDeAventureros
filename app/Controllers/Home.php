@@ -45,19 +45,8 @@ class Home extends BaseController {
                 foreach ($players as $player) {
                     if ($player->uid === session('user_uid')) {
                         $session->joined = $player->character_uid;
-                        break;
                     }
-                }
-    
-                $session->players = [
-                    'playing' => array_pad(array_slice($players, 0, $session->players_max), $session->players_max, NULL),
-                    'waitlist' => array_slice($players, $session->players_max),
-                ];
 
-                foreach ($session->players['playing'] as $player) {
-                    if (!$player) {
-                        break;
-                    }
                     if (!$session->rank || $session->rank == rank_get($player->level)) {
                         $player->badge_color = 'success';
                     } else if ($session->rank > rank_get($player->level)) {
@@ -66,6 +55,11 @@ class Home extends BaseController {
                         $player->badge_color = 'danger';
                     }
                 }
+    
+                $session->players = [
+                    'playing' => array_pad(array_slice($players, 0, $session->players_max), $session->players_max, NULL),
+                    'waitlist' => array_slice($players, $session->players_max),
+                ];
             }
         }
 

@@ -25,10 +25,6 @@ class Profile extends BaseController {
     }
 
     public function index($uid = NULL) {
-        if ($uid == NULL) {
-            $uid = session('user_uid');
-        }
-
         $user = $this->UserModel->getUser($uid);
 
         if (!$user) {
@@ -66,7 +62,7 @@ class Profile extends BaseController {
             );
             $this->UserModel->updateUser(session('user_uid'), $data);
             session()->setFlashdata('success', 'Configuración actualizada.');
-            return redirect()->to('profile');
+            return redirect()->to('profile/'.session('user_uid'));
         } else {
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
@@ -94,10 +90,11 @@ class Profile extends BaseController {
 
             $characterSheet = $this->request->getFile('character_sheet');
             $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
+            upload_log('public/character_sheets', $data['uploaded_sheet']);
 
             $this->CharacterModel->addCharacter($data);
             session()->setFlashdata('success', 'Personaje creado correctamente.');
-            return redirect()->to('profile');
+            return redirect()->to('profile/'.session('user_uid'));
         } else {
             session()->setFlashdata('error', 'No se ha podido crear el personaje.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
@@ -140,10 +137,11 @@ class Profile extends BaseController {
 
         $characterSheet = $this->request->getFile('character_sheet');
         $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
+        upload_log('public/character_sheets', $data['uploaded_sheet']);
 
         $this->CharacterModel->updateCharacter($uid, $data);
         session()->setFlashdata('success', 'Se ha actualizado el personaje ' . $character->name . '.');
-        return redirect()->to('profile');
+        return redirect()->to('profile/'.session('user_uid'));
     
     }
 

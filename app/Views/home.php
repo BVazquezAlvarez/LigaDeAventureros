@@ -12,7 +12,7 @@
                         </div>
                         <div class="card-body py-0">
                             <div class="row h-100">
-                                <div class="col-sm-6 border-right text-center p-2">
+                                <div class="col-sm-6 border-join-session text-center p-2">
                                     <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                                     <p>
                                         <?= date('d/m/Y', strtotime($session->date)) ?><br/>
@@ -22,24 +22,43 @@
                                     <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
                                 </div>
                                 <div class="col-sm-6 text-center p-2">
-                                    <? foreach ($session->players['playing'] as $player) : ?>
-                                        <? if ($player) : ?>
-                                            <div class="d-none d-md-block">
-                                                <span class="badge badge-<?= $player->badge_color ?> badge-player">
-                                                    <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
-                                                    <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
-                                                </span>
-                                            </div>
-                                            <div class="d-md-none">
-                                                <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
-                                                    <div><?= $player->name ?></div>
-                                                    <div>(<?= $player->display_name ?>)</div>
-                                                </a>
-                                            </div>
-                                        <? else : ?>
-                                            <span class="badge badge-secondary badge-player">------</span>
+                                    <div class="registered-players-block">
+                                        <? foreach ($session->players['playing'] as $player) : ?>
+                                            <? if ($player) : ?>
+                                                <div class="d-none d-md-block">
+                                                    <span class="badge badge-<?= $player->badge_color ?> badge-player">
+                                                        <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
+                                                        <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
+                                                    </span>
+                                                </div>
+                                                <div class="d-md-none">
+                                                    <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
+                                                        <div><?= $player->name ?></div>
+                                                        <div>(<?= $player->display_name ?>)</div>
+                                                    </a>
+                                                </div>
+                                            <? else : ?>
+                                                <span class="badge badge-secondary badge-player">------</span>
+                                            <? endif; ?>
+                                        <? endforeach; ?>
+                                        <? if ($session->players['waitlist']) : ?>
+                                            <h6 class="mt-2 text-secondary">Lista de espera</h6>
+                                            <? foreach ($session->players['waitlist'] as $player) : ?>
+                                                <div class="d-none d-md-block">
+                                                    <span class="badge badge-<?= $player->badge_color ?> badge-player">
+                                                        <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
+                                                        <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
+                                                    </span>
+                                                </div>
+                                                <div class="d-md-none">
+                                                    <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
+                                                        <div><?= $player->name ?></div>
+                                                        <div>(<?= $player->display_name ?>)</div>
+                                                    </a>
+                                                </div>
+                                            <? endforeach; ?>                                           
                                         <? endif; ?>
-                                    <? endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +109,7 @@
                         </div>
                         <div class="card-body py-0">
                             <div class="row h-100">
-                                <div class="col-sm-6 border-right text-center p-2">
+                                <div class="col-sm-6 border-join-session text-center p-2">
                                     <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                                     <p>
                                         <?= date('d/m/Y', strtotime($session->date)) ?><br/>
@@ -100,24 +119,43 @@
                                     <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
                                 </div>
                                 <div class="col-sm-6 text-center p-2">
-                                    <? foreach ($session->players['playing'] as $player) : ?>
-                                        <? if ($player) : ?>
-                                            <div class="d-none d-md-block">
-                                                <span class="badge badge-<?= $player->badge_color ?> badge-player">
-                                                    <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
-                                                    <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
-                                                </span>
-                                            </div>
-                                            <div class="d-md-none">
-                                                <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
-                                                    <div><?= $player->name ?></div>
-                                                    <div>(<?= $player->display_name ?>)</div>
-                                                </a>
-                                            </div>
-                                        <? else : ?>
-                                            <span class="badge badge-secondary badge-player">------</span>
+                                    <div class="registered-players-block">
+                                        <? foreach ($session->players['playing'] as $player) : ?>
+                                            <? if ($player) : ?>
+                                                <div class="d-none d-md-block">
+                                                    <span class="badge badge-<?= $player->badge_color ?> badge-player">
+                                                        <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
+                                                        <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
+                                                    </span>
+                                                </div>
+                                                <div class="d-md-none">
+                                                    <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
+                                                        <div><?= $player->name ?></div>
+                                                        <div>(<?= $player->display_name ?>)</div>
+                                                    </a>
+                                                </div>
+                                            <? else : ?>
+                                                <span class="badge badge-secondary badge-player">------</span>
+                                            <? endif; ?>
+                                        <? endforeach; ?>
+                                        <? if ($session->players['waitlist']) : ?>
+                                            <h6 class="mt-2 text-secondary">Lista de espera</h6>
+                                            <? foreach ($session->players['waitlist'] as $player) : ?>
+                                                <div class="d-none d-md-block">
+                                                    <span class="badge badge-<?= $player->badge_color ?> badge-player">
+                                                        <div><a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank"><?= $player->name ?></a></div>
+                                                        <div>(<a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a>)</div>
+                                                    </span>
+                                                </div>
+                                                <div class="d-md-none">
+                                                    <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> badge badge-player">
+                                                        <div><?= $player->name ?></div>
+                                                        <div>(<?= $player->display_name ?>)</div>
+                                                    </a>
+                                                </div>
+                                            <? endforeach; ?>                                           
                                         <? endif; ?>
-                                    <? endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

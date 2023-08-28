@@ -72,7 +72,9 @@
 									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" href="<?= base_url('admin') ?>">Panel de Control</a></li>
 										<li><hr class="dropdown-divider"></li>
-										<!-- TODO -->
+										<li><a class="dropdown-item" href="<?= base_url('admin/users') ?>">Administrar usuarios</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('admin/logs') ?>">Comprobar logs</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('admin/settings') ?>">Configuraciones del servidor</a></li>
 									</ul>
 								</li>
 							<? endif; ?>
@@ -85,7 +87,7 @@
 										<?= $userdata['display_name'] ?>
 									</a>
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item" href="<?= base_url('profile') ?>">Mi perfil</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('profile') ?>/<?= $userdata['uid'] ?>">Mi perfil</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('settings') ?>">Configuración</a></li>
 										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item" href="<?= base_url('logout') ?>">Cerrar Sesión</a></li>
@@ -121,7 +123,7 @@
 		</main>
 
 		<footer class="text-center">
-			footer
+			Liga de Aventureros de Vigo
 		</footer>
 
 	</body>
