@@ -30,6 +30,7 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/privacy', 'Home::privacy');
 
 $routes->post('login/onetap', 'Login::onetap');
 $routes->get('logout', 'Login::logout');

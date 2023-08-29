@@ -125,6 +125,7 @@
 
 		<footer class="text-center">
 			Liga de Aventureros de Vigo
+			<div><small><a href="<?= base_url('privacy') ?>">Política de privacidad</a></small></div>
 		</footer>
 
 	</body>

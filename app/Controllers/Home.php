@@ -69,4 +69,9 @@ class Home extends BaseController {
         return $this->loadView('home');
     }
 
+    public function privacy() {
+        $this->setTitle('Política de privacidad');
+        return $this->loadView('privacy');
+    }
+
 }
