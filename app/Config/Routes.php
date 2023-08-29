@@ -42,6 +42,7 @@ $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
 
 $routes->get('master', 'Master::index');
+$routes->get('master/kick/(:segment)/(:segment)', 'Master::kick/$1/$2');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->get('master/adventures', 'Master::adventures');

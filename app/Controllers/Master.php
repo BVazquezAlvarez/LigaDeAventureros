@@ -35,6 +35,27 @@ class Master extends BaseController {
     }
 
     public function index() {
+        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'));
+        foreach ($upcomingSessions as $session) {
+            $players = $this->SessionModel->getSessionPlayers($session->uid);
+    
+            foreach ($players as $player) {
+                if (!$session->rank || $session->rank == rank_get($player->level)) {
+                    $player->badge_color = 'success';
+                } else if ($session->rank > rank_get($player->level)) {
+                    $player->badge_color = 'warning';
+                } else {
+                    $player->badge_color = 'danger';
+                }
+            }
+
+            $session->players = [
+                'playing' => array_slice($players, 0, $session->players_max),
+                'waitlist' => array_slice($players, $session->players_max),
+            ];
+        }
+
+        $this->setData('upcoming_sessions', $upcomingSessions);
         $this->setData('sheets_pending_count', $this->CharacterModel->getCharactersValidationPendingCount());
         $this->setTitle('Panel de control');
         return $this->loadView('master/index');
@@ -184,6 +205,12 @@ class Master extends BaseController {
         $this->SessionModel->publishSessions($sessions);
         session()->setFlashdata('success', 'Se han publicado las sesiones seleccionadas.');
         return redirect()->to('master/publish');
+    }
+
+    public function kick($session_uid, $user_uid) {
+        $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
+        session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
+        return redirect()->to('master');
     }
 
 }

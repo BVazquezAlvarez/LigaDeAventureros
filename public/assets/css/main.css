@@ -95,3 +95,7 @@ select option:disabled {
     padding: 0.5rem ;
     width: 4em;
 }
+
+.text-small {
+    font-size: 0.6em;
+}

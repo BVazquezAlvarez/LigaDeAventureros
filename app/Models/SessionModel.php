@@ -34,7 +34,7 @@ class SessionModel extends Model {
         'published',
     ];
 
-    public function getSessions($start = NULL, $end = NULL) {
+    public function getSessions($start = NULL, $end = NULL, $master_uid = NULL) {
         $builder = $this->db->table('session');
         $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
@@ -45,6 +45,9 @@ class SessionModel extends Model {
         }
         if ($end) {
             $builder->where('session.date <=', $end);
+        }
+        if ($master_uid) {
+            $builder->where('session.master_uid', $master_uid);
         }
         $builder->orderBy('session.date', 'ASC');
         return $builder->get()->getResult();
