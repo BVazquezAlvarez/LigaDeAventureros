@@ -137,6 +137,14 @@
                             <input type="text" name="session_max_players" id="session_max_players" value="<?= setting('default_max_players') ?>" class="form-control" required>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" name="published" id="published" class="form-check-input">
+                                <label class="form-check-label" for="published">Publicar inmediatamente</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12">

@@ -28,6 +28,9 @@
         <a href="<?= base_url('master/new-session') ?>" class="btn btn-primary btn-lg btn-block">
             Nueva sesión
         </a>
+        <a href="<?= base_url('master/publish') ?>" class="btn btn-primary btn-lg btn-block">
+            Publicar sesiones
+        </a>
     </div>
     <div class="col-md-6">
         

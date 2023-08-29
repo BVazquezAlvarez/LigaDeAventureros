@@ -49,6 +49,8 @@ $routes->post('master/adventures', 'Master::adventures_post');
 $routes->get('master/adventure/(:segment)', 'Master::adventure/$1');
 $routes->get('master/new-session', 'Master::new_session');
 $routes->post('master/new-session', 'Master::new_session_post');
+$routes->get('master/publish', 'Master::publish');
+$routes->post('master/publish', 'Master::publish_post');
 
 $routes->get('admin', 'Admin::index');
 $routes->get('admin/logs', 'Admin::logs');

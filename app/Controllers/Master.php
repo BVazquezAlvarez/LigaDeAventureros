@@ -170,7 +170,20 @@ class Master extends BaseController {
         ]);
 
         session()->setFlashdata('success', 'Se ha creado una nueva sesión.');
-        return redirect()->to('master/adventures');
+        return redirect()->to('master/publish');
+    }
+
+    public function publish() {
+        $this->setData('sessions', $this->SessionModel->getUnpublishedSessions());
+        $this->setTitle('Publicar sesiones');
+        return $this->loadView('master/publish');
+    }
+
+    public function publish_post() {
+        $sessions = $this->request->getVar('session');
+        $this->SessionModel->publishSessions($sessions);
+        session()->setFlashdata('success', 'Se han publicado las sesiones seleccionadas.');
+        return redirect()->to('master/publish');
     }
 
 }

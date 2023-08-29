@@ -31,6 +31,7 @@ class SessionModel extends Model {
         'time',
         'players_min',
         'players_max',
+        'published',
     ];
 
     public function getSessions($start = NULL, $end = NULL) {
@@ -38,6 +39,7 @@ class SessionModel extends Model {
         $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
+        $builder->where('session.published', 1);
         if ($start) {
             $builder->where('session.date >=', $start);
         }
@@ -46,6 +48,16 @@ class SessionModel extends Model {
         }
         $builder->orderBy('session.date', 'ASC');
         return $builder->get()->getResult();
+    }
+
+    public function getUnpublishedSessions() {
+        $builder = $this->db->table('session');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
+        $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
+        $builder->join('user', 'session.master_uid = user.uid', 'left');
+        $builder->where('session.published', 0);
+        $builder->orderBy('session.date', 'ASC');
+        return $builder->get()->getResult();      
     }
 
     public function getSessionPlayers($session_uid) {
@@ -80,6 +92,12 @@ class SessionModel extends Model {
         $builder->where('session_uid', $session_uid);
         $builder->where('player_uid', $player_uid);
         $builder->delete();
+    }
+
+    public function publishSessions($uids) {
+        $builder = $this->db->table('session');
+        $builder->whereIn('uid', $uids);
+        $builder->update(['published' => 1]);
     }
 
 }

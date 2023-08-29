@@ -232,5 +232,16 @@ $(function() {
         $('#unban-modal').modal('show');
     });
 
+    $('#checkbox-select-all').on('click', function() {
+        $('.js-checkbox-select-all').prop('checked', this.checked);
+    });
+
+    $('.js-checkbox-select-all').on('click', function() {
+        var totalCheckboxes = $('.js-checkbox-select-all').length;
+        var checkedCheckboxes = $('.js-checkbox-select-all:checked').length;
+
+        $('#checkbox-select-all').prop('indeterminate', checkedCheckboxes > 0 && checkedCheckboxes < totalCheckboxes);
+        $('#checkbox-select-all').prop('checked', checkedCheckboxes === totalCheckboxes);
+    });
 
 });

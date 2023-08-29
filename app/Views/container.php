@@ -61,6 +61,7 @@
 										<li><a class="dropdown-item" href="<?= base_url('master/sheets') ?>">Validar hojas de personaje</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('master/adventures') ?>">Aventuras y sesiones</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('master/new-session') ?>">Nueva sesión</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('master/publish') ?>">Publicar sesiones</a></li>
 									</ul>
 								</li>
 							<? endif; ?>
