@@ -99,3 +99,14 @@ select option:disabled {
 .text-small {
     font-size: 0.6em;
 }
+
+footer {
+    position: relative;
+}
+
+.links-container {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+}

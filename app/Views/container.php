@@ -29,6 +29,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-3.6.0.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui.min.js') ?>"></script>
 
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
 		<script type="text/javascript" src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 
@@ -126,6 +127,9 @@
 		<footer class="text-center">
 			Liga de Aventureros de Vigo
 			<div><small><a href="<?= base_url('privacy') ?>">Política de privacidad</a></small></div>
+			<div class="links-container">
+				<a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
+			</div>
 		</footer>
 
 	</body>
