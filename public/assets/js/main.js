@@ -115,7 +115,7 @@ $(function() {
         let adventure_rank = $(this).data('adventure-rank');
 
         let char_uid = $(this).val();
-        let char_name = $(this).find('option:selected').text();
+        let char_name = $(this).find('option:selected').data('char-name');
         let char_rank = $(this).find('option:selected').data('rank');
     
         if (char_uid == '__cancel') {
