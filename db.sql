@@ -64,6 +64,7 @@ INSERT INTO `settings` (`id`, `description`, `value`) VALUES
 ('default_min_players', 'Mínimo de jugadores por defecto', ''),
 ('default_time', 'Hora por defecto para las sesiones', ''),
 ('google_client_id', 'google_client_id', '');
+('wiki_link', 'Link de la Wiki', '');
 
 CREATE TABLE `upload_log` (
   `id` int(11) NOT NULL,
