@@ -80,7 +80,9 @@
 									</ul>
 								</li>
 							<? endif; ?>
-							<li class="nav-item"><a class="nav-link" href="https://liga-de-aventureros-vigo.fandom.com/es/" target="_blank">Wiki</a></li>
+							<? if (setting('wiki_link')) : ?>
+								<li class="nav-item"><a class="nav-link" href="<?= setting('wiki_link') ?>" target="_blank">Wiki</a></li>
+							<? endif; ?>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 							<? if (isset($userdata)) : ?>
