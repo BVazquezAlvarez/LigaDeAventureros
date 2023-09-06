@@ -87,6 +87,23 @@ class Master extends BaseController {
         return redirect()->to('master/sheets');
     }
 
+    public function reject_sheet() {
+        $uid = $this->request->getVar('uid');
+        $character = $this->CharacterModel->getCharacter($uid);
+
+        if ($character->validated_sheet) {
+            $data = [
+                'uploaded_sheet' => $character->validated_sheet
+            ];
+            $this->CharacterModel->updateCharacter($uid, $data);
+        } else {
+            $this->CharacterModel->where('uid', $uid)->delete();
+        }
+
+        session()->setFlashdata('success', 'Se ha rechazado la ficha de '.$character->name);
+        return redirect()->to('master/sheets');
+    }
+
     public function adventures() {
         $filters = [
             'q'        => session('adventures.filters.q'),

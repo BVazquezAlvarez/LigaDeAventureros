@@ -45,6 +45,7 @@
                         </td>
                         <td class="align-middle">
                             <button class="btn btn-primary js-validate-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>">Validar</button>
+                            <button class="btn btn-danger js-reject-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>">Rechazar</button>
                         </td>
                         <td class="align-middle">
                             <? if (!$sheet->confirmed) : ?>
@@ -65,6 +66,21 @@
         <form class="modal-content" method="post" action="<?= base_url('master/validate-sheet') ?>">
             <div class="modal-body">
                 <h5>¿Estás seguro de que quieres validar la hoja de <span id="modal-character-name"></span>?</h5>
+                <input type="hidden" id="modal-uid" name="uid">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Sí</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="reject-sheet-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" method="post" action="<?= base_url('master/reject-sheet') ?>">
+            <div class="modal-body">
+                <h5>¿Estás seguro de que quieres <span class="text-danger">rechazar</span> la hoja de <span id="modal-character-name"></span>?</h5>
                 <input type="hidden" id="modal-uid" name="uid">
             </div>
             <div class="modal-footer">

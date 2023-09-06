@@ -51,10 +51,20 @@ $(function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
         
-        $("#modal-character-name").text(name);
-        $("#modal-uid").val(uid);
+        $('#validate-sheet-modal #modal-character-name').text(name);
+        $('#validate-sheet-modal #modal-uid').val(uid);
 
         $('#validate-sheet-modal').modal('show');
+    });
+
+    $('.js-reject-btn').on('click', function() {
+        let uid = $(this).data("uid");
+        let name = $(this).data("name");
+
+        $('#reject-sheet-modal #modal-character-name').text(name);
+        $('#reject-sheet-modal #modal-uid').val(uid);
+
+        $('#reject-sheet-modal').modal('show');
     });
 
     $('.js-update-character-btn').on('click', function() {
