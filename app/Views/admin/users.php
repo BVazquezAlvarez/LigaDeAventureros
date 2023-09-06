@@ -20,8 +20,8 @@
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Usuario</th>
-                <th scope="col">Fecha de registro</th>
+                <th colspan="2" scope="col" class="text-center">Usuario</th>
+                <th scope="col" class="text-center">Fecha de registro</th>
                 <th scope="col" class="text-center">Confirmado</th>
                 <th scope="col" class="text-center">Master</th>
                 <th scope="col" class="text-center">Administrador</th>
@@ -31,8 +31,9 @@
         <tbody>
             <? foreach ($users as $user) : ?>
                 <tr>
-                    <th class="align-middle" scope="row"><a href="<?= base_url('profile') ?>/<?= $user->uid ?>" target="_blank"><?= $user->display_name ?></a></th>
-                    <td class="align-middle"><?= date('d/m/Y H:i:s', strtotime($user->date_created)) ?></a></td>
+                    <th class="align-middle text-right" scope="row"><a href="<?= base_url('profile') ?>/<?= $user->uid ?>" target="_blank"><?= $user->uid ?></a></th>
+                    <td class="align-middle"><?= $user->display_name ?></td>
+                    <td class="align-middle text-center"><?= date('d/m/Y H:i:s', strtotime($user->date_created)) ?></a></td>
                     <td class="align-middle text-center">
                         <? if ($user->confirmed) : ?>
                             <span class="badge badge-lg badge-success">Sí</span>
