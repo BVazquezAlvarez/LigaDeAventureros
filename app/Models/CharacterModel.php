@@ -71,7 +71,7 @@ class CharacterModel extends Model {
         $builder->groupEnd();
         $builder->where('user.banned', 0);
         $builder->where('player_character.active', 1);
-        $builder->orderBy('user.confirmed', 'DESC');
+        $builder->orderBy('user.confirmed', 'ASC');
         $builder->orderBy('player_character.date_uploaded', 'ASC');
         return $builder->get()->getResult();
     }
