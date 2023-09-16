@@ -134,6 +134,7 @@ class Master extends BaseController {
     public function new_session() {
         $this->setData('adventures', $this->AdventureModel->getAdventureList());
         $this->setData('masters', $this->UserModel->getMasters());
+        $this->setData('locations', $this->SessionModel->getLocations());
         $this->setTitle('Nueva sesión');
         return $this->loadView('master/newsession');
     }
@@ -159,6 +160,7 @@ class Master extends BaseController {
         $validation->setRule('session_master', 'master', 'trim|required');
         $validation->setRule('session_date', 'fecha', 'trim|required');
         $validation->setRule('session_time', 'hora', 'trim|required');
+        $validation->setRule('location', 'ubicación', 'trim|required');
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
 
@@ -203,6 +205,7 @@ class Master extends BaseController {
             'master_uid' => $this->request->getVar('session_master'),
             'date' => $this->request->getVar('session_date'),
             'time' => $this->request->getVar('session_time'),
+            'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
         ]);

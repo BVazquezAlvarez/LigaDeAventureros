@@ -120,8 +120,17 @@
                             <input type="time" name="session_time" id="session_time" class="form-control" value="<?= setting('default_time') ?>" required>
                         </div>
                     </div>
-                </div>
-                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="location">Ubicación <span class="text-danger">*</span></label>
+                            <input type="text" name="location" id="location" class="form-control" list="locations" required>
+                            <datalist id="locations">
+                                <? foreach ($locations as $location) : ?>
+                                    <option value="<?= $location->location ?>">
+                                <? endforeach; ?>
+                            </datalist>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <label>Número de jugadores</label>
                     </div>

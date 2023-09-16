@@ -31,6 +31,7 @@ class SessionModel extends Model {
         'time',
         'players_min',
         'players_max',
+        'location',
         'published',
     ];
 
@@ -101,6 +102,15 @@ class SessionModel extends Model {
         $builder = $this->db->table('session');
         $builder->whereIn('uid', $uids);
         $builder->update(['published' => 1]);
+    }
+
+    public function getLocations() {
+        $builder = $this->db->table('session');
+        $builder->select('location, COUNT(*) AS total');
+        $builder->orderBy('total', 'DESC');
+        $builder->groupBy('location');
+        $builder->where('location !=', '');
+        return $builder->get()->getResult();
     }
 
 }

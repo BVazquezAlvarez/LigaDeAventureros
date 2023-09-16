@@ -8,8 +8,9 @@
                 <div class="col-sm-6 border-join-session text-center p-2">
                     <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                     <p>
-                        <?= date('d/m/Y', strtotime($session->date)) ?><br/>
-                        <?= date('H:i', strtotime($session->time)) ?>
+                        <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
+                        <?= date('H:i', strtotime($session->time)) ?><br/>
+                        <?= $session->location ?>
                     </p>
                     <p><?= $session->master ?></p>
                     <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
