@@ -80,6 +80,7 @@
 									</ul>
 								</li>
 							<? endif; ?>
+							<li class="nav-item"><a class="nav-link" href="<?= base_url('all-characters') ?>">Todos los personajes</a></li>
 							<? if (setting('wiki_link')) : ?>
 								<li class="nav-item"><a class="nav-link" href="<?= setting('wiki_link') ?>" target="_blank">Wiki</a></li>
 							<? endif; ?>

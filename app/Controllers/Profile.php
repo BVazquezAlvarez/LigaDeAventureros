@@ -142,7 +142,24 @@ class Profile extends BaseController {
         $this->CharacterModel->updateCharacter($uid, $data);
         session()->setFlashdata('success', 'Se ha actualizado el personaje ' . $character->name . '.');
         return redirect()->to('profile/'.session('user_uid'));
-    
+    }
+
+    public function all_characters($page = 1) {
+        $limit = 25;
+        $start = $limit * ($page - 1);
+
+        $characters = $this->CharacterModel->getAllActiveCharacters($start, $limit);
+        $total = $this->CharacterModel->countAllActiveCharacters();
+
+        $pager = service('pager');
+        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 3);
+
+        $this->setData('characters',$characters);
+        $this->setData('total',$total);
+        $this->setData('pagination',$pagination);
+
+        $this->setTitle('Todos los personajes');
+        return $this->loadView('profile/all_characters');
     }
 
 }

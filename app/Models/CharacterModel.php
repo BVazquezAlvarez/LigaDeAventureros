@@ -89,4 +89,27 @@ class CharacterModel extends Model {
         return $builder->countAllResults();
     }
 
+    public function getAllActiveCharacters($offset = NULL, $limit = NULL) {
+        $builder = $this->db->table('player_character');
+        $builder->select('player_character.*, user.display_name');
+        $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->where('player_character.active', 1);
+        $builder->where('user.banned', 0);
+        $builder->where('player_character.validated_sheet IS NOT NULL');
+        $builder->orderBy('player_character.level', 'DESC');
+		if ($limit) {
+			$builder->limit($limit, $offset);
+		}
+        return $builder->get()->getResult();
+    }
+
+    public function countAllActiveCharacters() {
+        $builder = $this->db->table('player_character');
+        $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->where('player_character.active', 1);
+        $builder->where('user.banned', 0);
+        $builder->where('player_character.validated_sheet IS NOT NULL');
+        return $builder->countAllResults();
+    }
+
 }

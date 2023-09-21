@@ -39,6 +39,9 @@ $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
+$routes->get('all-characters', 'Profile::all_characters');
+$routes->get('all-characters/(:segment)', 'Profile::all_characters/$1');
+
 $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
 
