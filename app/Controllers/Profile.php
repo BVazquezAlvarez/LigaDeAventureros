@@ -152,7 +152,7 @@ class Profile extends BaseController {
         $total = $this->CharacterModel->countAllActiveCharacters();
 
         $pager = service('pager');
-        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 3);
+        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 2);
 
         $this->setData('characters',$characters);
         $this->setData('total',$total);
