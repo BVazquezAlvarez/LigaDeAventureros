@@ -55,6 +55,12 @@ class Login extends BaseController {
             } else {
                 session()->set(['user_uid' => $user->uid]);
             }
+            if ($user->delete_on) {
+                $this->UserModel->updateUser($user->uid, [
+                    'delete_on' => NULL,
+                ]);
+            }
+
         }
 
         return redirect()->to('/');

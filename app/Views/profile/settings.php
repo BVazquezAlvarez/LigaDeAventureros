@@ -28,4 +28,27 @@
             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
     </div>
-</form> 
+    <div class="col-12">
+        <div class="form-group text-center">
+            <button type="button" data-toggle="modal" data-target="#delete-account-modal" class="btn btn-outline-danger">Eliminar mi cuenta</button>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="delete-account-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" method="post" action="<?= base_url('settings/delete-account') ?>">
+            <div class="modal-body">
+                <h5>¿Estás seguro de que quieres eliminar tu cuenta?</h5>
+                <div class="alert alert-danger text-center mt-3 mb-0" role="alert">
+                    Tu cuenta se eliminará en <strong>15 días</strong>.<br/>
+                    Para cancelar, inicia sesión durante ese período.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Sí</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+        </form>
+    </div>
+</div>

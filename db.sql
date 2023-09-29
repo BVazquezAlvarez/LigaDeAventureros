@@ -136,4 +136,6 @@ ALTER TABLE `upload_log`
 
 ALTER TABLE `session` ADD `location` VARCHAR(255) NOT NULL AFTER `time`; 
 
+ALTER TABLE `user` ADD `delete_on` DATE NULL AFTER `banned`;
+
 COMMIT;

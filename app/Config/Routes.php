@@ -37,6 +37,7 @@ $routes->get('logout', 'Login::logout');
 
 $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
+$routes->post('settings/delete-account','Profile::delete_account');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
 $routes->get('all-characters', 'Profile::all_characters');
@@ -84,6 +85,8 @@ $routes->post('session/cancel', 'Session::cancel');
 
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
+$routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
+$routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
 
 /*
  * --------------------------------------------------------------------

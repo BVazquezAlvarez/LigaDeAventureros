@@ -45,7 +45,7 @@ class Cron extends BaseController {
             $filePathToDelete = $folderPath . DIRECTORY_SEPARATOR . $fileToDelete;
             if (file_exists($filePathToDelete)) {
                 unlink($filePathToDelete);
-                echo "Eliminado: $fileToDelete.<br>";
+                echo "Eliminado: $fileToDelete.".PHP_EOL;
                 $count++;
             }
         }
@@ -79,11 +79,58 @@ class Cron extends BaseController {
             $filePathToDelete = $folderPath . DIRECTORY_SEPARATOR . $fileToDelete;
             if (file_exists($filePathToDelete)) {
                 unlink($filePathToDelete);
-                echo "Eliminado: $fileToDelete.<br>";
+                echo "Eliminado: $fileToDelete.".PHP_EOL;
                 $count++;
             }
         }
         echo "$count thumbnails eliminados.";
+    }
+
+    public function delete_accounts_requested() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('user');
+        $builder->where('banned', 0);
+        $builder->where('delete_on <=', date('Y-m-d'));
+        $accounts = $builder->get()->getResult();
+
+        $uids = [];
+        $count = count($accounts);
+        foreach ($accounts as $account) {
+            $uids[] = $account->uid;
+            echo "Eliminando: $account->uid ($account->display_name).".PHP_EOL;
+        }
+
+        if (!empty($uids)) {
+            $builder = $db->table('user');
+            $builder->whereIn('uid', $uids);
+            $builder->delete();
+        }
+
+        echo "$count cuentas eliminadas.";
+    }
+
+    public function delete_accounts_inactive() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('user');
+        $builder->where('confirmed', 0);
+        $builder->where('banned', 0);
+        $builder->where('date_created <=', date('Y-m-d', strtotime('- 6 months')));
+        $accounts = $builder->get()->getResult();
+
+        $uids = [];
+        $count = count($accounts);
+        foreach ($accounts as $account) {
+            $uids[] = $account->uid;
+            echo "Eliminando: $account->uid ($account->display_name).".PHP_EOL;
+        }
+
+        if (!empty($uids)) {
+            $builder = $db->table('user');
+            $builder->whereIn('uid', $uids);
+            $builder->delete();
+        }
+
+        echo "$count cuentas eliminadas.";
     }
 
 }

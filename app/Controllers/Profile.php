@@ -162,4 +162,13 @@ class Profile extends BaseController {
         return $this->loadView('profile/all_characters');
     }
 
+    public function delete_account() {
+        $date = strtotime('+ 15 days');
+        $this->UserModel->updateUser(session('user_uid'), [
+            'delete_on' => date('Y-m-d', $date),
+        ]);
+        session()->destroy();
+        return redirect()->to('/');
+    }
+
 }

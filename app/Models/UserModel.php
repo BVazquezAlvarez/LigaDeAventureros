@@ -32,6 +32,7 @@ class UserModel extends Model {
 		'admin',
         'date_created',
         'banned',
+		'delete_on'
 	];
 
 	public function getUsers($offset = NULL, $limit = NULL) {
