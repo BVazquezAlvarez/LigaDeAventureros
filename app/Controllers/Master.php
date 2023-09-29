@@ -259,7 +259,7 @@ class Master extends BaseController {
 
         $this->AdventureModel->updateAdventure($uid, $data);
         session()->setFlashdata('success', 'Se ha editado la aventura.');
-        return redirect()->to('master/adventures');
+        return redirect()->to('master/adventure/'.$uid);
     }
 
     public function delete_session() {
