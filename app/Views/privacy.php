@@ -35,7 +35,6 @@
 
 <h2 class="mt-4">5. Cambios en la política de privacidad</h2>
 <p>Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Te notificaremos sobre cambios significativos en la forma en que tratamos la información personal enviando un aviso a la dirección de correo electrónico asociada a tu cuenta o mediante una notificación destacada en la plataforma.</p>
-<p>Si tienes alguna pregunta o inquietud sobre esta Política de Privacidad, puedes ponerte en contacto con nosotros en [correo de contacto].</p>
 
 <h2 class="mt-4">6. Contacto</h2>
 <p>Si tienes alguna pregunta, comentario o inquietud sobre esta Política de Privacidad o el manejo de tus datos personales, no dudes en ponerte en contacto con nosotros:</p>
@@ -46,4 +45,4 @@
 
 <p class="mt-5">Al utilizar <strong><?= setting('app_name') ?></strong>, estás aceptando los términos descritos en esta Política de Privacidad.</p>
 
-<p class="text-muted">Fecha de última actualización: 29 de agosto de 2023</p>
+<p class="text-muted">Fecha de última actualización: 29 de septiembre de 2023</p>
