@@ -254,4 +254,18 @@ $(function() {
         $('#checkbox-select-all').prop('checked', checkedCheckboxes === totalCheckboxes);
     });
 
+    $('.js-session-rm').on('click', function() {
+        let uid = $(this).data("uid");
+        $("#session-rm-modal #uid").val(uid);
+        $('#session-rm-modal').modal('show');
+    });
+
+    $('.js-session-kick').on('click', function() {
+        let uid = $(this).data("uid");
+        let name = $(this).data("name");
+        $("#session-kick-modal #player-uid").val(uid);
+        $("#session-kick-modal #character-name").text(name);
+        $('#session-kick-modal').modal('show');
+    });
+
 });

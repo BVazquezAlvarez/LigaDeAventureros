@@ -89,4 +89,10 @@ class AdventureModel extends Model {
 		$this->db->table('adventure')->insert($data);
 		return $this->db->affectedRows();
 	}
+
+    public function updateAdventure($uid, $data) {
+        $builder = $this->db->table('adventure');
+        $builder->where('uid', $uid);
+        $builder->update($data);
+    }
 }

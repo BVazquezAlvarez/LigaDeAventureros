@@ -35,25 +35,7 @@ class Master extends BaseController {
     }
 
     public function index() {
-        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'));
-        foreach ($upcomingSessions as $session) {
-            $players = $this->SessionModel->getSessionPlayers($session->uid);
-    
-            foreach ($players as $player) {
-                if (!$session->rank || $session->rank == rank_get($player->level)) {
-                    $player->badge_color = 'success';
-                } else if ($session->rank > rank_get($player->level)) {
-                    $player->badge_color = 'warning';
-                } else {
-                    $player->badge_color = 'danger';
-                }
-            }
-
-            $session->players = [
-                'playing' => array_slice($players, 0, $session->players_max),
-                'waitlist' => array_slice($players, $session->players_max),
-            ];
-        }
+        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'), true);
 
         $this->setData('upcoming_sessions', $upcomingSessions);
         $this->setData('sheets_pending_count', $this->CharacterModel->getCharactersValidationPendingCount());
@@ -127,8 +109,12 @@ class Master extends BaseController {
     }
 
     public function adventure($uid) {
-        session()->setFlashdata('error', 'La página de aventura todavía no está disponible.');
-        return redirect()->to('master/adventures');
+        $adventure = $this->AdventureModel->getAdventure($uid);
+
+        $this->setData('adventure', $adventure);
+        $this->setData('sessions', $this->SessionModel->getAdventureSessions($uid));
+        $this->setTitle($adventure->name);
+        return $this->loadView('master/view_adventure');
     }
 
     public function new_session() {
@@ -136,7 +122,7 @@ class Master extends BaseController {
         $this->setData('masters', $this->UserModel->getMasters());
         $this->setData('locations', $this->SessionModel->getLocations());
         $this->setTitle('Nueva sesión');
-        return $this->loadView('master/newsession');
+        return $this->loadView('master/new_session');
     }
 
     public function new_session_post() {
@@ -227,7 +213,103 @@ class Master extends BaseController {
         return redirect()->to('master/publish');
     }
 
-    public function kick($session_uid, $user_uid) {
+    public function edit_adventure($uid) {
+        $adventure = $this->AdventureModel->getAdventure($uid);
+
+        $this->setData('adventure', $adventure);
+        $this->setTitle('Editar '.$adventure->name);
+        return $this->loadView('master/edit_adventure');
+    }
+
+    public function edit_adventure_post($uid) {
+        $validation = \Config\Services::validation();
+        $validation->setRule('adventure_name', 'nombre', 'trim|required');
+        $validation->setRule('adventure_rank', 'rango', 'trim');
+        $validation->setRule('adventure_players_min_recommended', 'mínimo de jugadores recomendado', 'trim|required');
+        $validation->setRule('adventure_players_max_recommended', 'máximo de jugadores recomendado', 'trim|required');
+        $validation->setRule('adventure_duration', 'duración', 'trim|required');
+        $validation->setRule('adventure_themes', 'temas', 'trim');
+        $validation->setRule('adventure_description', 'descripción', 'trim|required');
+        $validation->setRule('adventure_rewards', 'recompensas', 'trim');
+        if ($_FILES['adventure_thumbnail']['name']) {
+            $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png]|max_size[adventure_thumbnail,51200]');
+        }
+
+        $data = [
+            'name' => $this->request->getVar('adventure_name'),
+            'rank' => $this->request->getVar('adventure_rank') ?: NULL,
+            'players_min_recommended' => $this->request->getVar('adventure_players_min_recommended'),
+            'players_max_recommended' => $this->request->getVar('adventure_players_max_recommended'),
+            'duration' => $this->request->getVar('adventure_duration'),
+            'themes' => $this->request->getVar('adventure_themes') ?: NULL,
+            'description' => $this->request->getVar('adventure_description'),
+            'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
+        ];
+        
+        if ($this->request->getVar('delete_thumbnail')) {
+            $data['thumbnail'] = NULL;
+        } else if ($_FILES['adventure_thumbnail']['name']) {
+            $thumbnail = $this->request->getFile('adventure_thumbnail');
+            $thumbnailExtension = pathinfo($thumbnail->getName(), PATHINFO_EXTENSION);
+            $thumbnailName = "adv_".$uid."_".date('YmdHis').".".$thumbnailExtension;
+            $thumbnail->move(ROOTPATH . 'public/img/adventures', $thumbnailName);
+            upload_log('public/img/adventures', $thumbnailName);
+            $data['thumbnail'] = $thumbnailName;
+        }
+
+        $this->AdventureModel->updateAdventure($uid, $data);
+        session()->setFlashdata('success', 'Se ha editado la aventura.');
+        return redirect()->to('master/adventures');
+    }
+
+    public function delete_session() {
+        $uid = $this->request->getVar('uid');
+        $this->SessionModel->deleteSession($uid);
+        session()->setFlashdata('success', 'Se han eliminado la sesión.');
+        return redirect()->back();
+    }
+
+    public function edit_session($uid) {
+        $session = $this->SessionModel->getSession($uid);
+        $this->setData('session', $session);
+        $this->setData('masters', $this->UserModel->getMasters());
+        $this->setData('locations', $this->SessionModel->getLocations());
+        $this->setData('players', $this->SessionModel->getSessionPlayers($uid));
+        $this->setTitle('Editar sesión');
+        return $this->loadView('master/edit_session');
+    }
+
+    public function edit_session_post($uid) {
+        $validation = \Config\Services::validation();
+        $validation->setRule('session_master', 'master', 'trim|required');
+        $validation->setRule('session_date', 'fecha', 'trim|required');
+        $validation->setRule('session_time', 'hora', 'trim|required');
+        $validation->setRule('location', 'ubicación', 'trim|required');
+        $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
+        $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
+
+        if (!$validation->withRequest($this->request)->run()) {    
+            session()->setFlashdata('error', 'Se ha producido un error al editar la sesión.');
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+
+        $this->SessionModel->updateSession($uid, [
+            'master_uid' => $this->request->getVar('session_master'),
+            'date' => $this->request->getVar('session_date'),
+            'time' => $this->request->getVar('session_time'),
+            'location' => $this->request->getVar('location'),
+            'players_min' => $this->request->getVar('session_min_players'),
+            'players_max' => $this->request->getVar('session_max_players'),
+        ]);
+
+        session()->setFlashdata('success', 'Se ha editado la sesión.');
+        return redirect()->to('master');
+    }
+
+    public function kick() {
+        $session_uid = $this->request->getVar('session-uid');
+        $user_uid = $this->request->getVar('player-uid');
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
         return redirect()->to('master');

@@ -35,50 +35,37 @@
     <div class="col-md-6">
         <h2 class="text-center">Mis próximas sesiones</h2>
         <? if ($upcoming_sessions) : ?>
-            <div class="row">
-                <? foreach ($upcoming_sessions as $session) : ?>
-                    <div class="col-sm-6 mb-2">
-                        <div class="card h-100">
-                            <div class="card-header text-center">
-                                <h6 class="d-inline-block mb-0"><?= $session->adventure_name ?></h6>
-                            </div>
-                            <div class="card-body text-center">
-                                <p><strong><?= rank_full_text($session->rank) ?></strong></p>
-                                <p>
-                                    <?= date('d/m/Y', strtotime($session->date)) ?><br/>
-                                    <?= date('H:i', strtotime($session->time)) ?>
-                                </p>
-                                <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
-                            </div>
-                            <? if ($session->players['playing']) : ?>
-                                <div class="card-footer">
-                                    <h6 class="text-center">Jugadores</h6>
-                                    <? foreach ($session->players['playing'] as $player) : ?>
-                                        <div class="btn-group w-100">
-                                            <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> text-small">
-                                                <div><?= $player->name ?></div>
-                                                <div>(<?= $player->display_name ?>)</div>
-                                            </a>
-                                            <a href="<?= base_url('master/kick') ?>/<?= $session->uid ?>/<?= $player->uid ?>" class="btn btn-danger" type="button"><strong>X</strong></a>
-                                        </div>
-                                    <? endforeach; ?>
-                                    <? if ($session->players['waitlist']) : ?>
-                                        <h6 class="mt-2 text-secondary">Lista de espera</h6>
-                                        <? foreach ($session->players['waitlist'] as $player) : ?>
-                                            <div class="btn-group w-100">
-                                                <a href="<?= base_url('character_sheets') ?>/<?= $player->uploaded_sheet ?>" target="_blank" class="btn btn-<?= $player->badge_color ?> text-small">
-                                                    <div><?= $player->name ?></div>
-                                                    <div>(<?= $player->display_name ?>)</div>
-                                                </a>
-                                                <a href="<?= base_url('master/kick') ?>/<?= $session->uid ?>/<?= $player->uid ?>" class="btn btn-danger" type="button"><strong>X</strong></a>
-                                            </div>
-                                        <? endforeach; ?>                                           
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Aventura</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Jugadores</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? foreach ($upcoming_sessions as $session) : ?>
+                            <tr>
+                                <td class="align-middle">
+                                    <?= $session->adventure_name ?></br>
+                                    <?= rank_full_text($session->rank) ?>
+                                </td>
+                                <td class="align-middle"><?= date('d/m/Y', strtotime($session->date)) ?> <?= date('H:i', strtotime($session->time)) ?></td>
+                                <td class="align-middle"><?= $session->location ?></td>
+                                <td class="align-middle"><?= $session->players_min ?>-<?= $session->players_max ?> (<?= $session->registered_players ?>)</td>
+                                <td class="align-middle">
+                                    <a href="<?= base_url('master/edit-session') ?>/<?= $session->uid ?>" class="btn btn-primary mb-1">Editar</a>
+                                    <? if ($session->master_uid == $userdata['uid']) : ?>
+                                        <button class="btn btn-danger mb-1 js-session-rm" data-uid="<?= $session->uid ?>">Eliminar</button>
                                     <? endif; ?>
-                                </div>
-                            <? endif; ?>
-                        </div>
-                    </div>
-                <? endforeach; ?>
+                                </td>
+                            </tr>
+                        <? endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         <? else : ?>
             <div class="text-center">No tienes ninguna sesión futura publicada</div>
@@ -86,4 +73,4 @@
     </div>
 </div>
 
-<?= view('partials/modals/adventure_info') ?>
+<?= view('partials/modals/session_remove') ?>

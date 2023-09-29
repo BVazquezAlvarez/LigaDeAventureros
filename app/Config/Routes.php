@@ -46,17 +46,22 @@ $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
 
 $routes->get('master', 'Master::index');
-$routes->get('master/kick/(:segment)/(:segment)', 'Master::kick/$1/$2');
+$routes->post('master/kick', 'Master::kick');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->post('master/reject-sheet', 'Master::reject_sheet');
 $routes->get('master/adventures', 'Master::adventures');
 $routes->post('master/adventures', 'Master::adventures_post');
 $routes->get('master/adventure/(:segment)', 'Master::adventure/$1');
+$routes->get('master/edit-adventure/(:segment)', 'Master::edit_adventure/$1');
+$routes->post('master/edit-adventure/(:segment)', 'Master::edit_adventure_post/$1');
 $routes->get('master/new-session', 'Master::new_session');
 $routes->post('master/new-session', 'Master::new_session_post');
 $routes->get('master/publish', 'Master::publish');
 $routes->post('master/publish', 'Master::publish_post');
+$routes->post('master/delete-session', 'Master::delete_session');
+$routes->get('master/edit-session/(:segment)', 'Master::edit_session/$1');
+$routes->post('master/edit-session/(:segment)', 'Master::edit_session_post/$1');
 
 $routes->get('admin', 'Admin::index');
 $routes->get('admin/logs', 'Admin::logs');

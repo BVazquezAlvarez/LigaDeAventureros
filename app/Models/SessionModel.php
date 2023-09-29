@@ -35,7 +35,7 @@ class SessionModel extends Model {
         'published',
     ];
 
-    public function getSessions($start = NULL, $end = NULL, $master_uid = NULL) {
+    public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false) {
         $builder = $this->db->table('session');
         $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
@@ -50,7 +50,30 @@ class SessionModel extends Model {
         if ($master_uid) {
             $builder->where('session.master_uid', $master_uid);
         }
+        if ($count_players) {
+            $builder->select('COUNT(player_session.player_uid) AS registered_players');
+            $builder->join('player_session', 'session.uid = player_session.session_uid', 'left');
+            $builder->groupBy('session.uid');
+        }
         $builder->orderBy('session.date', 'ASC');
+        return $builder->get()->getResult();
+    }
+
+    public function getSession($uid) {
+        $builder = $this->db->table('session');
+        $builder->where('uid', $uid);
+        return $builder->get()->getRow();
+    }
+
+    public function getAdventureSessions($adventure_uid) {
+        $builder = $this->db->table('session');
+        $builder->select('session.*, user.uid AS master_uid, user.display_name AS master_name, COUNT(player_session.player_uid) AS registered_players');
+        $builder->join('user', 'session.master_uid = user.uid', 'left');
+        $builder->join('player_session', 'session.uid = player_session.session_uid', 'left');
+        $builder->where('session.adventure_uid', $adventure_uid);
+        $builder->where('session.published', 1);
+        $builder->orderBy('session.date', 'DESC');
+        $builder->groupBy('session.uid');
         return $builder->get()->getResult();
     }
 
@@ -79,6 +102,12 @@ class SessionModel extends Model {
         return $this->db->affectedRows();
     }
 
+    public function updateSession($uid, $data) {
+        $builder = $this->db->table('session');
+        $builder->where('uid', $uid);
+        $builder->update($data);
+    }
+
     public function addPlayerSession($data) {
         $this->db->table('player_session')->insert($data);
         return $this->db->affectedRows();
@@ -95,6 +124,12 @@ class SessionModel extends Model {
         $builder = $this->db->table('player_session');
         $builder->where('session_uid', $session_uid);
         $builder->where('player_uid', $player_uid);
+        $builder->delete();
+    }
+
+    public function deleteSession($session_uid) {
+        $builder = $this->db->table('session');
+        $builder->where('uid', $session_uid);
         $builder->delete();
     }
 
