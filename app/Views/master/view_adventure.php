@@ -34,8 +34,8 @@
                             <div><strong>Temas:</strong> <?= $adventure->themes ?></div>
                         <? endif; ?>
                     </p>
-                    <p><i><?= $adventure->description ?></i></p>
-                    <p><?= $adventure->rewards ?></p>
+                    <p><i><?= str_replace("\r\n", '<br>', $adventure->description) ?></i></p>
+                    <p><?= str_replace("\r\n", '<br>', $adventure->rewards) ?></p>
                     <a href="<?= base_url('master/edit-adventure') ?>/<?= $adventure->uid ?>" class="btn btn-primary">Editar</a>
                 </div>
             </div>
