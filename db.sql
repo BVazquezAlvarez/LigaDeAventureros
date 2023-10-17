@@ -37,7 +37,7 @@ CREATE TABLE `player_session` (
   `session_uid` char(11) NOT NULL,
   `player_uid` char(11) NOT NULL,
   `player_character_uid` char(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 CREATE TABLE `session` (

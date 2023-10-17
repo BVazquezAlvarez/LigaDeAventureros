@@ -117,7 +117,7 @@ abstract class BaseController extends Controller {
                     'uid'          => session('user_uid'),
                     'display_name' => $data->display_name,
                     'confirmed'    => $data->confirmed,
-                    'master'       => $data->master,
+                    'master'       => $data->master || $data->admin,
                     'admin'        => $data->admin,
                 ];
             } else {
