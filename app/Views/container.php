@@ -98,6 +98,25 @@
 										<li><a class="dropdown-item" href="<?= base_url('logout') ?>">Cerrar Sesión</a></li>
 									</ul>
 								</li>
+							<? else : ?>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+										Iniciar sesión
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+										<li>
+											<form class="px-4 py-3" style="min-width: 250px;" method="post" action="<?= base_url('login') ?>">
+												<div class="form-group">
+													<input type="text" class="form-control" name="email" value="<?= session('email_login') ?>" placeholder="Email">
+												</div>
+												<div class="form-group">
+													<input type="password" class="form-control" name="password" placeholder="Contraseña">
+												</div>
+												<button type="submit" class="btn btn-primary">Iniciar sesión</button>
+											</form>
+										</li>
+									</ul>
+								</li>
 							<? endif; ?>
 						</ul>
 					</div>

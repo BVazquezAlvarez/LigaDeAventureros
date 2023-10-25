@@ -32,6 +32,7 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 $routes->get('/privacy', 'Home::privacy');
 
+$routes->post('login', 'Login::login');
 $routes->post('login/onetap', 'Login::onetap');
 $routes->get('logout', 'Login::logout');
 

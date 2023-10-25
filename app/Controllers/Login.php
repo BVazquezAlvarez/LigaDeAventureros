@@ -25,6 +25,22 @@ class Login extends BaseController {
         $this->UserModel = model('UserModel');
     }
 
+    public function login() {
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+
+        $user = $this->UserModel->getUserByEmail($email);
+
+        if ($user && password_verify($password, $user->password)) {
+            $this->_process_login($user);
+        } else {
+            session()->setFlashdata('error', 'El usuario introducido no existe o la contraseña no es correcta.');
+            session()->set(['email_login' => $email]);
+        }
+
+        return redirect()->to('/');
+    }
+
     public function onetap() {
         if ($_COOKIE['g_csrf_token'] !== $this->request->getPost('g_csrf_token')) {
             // Invalid CSRF token
@@ -50,20 +66,23 @@ class Login extends BaseController {
                 ]);
                 $user = $this->UserModel->getUserByEmail($email);
             }
-            if ($user->banned) {
-                session()->setFlashdata('error', 'El usuario con el que intenta iniciar sesión ha sido bloqueado. Si cree que se trata de un error, póngase en contacto con los administradores.');
-            } else {
-                session()->set(['user_uid' => $user->uid]);
-            }
-            if ($user->delete_on) {
-                $this->UserModel->updateUser($user->uid, [
-                    'delete_on' => NULL,
-                ]);
-            }
-
+            $this->_process_login($user);
         }
 
         return redirect()->to('/');
+    }
+
+    private function _process_login($user) {
+        if ($user->banned) {
+            session()->setFlashdata('error', 'El usuario con el que intenta iniciar sesión ha sido bloqueado. Si cree que se trata de un error, póngase en contacto con los administradores.');
+        } else {
+            session()->set(['user_uid' => $user->uid]);
+        }
+        if ($user->delete_on) {
+            $this->UserModel->updateUser($user->uid, [
+                'delete_on' => NULL,
+            ]);
+        }
     }
 
     public function logout() {

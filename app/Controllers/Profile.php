@@ -55,11 +55,17 @@ class Profile extends BaseController {
     public function settings_post() {
         $validation = \Config\Services::validation();
         $validation->setRule('display_name', 'Nombre', 'trim|required');
+        if ($this->request->getVar('password')) {
+            $validation->setRule('repeat_password', 'Repetir contraseña', 'trim|required|matches[password]');
+        }
 
         if ($validation->withRequest($this->request)->run()) {
             $data = array(
                 'display_name' => $this->request->getVar('display_name'),
             );
+            if ($this->request->getVar('password')) {
+                $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_BCRYPT);
+            }
             $this->UserModel->updateUser(session('user_uid'), $data);
             session()->setFlashdata('success', 'Configuración actualizada.');
             return redirect()->to('profile/'.session('user_uid'));

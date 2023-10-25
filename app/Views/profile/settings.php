@@ -22,6 +22,17 @@
             <label for="display_name">Nombre <span class="text-danger">*</span></label>
             <input type="text" name="display_name" id="display_name" class="form-control" value="<?= $user->display_name ?>" required>
         </div>
+        <div class="form-group">
+            <label for="password">Contraseña</span></label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="repeat_password">Repetir contraseña</span></label>
+            <input type="password" name="repeat_password" id="repeat_password" class="form-control">
+            <? if (isset(session('validation_errors')['repeat_password'])) : ?>
+                <small class="text-danger"><?= session('validation_errors')['repeat_password'] ?></div>
+            <? endif; ?>
+        </div>
     </div>
     <div class="col-12">
         <div class="form-group text-right">

@@ -30,6 +30,7 @@ class UserModel extends Model {
 		'confirmed',
         'master',
 		'admin',
+		'password',
         'date_created',
         'banned',
 		'delete_on'

@@ -138,4 +138,6 @@ ALTER TABLE `session` ADD `location` VARCHAR(255) NOT NULL AFTER `time`;
 
 ALTER TABLE `user` ADD `delete_on` DATE NULL AFTER `banned`;
 
+ALTER TABLE `user` ADD `password` VARCHAR(255) NULL AFTER `admin`;
+
 COMMIT;
