@@ -86,7 +86,7 @@
 							<? endif; ?>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-							<? if (isset($userdata)) : ?>
+							<? if ($userdata) : ?>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
 										<?= $userdata['display_name'] ?>
@@ -114,6 +114,12 @@
 												</div>
 												<button type="submit" class="btn btn-primary">Iniciar sesión</button>
 											</form>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li>
+											<a href="<?= base_url('login/google') ?>" class="dropdown-item">
+												Iniciar sesión con <img src="<?= base_url('img/google.svg') ?>" height="20" alt="Google">
+											</a>
 										</li>
 									</ul>
 								</li>

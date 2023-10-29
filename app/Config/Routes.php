@@ -34,6 +34,7 @@ $routes->get('/privacy', 'Home::privacy');
 
 $routes->post('login', 'Login::login');
 $routes->post('login/onetap', 'Login::onetap');
+$routes->get('login/google', 'Login::google');
 $routes->get('logout', 'Login::logout');
 
 $routes->get('settings','Profile::settings');

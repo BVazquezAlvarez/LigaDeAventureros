@@ -18,6 +18,7 @@
 namespace App\Controllers;
 
 use Google_Client;
+use Google_Service_Oauth2;
 
 class Login extends BaseController {
 
@@ -31,7 +32,7 @@ class Login extends BaseController {
 
         $user = $this->UserModel->getUserByEmail($email);
 
-        if ($user && password_verify($password, $user->password)) {
+        if ($user && $user->password && password_verify($password, $user->password)) {
             $this->_process_login($user);
         } else {
             session()->setFlashdata('error', 'El usuario introducido no existe o la contraseña no es correcta.');
@@ -39,6 +40,39 @@ class Login extends BaseController {
         }
 
         return redirect()->to('/');
+    }
+
+    public function google() {
+        $client = new Google_Client();
+        $client->setClientId(setting('google_client_id'));
+        $client->setClientSecret(setting('google_secret'));
+
+        $client->setRedirectUri(base_url('login/google'));
+        $client->setScopes('email profile');
+
+        if (!$this->request->getGet('code')) { 
+            return redirect()->to($client->createAuthUrl());
+        } else {
+            $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+            $client->setAccessToken($token['access_token']);
+
+            $google_oauth = new Google_Service_Oauth2($client);
+            $google_account_info = $google_oauth->userinfo->get();
+            $email =  $google_account_info->email;
+
+            $user = $this->UserModel->getUserByEmail($email);
+            if (!$user) {
+                $this->UserModel->addUser([
+                    'uid' => uid_generate_unique('user'),
+                    'email' => $email,
+                    'display_name' => $google_account_info->givenName,
+                ]);
+                $user = $this->UserModel->getUserByEmail($email);
+            }
+            $this->_process_login($user);
+
+            return redirect()->to('/');
+        }
     }
 
     public function onetap() {

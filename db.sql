@@ -140,4 +140,6 @@ ALTER TABLE `user` ADD `delete_on` DATE NULL AFTER `banned`;
 
 ALTER TABLE `user` ADD `password` VARCHAR(255) NULL AFTER `admin`;
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('google_secret', 'google_secret', '');
+
 COMMIT;
