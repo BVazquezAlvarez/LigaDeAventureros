@@ -6,13 +6,6 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="text-center">
-                    <p><strong><?= rank_full_text($adventure->rank) ?></strong></p>
-                    <p>
-                        <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
-                        <?= date('H:i', strtotime($session->time)) ?><br/>
-                        <?= $session->location ?>
-                    </p>
-                    <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p>
                     <? if ($adventure->thumbnail) : ?>
                         <img class="img-fluid" src="<?= base_url('img/adventures') ?>/<?= $adventure->thumbnail ?>">
                     <? endif; ?>
@@ -27,7 +20,16 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="text-center text-secondary mb-2">De <?= $session->players_min ?> a <?= $session->players_max ?> jugadores</span>
+                        <div class="text-center mb-2">
+                            <p><strong><?= rank_full_text($adventure->rank) ?></strong></p>
+                            <p>
+                                <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
+                                <?= date('H:i', strtotime($session->time)) ?><br/>
+                                <?= $session->location ?>
+                                <span class="text-secondary">De <?= $session->players_min ?> a <?= $session->players_max ?> jugadores</span>
+                            </p>
+                            <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="registered-players-block">
