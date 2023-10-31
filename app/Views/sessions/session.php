@@ -25,7 +25,7 @@
                             <p>
                                 <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
                                 <?= date('H:i', strtotime($session->time)) ?><br/>
-                                <?= $session->location ?>
+                                <?= $session->location ?><br/>
                                 <span class="text-secondary">De <?= $session->players_min ?> a <?= $session->players_max ?> jugadores</span>
                             </p>
                             <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p>
