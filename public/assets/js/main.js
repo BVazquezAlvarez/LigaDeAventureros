@@ -89,6 +89,8 @@ function preloadJoinSession() {
 }
 
 $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('.js-validate-btn').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");

@@ -37,9 +37,9 @@
                             </div>
                             <div class="table-sessions">
                                 <? foreach ($sessions as $session) : ?>
-                                    <a href="#" data-uid="<?= $session->uid ?>" class="js-calendar-load-session badge badge-primary w-100 text-left">
+                                    <a href="#" data-uid="<?= $session->uid ?>" class="js-calendar-load-session badge badge-primary w-100 text-left" data-toggle="tooltip" data-placement="bottom" title="<?= $session->adventure_name ?>">
                                         <?= date("H:i", strtotime($session->time)) ?> <?= rank_name($session->rank) ?><br/>
-                                        <?= $session->adventure_name ?>
+                                        <?= substr($session->adventure_name, 0, 10) ?>...
                                     </a>
                                 <? endforeach; ?>
                             </div>
