@@ -56,12 +56,15 @@ class SessionModel extends Model {
             $builder->groupBy('session.uid');
         }
         $builder->orderBy('session.date', 'ASC');
+        $builder->orderBy('session.time', 'ASC');
         return $builder->get()->getResult();
     }
 
     public function getSession($uid) {
         $builder = $this->db->table('session');
-        $builder->where('uid', $uid);
+        $builder->select('session.*, user.display_name AS master');
+        $builder->join('user', 'session.master_uid = user.uid', 'left');
+        $builder->where('session.uid', $uid);
         return $builder->get()->getRow();
     }
 

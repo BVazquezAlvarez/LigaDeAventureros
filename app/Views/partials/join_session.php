@@ -10,9 +10,10 @@
                     <p>
                         <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
                         <?= date('H:i', strtotime($session->time)) ?><br/>
-                        <?= $session->location ?>
+                        <?= $session->location ?><br/>
+                        <span class="text-secondary"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                     </p>
-                    <p><?= $session->master ?></p>
+                    <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p> 
                     <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
                 </div>
                 <div class="col-sm-6 text-center p-2">

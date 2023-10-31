@@ -26,18 +26,14 @@ class Home extends BaseController {
 
     public function index() {
         setlocale(LC_TIME, 'es_ES');
-        $mondayThisWeek = date('c', strtotime('this week monday'));
-        $sundayThisWeek = date('c', strtotime('this week sunday'));
-        $mondayNextWeek = date('c', strtotime('next week monday'));
-        $sundayNextWeek = date('c', strtotime('next week sunday'));
         
         $sessions = [
-            'this_week' => $this->SessionModel->getSessions($mondayThisWeek, $sundayThisWeek),
-            'next_week' => $this->SessionModel->getSessions($mondayNextWeek, $sundayNextWeek),
+            'today' => $this->SessionModel->getSessions(date('Y-m-d'), date('Y-m-d')),
+            'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow')), date('Y-m-d', strtotime('+15 days'))),
         ];
 
-        foreach ($sessions as $week) {
-            foreach ($week as $session) {
+        foreach ($sessions as $session_block) {
+            foreach ($session_block as $session) {
                 $players = $this->SessionModel->getSessionPlayers($session->uid);
 
                 $session->joined = false;
@@ -63,8 +59,8 @@ class Home extends BaseController {
             }
         }
 
-        $this->setData('sessions_this_week', $sessions['this_week']);
-        $this->setData('sessions_next_week', $sessions['next_week']);
+        $this->setData('sessions_today', $sessions['today']);
+        $this->setData('sessions_upcoming', $sessions['upcoming']);
         $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid')));
         return $this->loadView('home');
     }

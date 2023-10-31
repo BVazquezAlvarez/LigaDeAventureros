@@ -1,30 +1,33 @@
-<div class="card mt-3">
-    <div class="card-header text-center">
-        <h2 class="d-inline-block mb-0">Partidas de esta semana</h1>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <? foreach ($sessions_this_week as $session) : ?>
-                <?= view('partials/join_session', ['session' => $session]) ?>
-            <? endforeach; ?>
-            <? if (!$sessions_this_week) : ?>
-                <div class="col-12 text-center">No hay partidas programadas esta semana.</div>
-            <? endif; ?>
+<? if ($sessions_today) : ?>
+    <div class="card mt-3 mb-3">
+        <div class="card-header text-center">
+            <h2 class="d-inline-block mb-0">¡Hoy!</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <? foreach ($sessions_today as $session) : ?>
+                    <?= view('partials/join_session', ['session' => $session]) ?>
+                <? endforeach; ?>
+            </div>
         </div>
     </div>
+<? endif; ?>
+
+<div class="text-center">
+    <a href="<?= base_url('calendar') ?>" class="btn btn-primary btn-lg">Ver calendario</a>
 </div>
 
 <div class="card mt-3">
     <div class="card-header text-center">
-        <h2 class="d-inline-block mb-0">Partidas de la próxima semana</h1>
+        <h2 class="d-inline-block mb-0">Próximas partidas</h1>
     </div>
     <div class="card-body">
         <div class="row">
-            <? foreach ($sessions_next_week as $session) : ?>
+            <? foreach ($sessions_upcoming as $session) : ?>
                 <?= view('partials/join_session', ['session' => $session]) ?>
             <? endforeach; ?>
-            <? if (!$sessions_next_week) : ?>
-                <div class="col-12 text-center">Todavía no hay partidas programadas para la próxima semana.</div>
+            <? if (!$sessions_upcoming) : ?>
+                <div class="col-12 text-center">Todavía no hay partidas programadas para los próximos días...</div>
             <? endif; ?>
         </div>
     </div>

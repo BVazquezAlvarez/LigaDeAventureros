@@ -168,9 +168,6 @@
 			data-login_uri="<?= base_url('login/onetap') ?>"
 			data-cancel_on_tap_outside="false">
 		</div>
-		<script>
-			document.cookie = "g_state=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-		</script>
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 	<? endif; ?>
 </html>

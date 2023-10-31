@@ -27,7 +27,7 @@ function rank_name($rank) : string {
     if ($rank == 2) return 'Plata';
     if ($rank == 3) return 'Oro';
     if ($rank == 4) return 'Mithril';
-    return 'Error';
+    return 'Todos';
 }
 
 function rank_full_text($rank) : string {
