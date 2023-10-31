@@ -50,27 +50,29 @@
                             <? endif; ?>
                         </div>
                     </div>
-                    <div class="col-md-12 mt-2">
-                        <? if (strtotime($session->date . ' ' . $session->time) <= time()) : ?>
-                            <div class="text-center text-secondary">Ya no te puedes anotar a esta partida</div>
-                        <? elseif (!$characters) : ?>
-                            <div class="text-center text-secondary"><a href="<?= base_url('profile') ?>">¡Crea un personaje!</a></div>
-                        <? elseif (!$userdata['confirmed']) : ?>
-                            <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
-                        <? else : ?>
-                            <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $adventure->name ?>" data-joined="<?= $session->joined ?>" data-adventure-rank="<?= rank_name($adventure->rank) ?>" class="js-select-join-session form-control">
-                                <? if (!$session->joined) : ?>
-                                    <option selected disabled value="__default">¡Anótate!</option>
-                                <? endif; ?>
-                                <? foreach ($characters as $char) : ?>
-                                    <option value="<?= $char->uid ?>" data-rank="<?= rank_name(rank_get($char->level)) ?>" data-char-name="<?= $char->name ?>" <?= $char->uid == $session->joined ? 'selected disabled' : '' ?>><?= $session->joined ? ($char->uid == $session->joined ? 'Anotado con ' : 'Cambiar a ') : '' ?><?= $char->name ?></option>
-                                <? endforeach; ?>
-                                <? if ($session->joined) : ?>
-                                    <option value="__cancel">CANCELAR INSCRIPCIÓN</option>
-                                <? endif; ?>
-                            </select>
-                        <? endif; ?>
-                    </div>
+                    <? if ($userdata) : ?>
+                        <div class="col-md-12 mt-2">
+                            <? if (strtotime($session->date . ' ' . $session->time) <= time()) : ?>
+                                <div class="text-center text-secondary">Ya no te puedes anotar a esta partida</div>
+                            <? elseif (!$characters) : ?>
+                                <div class="text-center text-secondary"><a href="<?= base_url('profile') ?>">¡Crea un personaje!</a></div>
+                            <? elseif (!$userdata['confirmed']) : ?>
+                                <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
+                            <? else : ?>
+                                <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $adventure->name ?>" data-joined="<?= $session->joined ?>" data-adventure-rank="<?= rank_name($adventure->rank) ?>" class="js-select-join-session form-control">
+                                    <? if (!$session->joined) : ?>
+                                        <option selected disabled value="__default">¡Anótate!</option>
+                                    <? endif; ?>
+                                    <? foreach ($characters as $char) : ?>
+                                        <option value="<?= $char->uid ?>" data-rank="<?= rank_name(rank_get($char->level)) ?>" data-char-name="<?= $char->name ?>" <?= $char->uid == $session->joined ? 'selected disabled' : '' ?>><?= $session->joined ? ($char->uid == $session->joined ? 'Anotado con ' : 'Cambiar a ') : '' ?><?= $char->name ?></option>
+                                    <? endforeach; ?>
+                                    <? if ($session->joined) : ?>
+                                        <option value="__cancel">CANCELAR INSCRIPCIÓN</option>
+                                    <? endif; ?>
+                                </select>
+                            <? endif; ?>
+                        </div>
+                    <? endif; ?>
                 </div>
             </div>
         </div>
