@@ -41,7 +41,7 @@
                         <div class="text-center mb-2">
                             <p><strong><?= rank_full_text($adventure->rank) ?></strong></p>
                             <p>
-                                <?= weekday(date('N', strtotime($session->date))) ?> <?= date('d', strtotime($session->date)) ?><br/>
+                                <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?><br/>
                                 <?= date('H:i', strtotime($session->time)) ?><br/>
                                 <?= $session->location ?><br/>
                                 <span class="text-secondary">De <?= $session->players_min ?> a <?= $session->players_max ?> jugadores</span>

@@ -194,6 +194,7 @@ class Master extends BaseController {
             'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
+            'published' => $this->request->getVar('published') ? 1 : 0,
         ]);
 
         session()->setFlashdata('success', 'Se ha creado una nueva sesión.');
