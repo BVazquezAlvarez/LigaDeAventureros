@@ -83,13 +83,14 @@ class Profile extends BaseController {
         $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,5120]');
 
         if ($validation->withRequest($this->request)->run()) {
+            $uid = uid_generate_unique('player_character');
             $data = array(
-                'uid'            => uid_generate_unique('player_character'),
+                'uid'            => $uid,
                 'user_uid'       => session('user_uid'),
                 'name'           => $this->request->getVar('name'),
                 'class'          => $this->request->getVar('class'),
                 'level'          => $this->request->getVar('level'),
-                'uploaded_sheet' => str_replace(' ', '_', $this->request->getVar('name')) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
+                'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
                 'date_uploaded'  => date('c'),
                 'active'         => 1,
             );
@@ -136,7 +137,7 @@ class Profile extends BaseController {
         $data = array(
             'class'          => $this->request->getVar('class'),
             'level'          => $this->request->getVar('level'),
-            'uploaded_sheet' => str_replace(' ', '_', $character->name) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
+            'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
             'date_uploaded'  => date('c'),
             'active'         => 1,
         );

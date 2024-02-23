@@ -35,7 +35,7 @@ class Master extends BaseController {
     }
 
     public function index() {
-        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'), true);
+        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'), true, false);
 
         $this->setData('upcoming_sessions', $upcomingSessions);
         $this->setData('sheets_pending_count', $this->CharacterModel->getCharactersValidationPendingCount());
@@ -302,6 +302,7 @@ class Master extends BaseController {
             'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
+            'published' => $this->request->getVar('published') ? 1 : 0,
         ]);
 
         session()->setFlashdata('success', 'Se ha editado la sesión.');
