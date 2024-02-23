@@ -81,9 +81,9 @@
 								</li>
 							<? endif; ?>
 							<li class="nav-item"><a class="nav-link" href="<?= base_url('all-characters') ?>">Todos los personajes</a></li>
-							<? if (setting('wiki_link')) : ?>
-								<li class="nav-item"><a class="nav-link" href="<?= setting('wiki_link') ?>" target="_blank">Wiki</a></li>
-							<? endif; ?>
+							<? foreach (links_menu() as $link) : ?>
+								<li class="nav-item"><a class="nav-link" href="<?= $link->url ?>" <?= $link->new_tab ? 'target="_blank"' : '' ?>><?= $link->text ?></a></li>
+							<? endforeach; ?>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 							<? if ($userdata) : ?>

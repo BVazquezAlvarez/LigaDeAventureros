@@ -45,3 +45,11 @@ function setting_update($id, $value) {
     global $settings;
     $settings[$id] = $value;
 }
+
+function links_menu() {
+    $db = \Config\Database::connect();
+    $builder = $db->table('link_menu');
+    $builder->where('active', 1);
+    $builder->orderBy('position', 'ASC');
+    return $builder->get()->getResult();
+}
