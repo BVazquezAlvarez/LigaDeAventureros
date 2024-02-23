@@ -62,12 +62,7 @@ class Login extends BaseController {
 
             $user = $this->UserModel->getUserByEmail($email);
             if (!$user) {
-                $this->UserModel->addUser([
-                    'uid' => uid_generate_unique('user'),
-                    'email' => $email,
-                    'display_name' => $google_account_info->givenName,
-                ]);
-                $user = $this->UserModel->getUserByEmail($email);
+                $user = $this->_register_user($email, $google_account_info->givenName);
             }
             $this->_process_login($user);
 
@@ -93,12 +88,7 @@ class Login extends BaseController {
             $email = $payload['email'];
             $user = $this->UserModel->getUserByEmail($email);
             if (!$user) {
-                $this->UserModel->addUser([
-                    'uid' => uid_generate_unique('user'),
-                    'email' => $email,
-                    'display_name' => $payload['given_name'],
-                ]);
-                $user = $this->UserModel->getUserByEmail($email);
+                $user = $this->_register_user($email, $payload['given_name']);
             }
             $this->_process_login($user);
         }
@@ -113,10 +103,22 @@ class Login extends BaseController {
             session()->set(['user_uid' => $user->uid]);
         }
         if ($user->delete_on) {
+            $this->email->notify_cancel_deletion($user->uid);
             $this->UserModel->updateUser($user->uid, [
                 'delete_on' => NULL,
             ]);
         }
+    }
+
+    private function _register_user($email, $display_name) {
+        $this->UserModel->addUser([
+            'uid' => uid_generate_unique('user'),
+            'email' => $email,
+            'display_name' => $display_name,
+        ]);
+        $user = $this->UserModel->getUserByEmail($email);
+        $this->email->confirm_registration($user);
+        return $user;
     }
 
     public function logout() {

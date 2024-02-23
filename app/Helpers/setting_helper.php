@@ -17,19 +17,14 @@
 
 function setting($id): string {
     global $settings;
-    if (isset($settings[$id])) {
-        return $settings[$id];
+    if (!isset($settings[$id])) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('settings');
+        $builder->where('id',$id);
+        $result = $builder->get()->getRow();
+        $settings[$id] = $result ? $result->value : 'NULL';
     }
-    $db = \Config\Database::connect();
-    $builder = $db->table('settings');
-    $builder->where('id',$id);
-    $result = $builder->get()->getRow();
-    if ($result) {
-        $settings[$id] = $result->value;
-        return $result->value;
-    } else {
-        return '';
-    }    
+    return $settings[$id];
 }
 
 function setting_all() {

@@ -24,6 +24,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use App\Libraries\MyEmail;
+
 /**
  * Class BaseController
  *
@@ -68,6 +70,7 @@ abstract class BaseController extends Controller {
         $this->data = array();
 
         // Preload any models, libraries, etc, here.
+        $this->email = new MyEmail();
 
         // E.g.: $this->session = \Config\Services::session();
         $this->data['userdata'] = $this->isUserLoggedIn() ? $this->getUserData() : NULL;

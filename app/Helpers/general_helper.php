@@ -25,3 +25,8 @@ function weekday($day) {
     if ($day == 7) return 'Domingo';
     return '';
 }
+
+function safe_text_links($text) {
+    $regex = '/\b(?:https?|ftp):\/\/\S+|www\.\S+\b/i';
+    return preg_replace($regex, '<a href="$0" target="_blank">$0</a>', strip_tags($text));
+}

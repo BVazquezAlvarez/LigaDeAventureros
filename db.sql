@@ -142,4 +142,16 @@ ALTER TABLE `user` ADD `password` VARCHAR(255) NULL AFTER `admin`;
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('google_secret', 'google_secret', '');
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('no_reply_email', 'Email desde el que se enviarán comunicaciones', '');
+
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('bcc_email', 'Email al que se enviará copia de los emails enviados a los usuarios', '');
+
+CREATE TABLE `email_setting` (
+  `user_uid` char(11) NOT NULL,
+  `setting` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `email_setting`
+  ADD PRIMARY KEY (`user_uid`,`setting`);
+
 COMMIT;
