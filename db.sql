@@ -157,7 +157,7 @@ ALTER TABLE `link_menu`
 ALTER TABLE `link_menu`
   MODIFY `link_menu_id` int(11) NOT NULL AUTO_INCREMENT;
 
-DELETE FROM `settings` WHERE `id` = 'wiki_link'
+DELETE FROM `settings` WHERE `id` = 'wiki_link';
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode', 'Activa el modo mantenimiento de la web. No se podrá acceder hasta que se desactive.', '0');
 
