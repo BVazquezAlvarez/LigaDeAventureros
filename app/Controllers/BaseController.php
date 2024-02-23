@@ -67,6 +67,11 @@ abstract class BaseController extends Controller {
 
         $this->data = array();
 
+        if (setting('maintenance_mode')) {
+            echo view('maintenance_mode');
+            die();
+        }
+
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();

@@ -159,4 +159,6 @@ ALTER TABLE `link_menu`
 
 DELETE FROM `settings` WHERE `id` = 'wiki_link'
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode', 'Activa el modo mantenimiento de la web. No se podrá acceder hasta que se desactive.', '0');
+
 COMMIT;
