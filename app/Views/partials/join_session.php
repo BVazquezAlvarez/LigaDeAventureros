@@ -11,7 +11,7 @@
                         <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?><br/>
                         <?= date('H:i', strtotime($session->time)) ?><br/>
                         <?= $session->location ?><br/>
-                        <span class="text-secondary"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
+                        <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                     </p>
                     <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p> 
                     <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
