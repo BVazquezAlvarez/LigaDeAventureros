@@ -161,4 +161,6 @@ DELETE FROM `settings` WHERE `id` = 'wiki_link';
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode', 'Activa el modo mantenimiento de la web. No se podrá acceder hasta que se desactive.', '0');
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode_ips', 'Cuando el modo mantenimiento está activo, se podrá acceder desde estas IPs (separar con ;)', '');
+
 COMMIT;

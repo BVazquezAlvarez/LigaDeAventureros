@@ -78,7 +78,7 @@ class Login extends BaseController {
     public function onetap() {
         if ($_COOKIE['g_csrf_token'] !== $this->request->getPost('g_csrf_token')) {
             // Invalid CSRF token
-            return back();
+            return redirect()->back();
         }
         
         $idToken = $this->request->getPost('credential'); 
