@@ -306,7 +306,9 @@ class Master extends BaseController {
         ]);
 
         session()->setFlashdata('success', 'Se ha editado la sesión.');
-        return redirect()->to('master');
+
+        $session = $this->SessionModel->getSession($uid);
+        return redirect()->to('master/adventure/'.$session->adventure_uid);
     }
 
     public function kick() {
@@ -314,7 +316,7 @@ class Master extends BaseController {
         $user_uid = $this->request->getVar('player-uid');
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
-        return redirect()->to('master');
+        return redirect()->back();
     }
 
 }
