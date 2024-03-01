@@ -45,14 +45,17 @@ class Admin extends BaseController {
         $limit = 20;
         $start = $limit * ($page - 1);
 
-        $users = $this->UserModel->getUsers($start, $limit);
-        $total = $this->UserModel->getTotalUsers();
+        $q = $this->request->getGet('q');
+
+        $users = $this->UserModel->getUsers($start, $limit, $q);
+        $total = $this->UserModel->getTotalUsers($q);
 
         $pager = service('pager');
         $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 3);
 
         $this->setData('users',$users);
         $this->setData('total',$total);
+        $this->setData('q',$q);
         $this->setData('pagination',$pagination);
         $this->setTitle('Administrar usuarios');
         return $this->loadView('admin/users');

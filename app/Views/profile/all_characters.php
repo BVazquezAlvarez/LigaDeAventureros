@@ -16,6 +16,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
+<form class="row mb-3">
+    <div class="col-md-6 offset-md-6">
+        <input type="text" class="form-control" name="q" value="<?= $q ?>" placeholder="Búsqueda...">
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-hover">
         <thead class="thead-dark">

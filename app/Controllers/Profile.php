@@ -155,14 +155,17 @@ class Profile extends BaseController {
         $limit = 25;
         $start = $limit * ($page - 1);
 
-        $characters = $this->CharacterModel->getAllActiveCharacters($start, $limit);
-        $total = $this->CharacterModel->countAllActiveCharacters();
+        $q = $this->request->getGet('q');
+
+        $characters = $this->CharacterModel->getAllActiveCharacters($start, $limit, $q);
+        $total = $this->CharacterModel->countAllActiveCharacters($q);
 
         $pager = service('pager');
         $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 2);
 
         $this->setData('characters',$characters);
         $this->setData('total',$total);
+        $this->setData('q',$q);
         $this->setData('pagination',$pagination);
 
         $this->setTitle('Todos los personajes');

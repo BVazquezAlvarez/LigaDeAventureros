@@ -89,13 +89,18 @@ class CharacterModel extends Model {
         return $builder->countAllResults();
     }
 
-    public function getAllActiveCharacters($offset = NULL, $limit = NULL) {
+    public function getAllActiveCharacters($offset = NULL, $limit = NULL, $q = NULL) {
         $builder = $this->db->table('player_character');
         $builder->select('player_character.*, user.display_name');
         $builder->join('user', 'player_character.user_uid = user.uid', 'left');
         $builder->where('player_character.active', 1);
         $builder->where('user.banned', 0);
         $builder->where('player_character.validated_sheet IS NOT NULL');
+        if ($q) {
+            $builder->like('player_character.name', $q);
+			$builder->orLike('player_character.class', $q);
+			$builder->orLike('user.display_name', $q);
+        }
         $builder->orderBy('player_character.level', 'DESC');
 		if ($limit) {
 			$builder->limit($limit, $offset);
@@ -103,12 +108,17 @@ class CharacterModel extends Model {
         return $builder->get()->getResult();
     }
 
-    public function countAllActiveCharacters() {
+    public function countAllActiveCharacters($q = NULL) {
         $builder = $this->db->table('player_character');
         $builder->join('user', 'player_character.user_uid = user.uid', 'left');
         $builder->where('player_character.active', 1);
         $builder->where('user.banned', 0);
         $builder->where('player_character.validated_sheet IS NOT NULL');
+        if ($q) {
+            $builder->like('player_character.name', $q);
+			$builder->orLike('player_character.class', $q);
+			$builder->orLike('user.display_name', $q);
+        }
         return $builder->countAllResults();
     }
 
