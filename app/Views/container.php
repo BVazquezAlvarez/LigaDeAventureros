@@ -94,6 +94,10 @@
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" href="<?= base_url('profile') ?>/<?= $userdata['uid'] ?>">Mi perfil</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('settings') ?>">Configuración</a></li>
+										<? if (session('real_user')) : ?>
+											<li><hr class="dropdown-divider"></li>
+											<li><a class="dropdown-item" href="<?= base_url('admin/logout') ?>">Volver a <?= session('real_user')['display_name'] ?></a></li>
+										<? endif; ?>
 										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item" href="<?= base_url('logout') ?>">Cerrar Sesión</a></li>
 									</ul>

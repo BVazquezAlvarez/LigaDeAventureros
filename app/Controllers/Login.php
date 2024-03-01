@@ -124,4 +124,12 @@ class Login extends BaseController {
 		return redirect()->to('/');
     }
 
+    public function return_to_real_user() {
+        if (session('real_user')) {
+            session()->set(['user_uid' => session('real_user')['uid']]);
+            session()->remove('real_user');
+        }
+		return redirect()->to('/');
+    }
+
 }

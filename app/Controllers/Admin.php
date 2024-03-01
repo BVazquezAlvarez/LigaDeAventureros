@@ -58,6 +58,23 @@ class Admin extends BaseController {
         return $this->loadView('admin/users');
     }
 
+    public function user_login($uid) {
+        if (session('real_user')) {
+            if (session('real_user')['uid'] == $uid) {
+                session()->set(['user_uid' => $uid]);
+                session()->remove('real_user');
+            } else {
+                session()->set(['user_uid' => $uid]);
+            }
+        } else {
+            session()->set([
+                'user_uid' => $uid,
+                'real_user' => $this->getUserData(),
+            ]);
+        }
+        return redirect()->to('/');
+    }
+
     public function user_toggle_master() {
         $uid = $this->request->getVar('uid');
         $data = [

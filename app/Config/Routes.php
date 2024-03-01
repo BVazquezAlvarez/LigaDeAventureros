@@ -74,6 +74,8 @@ $routes->get('admin/settings', 'Admin::settings');
 $routes->post('admin/settings', 'Admin::settings_post');
 $routes->get('admin/users', 'Admin::users');
 $routes->get('admin/users/(:segment)', 'Admin::users/$1');
+$routes->get('admin/user_login/(:segment)', 'Admin::user_login/$1');
+$routes->get('admin/logout', 'Login::return_to_real_user');
 $routes->post('admin/user-toggle-master', 'Admin::user_toggle_master');
 $routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
 $routes->post('admin/user-ban', 'Admin::user_ban');

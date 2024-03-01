@@ -32,7 +32,12 @@
             <? foreach ($users as $user) : ?>
                 <tr>
                     <th class="align-middle text-right" scope="row"><a href="<?= base_url('profile') ?>/<?= $user->uid ?>" target="_blank"><?= $user->uid ?></a></th>
-                    <td class="align-middle"><?= $user->display_name ?></td>
+                    <td class="align-middle">
+                        <?= $user->display_name ?>
+                        <? if ($user->uid != session('user_uid') && !$user->banned) : ?>
+                            <br/><a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>">Iniciar sesión</a>
+                        <? endif; ?>
+                    </td>
                     <td class="align-middle text-center"><?= date('d/m/Y H:i:s', strtotime($user->date_created)) ?></a></td>
                     <td class="align-middle text-center">
                         <? if ($user->confirmed) : ?>
