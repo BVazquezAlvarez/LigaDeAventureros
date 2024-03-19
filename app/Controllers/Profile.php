@@ -151,22 +151,12 @@ class Profile extends BaseController {
         return redirect()->to('profile/'.session('user_uid'));
     }
 
-    public function all_characters($page = 1) {
-        $limit = 25;
-        $start = $limit * ($page - 1);
-
-        $q = $this->request->getGet('q');
-
-        $characters = $this->CharacterModel->getAllActiveCharacters($start, $limit, $q);
-        $total = $this->CharacterModel->countAllActiveCharacters($q);
-
-        $pager = service('pager');
-        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 2);
+    public function all_characters() {
+        $characters = $this->CharacterModel->getAllActiveCharacters();
+        $total = $this->CharacterModel->countAllActiveCharacters();;
 
         $this->setData('characters',$characters);
         $this->setData('total',$total);
-        $this->setData('q',$q);
-        $this->setData('pagination',$pagination);
 
         $this->setTitle('Todos los personajes');
         return $this->loadView('profile/all_characters');

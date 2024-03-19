@@ -43,7 +43,6 @@ $routes->post('settings/delete-account','Profile::delete_account');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
 $routes->get('all-characters', 'Profile::all_characters');
-$routes->get('all-characters/(:segment)', 'Profile::all_characters/$1');
 
 $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');

@@ -289,4 +289,37 @@ $(function() {
         });
     });
 
+    $('#all-characters-search').on('keyup', function() {
+        let search = $(this).val().toLowerCase();
+        let searchWords = search.split(/\s+/).filter(word => word.trim() !== '');
+
+        if (searchWords.length === 0) {
+            $('.js-all-characters-search').show();
+            return;
+        }
+        
+        $('.js-all-characters-search').each(function() {
+            let query = $(this).data('query');
+            let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
+
+            let matchFound = false;
+            for (let i = 0; i < searchWords.length; i++) {
+                for (let j = 0; j < queryWords.length; j++) {
+                    if (queryWords[j].includes(searchWords[i])) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+                if (matchFound) {
+                    break;
+                }
+            }
+
+            if (matchFound) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
 });

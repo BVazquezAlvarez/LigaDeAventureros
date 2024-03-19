@@ -16,11 +16,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<form class="row mb-3">
+<div class="row mb-3">
     <div class="col-md-6 offset-md-6">
-        <input type="text" class="form-control" name="q" value="<?= $q ?>" placeholder="Búsqueda...">
+        <input type="text" class="form-control" id="all-characters-search" placeholder="Búsqueda...">
     </div>
-</form>
+</div>
 
 <div class="table-responsive">
     <table class="table table-hover">
@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             <? foreach ($characters as $char) : ?>
-                <tr>
+                <tr class="js-all-characters-search" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= strtolower(rank_name(rank_get($char->level))) ?>">
                     <th scope="row"><a href="<?= base_url('character_sheets') ?>/<?= $char->uploaded_sheet ?>" target="_blank"><?= $char->name ?></th>
                     <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>" target="_blank"><?= $char->display_name ?></a></td>
                     <td><?= $char->class ?></td>
@@ -46,9 +46,3 @@
         </tbody>
     </table>
 </div>
-
-<div class="text-right text-muted">
-    Mostrando <?= count($characters) ?> de <?= $total ?> resultados
-</div>
-
-<?= $pagination ?>
