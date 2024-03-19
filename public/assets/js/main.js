@@ -290,7 +290,7 @@ $(function() {
     });
 
     $('#all-characters-search').on('keyup', function() {
-        let search = $(this).val().toLowerCase();
+        let search = $(this).val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         let searchWords = search.split(/\s+/).filter(word => word.trim() !== '');
 
         if (searchWords.length === 0) {
@@ -299,7 +299,7 @@ $(function() {
         }
         
         $('.js-all-characters-search').each(function() {
-            let query = $(this).data('query');
+            let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
 
             let matchFound = false;

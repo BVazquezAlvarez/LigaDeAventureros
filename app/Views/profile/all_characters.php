@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             <? foreach ($characters as $char) : ?>
-                <tr class="js-all-characters-search" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= strtolower(rank_name(rank_get($char->level))) ?>">
+                <tr class="js-all-characters-search <?= $char->user_uid == $userdata['uid'] ? 'table-active' : '' ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= $char->level ?> <?= strtolower(rank_name(rank_get($char->level))) ?>">
                     <th scope="row"><a href="<?= base_url('character_sheets') ?>/<?= $char->uploaded_sheet ?>" target="_blank"><?= $char->name ?></th>
                     <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>" target="_blank"><?= $char->display_name ?></a></td>
                     <td><?= $char->class ?></td>
