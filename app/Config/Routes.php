@@ -40,6 +40,7 @@ $routes->get('logout', 'Login::logout');
 $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
 $routes->post('settings/delete-account','Profile::delete_account');
+$routes->get('profile','Profile::index');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
 $routes->get('all-characters', 'Profile::all_characters');

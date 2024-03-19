@@ -25,6 +25,13 @@ class Profile extends BaseController {
     }
 
     public function index($uid = NULL) {
+        if (!$uid) {
+            if ($this->isUserLoggedIn()) {
+                $uid = session('user_uid');
+            } else {
+                return redirect()->to('/');
+            }
+        }
         $user = $this->UserModel->getUser($uid);
 
         if (!$user) {
