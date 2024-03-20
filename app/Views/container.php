@@ -37,8 +37,8 @@
 			baseUrl = "<?= base_url() ?>";
 		</script>
 
-		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>"></script>
-		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>">
+		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>?v=<?= filemtime('assets/js/main.js') ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>?v=<?= filemtime('assets/css/main.css') ?>">
 	</head>
 
 	<body>
