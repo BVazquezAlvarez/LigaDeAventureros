@@ -121,7 +121,7 @@ class Session extends BaseController {
             'player_uid' => $player_uid,
             'player_character_uid' => $character_uid,
         ]);
-        $this->email->player_join_session($user_uid, $session_uid, $character_uid);
+        $this->email->player_join_session($player_uid, $session_uid, $character_uid);
 
         session()->setFlashdata('success', 'Te has anotado a una partida');
         session()->setFlashdata('session_updated', $session_uid);
@@ -136,7 +136,7 @@ class Session extends BaseController {
         $this->SessionModel->updatePlayerSession($session_uid, $player_uid, [
             'player_character_uid' => $character_uid,
         ]);
-        $this->email->player_swap_session($user_uid, $session_uid, $character_uid);
+        $this->email->player_swap_session($player_uid, $session_uid, $character_uid);
 
         session()->setFlashdata('success', 'Se ha cambiado el personaje con el que estabas anotado');
         session()->setFlashdata('session_updated', $session_uid);
@@ -149,7 +149,7 @@ class Session extends BaseController {
         $player_uid = session('user_uid');
 
         $this->SessionModel->deletePlayerSession($session_uid, $player_uid);
-        $this->email->player_cancel_session($user_uid, $session_uid);
+        $this->email->player_cancel_session($player_uid, $session_uid);
 
         session()->setFlashdata('success', 'Se ha cancelado tu inscripción.');
         session()->setFlashdata('session_updated', $session_uid);

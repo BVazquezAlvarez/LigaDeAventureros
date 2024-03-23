@@ -108,27 +108,80 @@ class MyEmail {
     public function player_join_session($user_uid, $session_uid, $character_uid) {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
+
+        $user_send_email = $this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_join');
+        $master_send_email = $this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_join');
+
+        if (!$user_send_email && !$master_send_email) {
+            return;
+        }
+
+        $master = $this->UserModel->getUser($session->master_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        $character = $this->CharacterModel->getCharacter($uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
+        $character = $this->CharacterModel->getCharacter($character_uid);
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
-        $data = [
-            'user'      => $user,
-            'session'   => $session,
-            'adventure' => $adventure,
-            'character' => $character,
-        ];
-
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_join')) {
-            // TODO Enviar a jugador
+        if ($session->players_max >= count($session_players)) {
+            $waitlist = false;
+        } else {
+            $waitlist = true;
+            for ($i = 0; $i < $session->players_max; $i++) {
+                if ($session_players[$i]->uid == $user->uid) {
+                    $waitlist = false;
+                    break;
+                }
+            }
         }
 
-        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_join')) {
-            // TODO Enviar a master
+        $data = [
+            'user'         => $user,
+            'master'       => $master,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'character'    => $character,
+            'player_count' => count($session_players),
+            'master_email' => $master_email,
+            'waitlist'     => $waitlist,
+        ];
+
+        $email = \Config\Services::email();
+
+        if ($user_send_email) {
+            $data['main'] = 'emails/player_join_session';
+            $email->clear();
+
+            $email->setTo($user->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            if ($master_email) {
+                $email->setReplyTo($master->email, $master->display_name);
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("Se ha confirmando tu inscripción en la partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
+        }
+
+        if ($master_send_email) {
+            $data['main'] = 'emails/player_join_session_master';
+            $email->clear();
+
+            $email->setTo($master->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("$user->display_name se ha anotado a tu partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
         }
     }
 
@@ -137,7 +190,7 @@ class MyEmail {
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
         $character = $this->CharacterModel->getCharacter($uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
             $master_email = $this->UserModel->getUser($session->master_uid)->email;
         } else {
             $master_email = false;
@@ -163,7 +216,7 @@ class MyEmail {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
             $master_email = $this->UserModel->getUser($session->master_uid)->email;
         } else {
             $master_email = false;
@@ -190,7 +243,7 @@ class MyEmail {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
             $master_email = $this->UserModel->getUser($session->master_uid)->email;
         } else {
             $master_email = false;
@@ -212,7 +265,7 @@ class MyEmail {
     public function session_updated($session_uid) {
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
             $master_email = $this->UserModel->getUser($session->master_uid)->email;
         } else {
             $master_email = false;
@@ -225,7 +278,7 @@ class MyEmail {
 
         $users = $this->SessionModel->getSessionPlayers($session_uid);
         foreach ($users as $user) {
-            if ($this->EmailSettingModel->checkUserSetting($user_uid, 'notification_session_modified')) {
+            if ($this->EmailSettingModel->checkUserSetting($user->uid, 'notification_session_modified')) {
                 $data['user'] = $user;
                 // TODO Enviar a jugador
             }
@@ -235,7 +288,7 @@ class MyEmail {
     public function session_canceled($session_uid) {
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'master_send_emails')) {
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
             $master_email = $this->UserModel->getUser($session->master_uid)->email;
         } else {
             $master_email = false;
@@ -248,7 +301,7 @@ class MyEmail {
 
         $users = $this->SessionModel->getSessionPlayers($session_uid);
         foreach ($users as $user) {
-            if ($this->EmailSettingModel->checkUserSetting($user_uid, 'notification_session_canceled')) {
+            if ($this->EmailSettingModel->checkUserSetting($user->uid, 'notification_session_canceled')) {
                 $data['user'] = $user;
                 // TODO Enviar a jugador
             }

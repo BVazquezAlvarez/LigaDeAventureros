@@ -21,7 +21,7 @@
                 color: #333;
                 margin-top: 0;
             }
-            p {
+            p, ul {
                 color: #666;
             }
             .button {
@@ -38,6 +38,9 @@
                 color: #fff !important;
                 padding: 10px;
                 text-align: center;
+            }
+            .rojo {
+                color: #ff6347;
             }
         </style>
     </head>
