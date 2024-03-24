@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -158,7 +158,11 @@
 
 		<footer class="text-center">
 			Liga de Aventureros de Vigo
-			<div><small><a href="<?= base_url('privacy') ?>">Política de privacidad</a></small></div>
+			<div class="footer-links">
+				<small><a href="<?= base_url('privacy') ?>">Política de privacidad</a></small>
+				<span class="separator">|</span>
+				<small><a href="<?= base_url('contact') ?>">Contacto</a></small>
+			</div>
 			<div class="links-container">
 				<a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
 			</div>

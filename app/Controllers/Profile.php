@@ -64,9 +64,9 @@ class Profile extends BaseController {
 
     public function settings_post() {
         $validation = \Config\Services::validation();
-        $validation->setRule('display_name', 'Nombre', 'trim|required');
+        $validation->setRule('display_name', 'nombre', 'trim|required');
         if ($this->request->getVar('password')) {
-            $validation->setRule('repeat_password', 'Repetir contraseña', 'trim|required|matches[password]');
+            $validation->setRule('repeat_password', 'repetir contraseña', 'trim|required|matches[password]');
         }
 
         if ($validation->withRequest($this->request)->run()) {

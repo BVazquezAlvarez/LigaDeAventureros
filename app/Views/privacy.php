@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,12 +37,8 @@
 <p>Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Te notificaremos sobre cambios significativos en la forma en que tratamos la información personal enviando un aviso a la dirección de correo electrónico asociada a tu cuenta o mediante una notificación destacada en la plataforma.</p>
 
 <h2 class="mt-4">6. Contacto</h2>
-<p>Si tienes alguna pregunta, comentario o inquietud sobre esta Política de Privacidad o el manejo de tus datos personales, no dudes en ponerte en contacto con nosotros:</p>
-
-<ul class="list-unstyled">
-    <li><strong>Correo Electrónico:</strong> <a href="mailto:<?= setting('contact_email') ?>" target="_blank"><?= setting('contact_email') ?></a></li>
-</ul>
+<p>Si tienes alguna pregunta, comentario o inquietud sobre esta Política de Privacidad o el manejo de tus datos personales, no dudes en ponerte en contacto con nosotros utilizando <a href="<?= base_url('contact') ?>">nuestro formulario de contacto</a>.</p>
 
 <p class="mt-5">Al utilizar <strong><?= setting('app_name') ?></strong>, estás aceptando los términos descritos en esta Política de Privacidad.</p>
 
-<p class="text-muted">Fecha de última actualización: 29 de septiembre de 2023</p>
+<p class="text-muted">Fecha de última actualización: 24 de marzo de 2024</p>

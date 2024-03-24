@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ class Home extends BaseController {
     public function __construct() {
         $this->CharacterModel = model('CharacterModel');
         $this->SessionModel = model('SessionModel');
+        $this->UserModel = model('UserModel');
     }
 
     public function index() {
@@ -70,4 +71,53 @@ class Home extends BaseController {
         return $this->loadView('privacy');
     }
 
+    public function contact() {
+        $this->setTitle('Contacto');
+
+        if ($this->isUserLoggedIn()) {
+            $user = $this->UserModel->getUser($this->getUserData()['uid']);
+            $this->setData('name', $user->display_name);
+            $this->setData('email', $user->email);
+        } else {
+            $this->setData('name', NULL);
+            $this->setData('email', NULL);
+        }
+
+        return $this->loadView('contact');       
+    }
+
+
+    public function contact_post() {
+        $validation = \Config\Services::validation();
+        $validation->setRule('name', 'nombre', 'trim|required');
+        $validation->setRule('email', 'dirección de correo electrónico', 'trim|required|valid_email');
+        $validation->setRule('subject', 'asunto', 'trim|required');
+        $validation->setRule('msg', 'mensaje', 'trim|required');
+
+        if (!$validation->withRequest($this->request)->run()) {
+            session()->setFlashdata('error', 'No se ha enviado el formulario de contacto.');
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+
+        $data = [
+            'name'    => $this->request->getVar('name'),
+            'email'   => $this->request->getVar('email'),
+            'subject' => $this->request->getVar('subject'),
+            'msg'     => $this->request->getVar('msg'),
+            'main'    => 'emails/contact',
+        ];
+
+        $email = \Config\Services::email();
+        $email->setTo(setting('contact_email'));
+        $email->setFrom(setting('no_reply_email'), $data['name']);
+        $email->setReplyTo($data['email'], $data['name']);
+        $email->setSubject($data['subject']);
+        $email->setMessage(view('emails/template', $data));
+        $email->setMailType('html');
+        $email->send();
+
+        $this->setTitle('Contacto enviado');
+        return $this->loadView('contact_sent');  
+    }
 }

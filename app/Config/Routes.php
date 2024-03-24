@@ -46,6 +46,8 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('/privacy', 'Home::privacy');
+$routes->get('/contact', 'Home::contact');
+$routes->post('/contact', 'Home::contact_post');
 
 $routes->post('login', 'Login::login');
 $routes->post('login/onetap', 'Login::onetap');

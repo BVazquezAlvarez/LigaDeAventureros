@@ -1,5 +1,5 @@
 /* LigaDeAventureros
-Copyright (C) 2023 Santiago González Lago
+Copyright (C) 2023-2024 Santiago González Lago
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -123,4 +123,24 @@ footer {
 .table-sessions {
     margin: auto -0.5em -0.5em;
     min-height: 4em;
+}
+
+.footer-links .separator {
+    color: lightgray;
+}
+
+@media screen and (max-width: 720px) {
+    .footer-links {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .footer-links small {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .footer-links .separator {
+        display: none;
+    }
 }
