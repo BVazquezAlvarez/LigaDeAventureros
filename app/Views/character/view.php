@@ -65,7 +65,7 @@
         <? else : ?>
           <a href="<?= base_url('character') ?>/<?= $character->uid ?>/enable" class="btn btn-outline-success">Reactivar</a>
         <? endif; ?>
-        <button type="button" class="btn btn-danger js-delete-character-btn" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-class="<?= $character->class ?>" data-level="<?= $character->level ?>">Eliminar</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-character-modal">Eliminar</button>
       </div>
     <? endif; ?>
     <? if ($character->uploaded_sheet != $character->validated_sheet && ($userdata && $userdata['master'])) : ?>
@@ -87,3 +87,4 @@
   <?= view('partials/modals/validate_sheets') ?>
 <? endif; ?>
 <?= view('partials/modals/image', ['title' => $character->name, 'img' => 'https://s1.elespanol.com/2017/08/16/actualidad/actualidad_239489274_129989410_1706x960.jpg']) ?>
+<?= view('partials/modals/delete_character') ?>

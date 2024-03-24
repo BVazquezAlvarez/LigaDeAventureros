@@ -59,6 +59,11 @@
                 <div>Este jugador no tiene ningún personaje creado.</div>
             <? endif; ?>
         <? endif; ?>
+        <? if (!$isOwner && $userdata && $userdata['admin']) : ?>
+            <div class="col-md-12 mt-3">
+                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary">Iniciar sesión</a>
+            </div>
+        <? endif; ?>
     </div>
 </div>
 

@@ -122,4 +122,10 @@ class CharacterModel extends Model {
         return $builder->countAllResults();
     }
 
+    public function deleteCharacter($uid) {
+        $builder = $this->db->table('player_character');
+        $builder->where('uid', $uid);
+        $builder->delete();
+    }
+
 }

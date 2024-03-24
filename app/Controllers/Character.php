@@ -152,4 +152,10 @@ class Character extends BaseController {
         return redirect()->to('character/'.$uid);
     }
 
+    public function delete() {
+        $uid = $this->request->getVar('uid');
+        $this->CharacterModel->deleteCharacter($uid);
+        return redirect()->to('profile');
+    }
+
 }

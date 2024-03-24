@@ -323,4 +323,21 @@ $(function() {
             }
         });
     });
+
+    $('#delete-character-modal').on('show.bs.modal', function () {
+        var submitBtn = $('#delete-character-modal button[type="submit"]');
+        var originalText = submitBtn.html();
+
+        var countDown = 3;
+        submitBtn.prop('disabled', true).html(`${countDown}...`);
+        var interval = setInterval(function () {
+          countDown--;
+          if (countDown > 0) {
+            submitBtn.html(`${countDown}...`);
+          } else {
+            clearInterval(interval); 
+            submitBtn.prop('disabled', false).html(originalText); 
+          }
+        }, 1000);
+      });
 });
