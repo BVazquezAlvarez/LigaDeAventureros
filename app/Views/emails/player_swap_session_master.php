@@ -1,11 +1,11 @@
-<h1>Se ha confirmando tu inscripción en la partida <?= $adventure->name ?></h1>
+<h1><?= $user->display_name ?> ha cambiado su personaje para tu partida <?= $adventure->name ?></h1>
 
 <p>
-    ¡Hola <?= $user->display_name ?>!
+    ¡Hola <?= $master->display_name ?>!
 </p>
 
 <p>
-    Te recordamos la información de la partida:
+    Datos de la partida:
 </p>
 <ul>
     <li><strong>Ubicación:</strong> <?= $session->location ?></li>
@@ -15,7 +15,7 @@
 </ul>
 
 <p>
-    Te has anotado con el siguiente personaje:
+    Información del nuevo personaje:
 </p>
 <ul>
     <li><strong>Nombre:</strong> <?= $character->name ?></li>
@@ -24,13 +24,13 @@
 </ul>
 
 <? if ($waitlist) : ?>
-    <p>
-        <span class="rojo">Actualmente estás en lista de espera</span>. Se te informará si se abre un espacio para ti, siempre que tengas esa opción activa en <a href="<?= base_url('settings') ?>">tu configuración</a>.
+    <p class="rojo">
+        El jugador se encuentra actualmente en lista de espera.
     </p>
 <? endif; ?>
 
-<? if ($master_email) : ?>
-    <p>
-        Si tienes alguna duda, puedes responder a este email para contactar con el Master.
+<? if ($player_count < $session->players_min) : ?>
+    <p class="rojo">
+        Actualmente no se cumple el mínimo de jugadores para la partida.
     </p>
 <? endif; ?>

@@ -304,7 +304,7 @@ class Master extends BaseController {
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
         ]);
-        $this->email->session_canceled($uid);
+        $this->email->session_updated($uid);
 
         session()->setFlashdata('success', 'Se ha editado la sesión.');
         return redirect()->to('master');
@@ -314,7 +314,7 @@ class Master extends BaseController {
         $session_uid = $this->request->getVar('session-uid');
         $user_uid = $this->request->getVar('player-uid');
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
-        $this->email->player_kicked_session($session_uid, $user_uid);
+        $this->email->player_kicked_session($user_uid, $session_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
         return redirect()->to('master');
     }

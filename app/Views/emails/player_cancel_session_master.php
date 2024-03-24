@@ -5,7 +5,7 @@
 </p>
 
 <p>
-    Datos de la partida:
+    El jugador ha cancelado la inscripción a la siguiente partida
 </p>
 <ul>
     <li><strong>Ubicación:</strong> <?= $session->location ?></li>
@@ -13,21 +13,6 @@
     <li><strong>Hora:</strong> <?= date('H:i', strtotime($session->time)) ?></li>
     <li><strong>Duración:</strong> <?= $adventure->duration ?></strong> 
 </ul>
-
-<p>
-    Información del personaje:
-</p>
-<ul>
-    <li><strong>Nombre:</strong> <?= $character->name ?></li>
-    <li><strong>Clase:</strong> <?= $character->class ?></li>
-    <li><strong>Nivel:</strong> <?= $character->level ?></li>
-</ul>
-
-<? if ($waitlist) : ?>
-    <p class="rojo">
-        El jugador se encuentra actualmente en lista de espera.
-    </p>
-<? endif; ?>
 
 <? if ($player_count < $session->players_min) : ?>
     <p class="rojo">

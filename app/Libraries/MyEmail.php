@@ -188,98 +188,284 @@ class MyEmail {
     public function player_swap_session($user_uid, $session_uid, $character_uid) {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
+
+        $user_send_email = $this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_swap');
+        $master_send_email = $this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_swap');
+
+        if (!$user_send_email && !$master_send_email) {
+            return;
+        }
+
+        $master = $this->UserModel->getUser($session->master_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
-        $character = $this->CharacterModel->getCharacter($uid);
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
+        $character = $this->CharacterModel->getCharacter($character_uid);
         if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
-        $data = [
-            'user'      => $user,
-            'session'   => $session,
-            'adventure' => $adventure,
-            'character' => $character,
-        ];
-
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_swap')) {
-            // TODO Enviar a jugador
+        if ($session->players_max >= count($session_players)) {
+            $waitlist = false;
+        } else {
+            $waitlist = true;
+            for ($i = 0; $i < $session->players_max; $i++) {
+                if ($session_players[$i]->uid == $user->uid) {
+                    $waitlist = false;
+                    break;
+                }
+            }
         }
 
-        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_swap')) {
-            // TODO Enviar a master
+        $data = [
+            'user'         => $user,
+            'master'       => $master,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'character'    => $character,
+            'player_count' => count($session_players),
+            'master_email' => $master_email,
+            'waitlist'     => $waitlist,
+        ];
+
+        $email = \Config\Services::email();
+
+        if ($user_send_email) {
+            $data['main'] = 'emails/player_swap_session';
+            $email->clear();
+
+            $email->setTo($user->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            if ($master_email) {
+                $email->setReplyTo($master->email, $master->display_name);
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("Has cambiado tu personaje para la partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
+        }
+
+        if ($master_send_email) {
+            $data['main'] = 'emails/player_swap_session_master';
+            $email->clear();
+
+            $email->setTo($master->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("$user->display_name ha cambiado su personaje para tu partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
         }
     }
 
     public function player_cancel_session($user_uid, $session_uid) {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
+
+        $user_send_email = $this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_cancel');
+        $master_send_email = $this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_cancel');
+
+        $master = $this->UserModel->getUser($session->master_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
         if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
         $data = [
-            'user'      => $user,
-            'session'   => $session,
-            'adventure' => $adventure,
+            'user'         => $user,
+            'master'       => $master,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'player_count' => count($session_players),
+            'master_email' => $master_email,
         ];
 
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'confirmation_session_cancel')) {
-            // TODO Enviar a jugador
+        $email = \Config\Services::email();
+
+        if ($user_send_email) {
+            $data['main'] = 'emails/player_cancel_session';
+            $email->clear();
+
+            $email->setTo($user->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            if ($master_email) {
+                $email->setReplyTo($master->email, $master->display_name);
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("Has cancelado tu inscripción a la partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
         }
 
-        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_player_cancel')) {
-            // TODO Enviar a master
+        if ($master_send_email) {
+            $data['main'] = 'emails/player_cancel_session_master';
+            $email->clear();
+
+            $email->setTo($master->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("$user->display_name ha cancelado su inscripción a tu partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
         }
 
-        // TODO Buscar jugador que abandona lista de espera y enviarle email
+        if ($session->players_max >= count($session_players)) {
+            $next_user = $session_players[($session->players_max - 1)];
+            $this->next_in_waitlist($next_user->uid, $session_uid, $next_user->character_uid);
+        }
     }
 
     public function player_kicked_session($user_uid, $session_uid) {
         $user = $this->UserModel->getUser($user_uid);
         $session = $this->SessionModel->getSession($session_uid);
+
+        $user_send_email = $this->EmailSettingModel->checkUserSetting($user_uid, 'notification_session_kicked');
+
+        $master = $this->UserModel->getUser($session->master_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
         if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
         $data = [
-            'user'      => $user,
-            'session'   => $session,
-            'adventure' => $adventure,
+            'user'         => $user,
+            'master'       => $master,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'player_count' => count($session_players),
+            'master_email' => $master_email,
         ];
 
-        if ($this->EmailSettingModel->checkUserSetting($user_uid, 'notification_session_kicked')) {
-            // TODO Enviar a jugador
+        $email = \Config\Services::email();
+
+        if ($user_send_email) {
+            $data['main'] = 'emails/player_kicked_session';
+            $email->clear();
+
+            $email->setTo($user->email);
+            if (setting('bcc_email')) {
+                $email->setBCC(setting('bcc_email'));
+            }
+            if ($master_email) {
+                $email->setReplyTo($master->email, $master->display_name);
+            }
+            $email->setFrom(setting('no_reply_email'), setting('app_name'));
+            $email->setSubject("Has sido expulsado de la partida $adventure->name");
+            $email->setMessage(view('emails/template', $data));
+            $email->setMailType('html');
+            $email->send();
         }
 
-        // TODO Buscar jugador que abandona lista de espera y enviarle email
+        if ($session->players_max >= count($session_players)) {
+            $next_user = $session_players[($session->players_max - 1)];
+            $this->next_in_waitlist($next_user->uid, $session_uid, $next_user->character_uid);
+        }
+    }
+
+    private function next_in_waitlist($user_uid, $session_uid, $character_uid) {
+        $user = $this->UserModel->getUser($user_uid);
+        $session = $this->SessionModel->getSession($session_uid);
+    
+        $user_send_email = $this->EmailSettingModel->checkUserSetting($user_uid, 'notification_session_waitlist');
+
+        if (!$user_send_email) {
+            return;
+        }
+
+        $master = $this->UserModel->getUser($session->master_uid);
+        $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $character = $this->CharacterModel->getCharacter($character_uid);
+        if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
+            $master_email = true;
+        } else {
+            $master_email = false;
+        }
+
+        $data = [
+            'user'         => $user,
+            'master'       => $master,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'character'    => $character,
+            'master_email' => $master_email,
+        ];
+
+        $email = \Config\Services::email();
+
+        $data['main'] = 'emails/next_in_waitlist';
+        $email->clear();
+
+        $email->setTo($user->email);
+        if (setting('bcc_email')) {
+            $email->setBCC(setting('bcc_email'));
+        }
+        if ($master_email) {
+            $email->setReplyTo($master->email, $master->display_name);
+        }
+        $email->setFrom(setting('no_reply_email'), setting('app_name'));
+        $email->setSubject("Hay espacio para ti en la partida $adventure->name");
+        $email->setMessage(view('emails/template', $data));
+        $email->setMailType('html');
+        $email->send();
     }
 
     public function session_updated($session_uid) {
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $master = $this->UserModel->getUser($session->master_uid);
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
         if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
         $data = [
-            'session'   => $session,
-            'adventure' => $adventure,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'player_count' => count($session_players),
+            'master'       => $master,
+            'master_email' => $master_email,
         ];
+
+        $email = \Config\Services::email();
 
         $users = $this->SessionModel->getSessionPlayers($session_uid);
         foreach ($users as $user) {
             if ($this->EmailSettingModel->checkUserSetting($user->uid, 'notification_session_modified')) {
-                $data['user'] = $user;
+                $data['user'] = $this->UserModel->getUser($user->uid);
+                $data['character'] = $this->CharacterModel->getCharacter($user->character_uid);
+                if ($session->players_max >= count($session_players)) {
+                    $data['waitlist'] = false;
+                } else {
+                    $data['waitlist'] = true;
+                    for ($i = 0; $i < $session->players_max; $i++) {
+                        if ($session_players[$i]->uid == $user->uid) {
+                            $data['waitlist'] = false;
+                            break;
+                        }
+                    }
+                }
+
                 // TODO Enviar a jugador
             }
         }
@@ -288,21 +474,30 @@ class MyEmail {
     public function session_canceled($session_uid) {
         $session = $this->SessionModel->getSession($session_uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $master = $this->UserModel->getUser($session->master_uid);
+        $session_players = $this->SessionModel->getSessionPlayers($session_uid);
         if ($this->EmailSettingModel->checkUserSetting($session->master_uid, 'master_send_emails')) {
-            $master_email = $this->UserModel->getUser($session->master_uid)->email;
+            $master_email = true;
         } else {
             $master_email = false;
         }
 
         $data = [
-            'session'   => $session,
-            'adventure' => $adventure,
+            'session'      => $session,
+            'adventure'    => $adventure,
+            'player_count' => count($session_players),
+            'master'       => $master,
+            'master_email' => $master_email,
         ];
+
+        $email = \Config\Services::email();
 
         $users = $this->SessionModel->getSessionPlayers($session_uid);
         foreach ($users as $user) {
             if ($this->EmailSettingModel->checkUserSetting($user->uid, 'notification_session_canceled')) {
-                $data['user'] = $user;
+                $data['user'] = $this->UserModel->getUser($user->uid);
+                $data['character'] = $this->CharacterModel->getCharacter($user->character_uid);
+
                 // TODO Enviar a jugador
             }
         }

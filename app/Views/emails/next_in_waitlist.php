@@ -1,7 +1,11 @@
-<h1>Se ha confirmando tu inscripción en la partida <?= $adventure->name ?></h1>
+<h1>Hay espacio para ti en la partida <?= $adventure->name ?></h1>
 
 <p>
     ¡Hola <?= $user->display_name ?>!
+</p>
+
+<p>
+    Alguien ha abandonado la partida por lo que se ha abierto un hueco para ti. Si no puedes ir, recuerda cancelar tu inscripción.
 </p>
 
 <p>
@@ -22,12 +26,6 @@
     <li><strong>Clase:</strong> <?= $character->class ?></li>
     <li><strong>Nivel:</strong> <?= $character->level ?></li>
 </ul>
-
-<? if ($waitlist) : ?>
-    <p>
-        <span class="rojo">Actualmente estás en lista de espera</span>. Se te informará si se abre un espacio para ti, siempre que tengas esa opción activa en <a href="<?= base_url('settings') ?>">tu configuración</a>.
-    </p>
-<? endif; ?>
 
 <? if ($master_email) : ?>
     <p>

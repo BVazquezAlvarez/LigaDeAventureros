@@ -1,4 +1,4 @@
-<h1>Se ha confirmando tu inscripción en la partida <?= $adventure->name ?></h1>
+<h1>Has cambiado tu personaje para la partida <?= $adventure->name ?></h1>
 
 <p>
     ¡Hola <?= $user->display_name ?>!
@@ -15,7 +15,7 @@
 </ul>
 
 <p>
-    Te has anotado con el siguiente personaje:
+    El nuevo personaje es el siguiente:
 </p>
 <ul>
     <li><strong>Nombre:</strong> <?= $character->name ?></li>
@@ -25,7 +25,7 @@
 
 <? if ($waitlist) : ?>
     <p>
-        <span class="rojo">Actualmente estás en lista de espera</span>. Se te informará si se abre un espacio para ti, siempre que tengas esa opción activa en <a href="<?= base_url('settings') ?>">tu configuración</a>.
+        Te recordamos que <span class="rojo">actualmente estás en lista de espera</span>. Se te informará si se abre un espacio para ti, siempre que tengas esa opción activa en <a href="<?= base_url('settings') ?>">tu configuración</a>.
     </p>
 <? endif; ?>
 
