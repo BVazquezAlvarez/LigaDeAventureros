@@ -175,4 +175,6 @@ CREATE TABLE `email_setting` (
 ALTER TABLE `email_setting`
   ADD PRIMARY KEY (`user_uid`,`setting`);
 
+ALTER TABLE `email_setting` ADD FOREIGN KEY (`user_uid`) REFERENCES `user`(`uid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 COMMIT;
