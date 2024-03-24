@@ -29,26 +29,19 @@
         <? if ($characters) : ?>
             <div class="row">
                 <? foreach ($characters as $char) : ?>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-lg-4 col-md-6 mb-2">
                         <div class="card <?= $char->active ? "" : "text-secondary" ?>">
                             <div class="card-header">
                                 <h3 class="d-inline h5 mb-0"><?= $char->name ?></h1> <?= $char->active ? "" : "(Inactivo)" ?>
                             </div>
                             <div class="card-body">
                                 <p><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</p>
-                                <p><a href="<?= base_url('character_sheets') ?>/<?= $char->uploaded_sheet ?>" target="_blank">Hoja de personaje</a></p>
-                                <? if ($char->uploaded_sheet != $char->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
-                                    <? if ($char->validated_sheet) : ?>
-                                        <p><a href="<?= base_url('character_sheets') ?>/<?= $char->validated_sheet ?>" target="_blank">Última hoja de personaje validada</a></p>
-                                    <? else : ?>
-                                        <p class="text-danger">Este personaje todavía no ha sido validado.</p>
+                                <p>
+                                    <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalle</a>
+                                    <? if ($char->uploaded_sheet != $char->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
+                                        <span class="text-danger">(Sin validar)</span>
                                     <? endif; ?>
-                                <? endif; ?> 
-                                <? if ($isOwner && $userdata['confirmed']) : ?>
-                                    <div class="col-md-12 mt-3">
-                                        <button type="button" class="btn btn-primary js-update-character-btn" data-uid="<?= $char->uid ?>" data-name="<?= $char->name ?>" data-class="<?= $char->class ?>" data-level="<?= $char->level ?>">Actualizar</button>
-                                    </div>
-                                <? endif; ?>
+                                </p>
                             </div>
                         </div>
                     </div>

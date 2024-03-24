@@ -60,10 +60,12 @@ $routes->post('settings/email','Profile::settings_email');
 $routes->post('settings/delete-account','Profile::delete_account');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
-$routes->get('all-characters', 'Profile::all_characters');
-
-$routes->post('new-character', 'Profile::new_character');
-$routes->post('update-character', 'Profile::update_character');
+$routes->get('character/(:segment)','Character::index/$1');
+$routes->get('all-characters', 'Character::all_characters');
+$routes->post('new-character', 'Character::new_character');
+$routes->post('update-character', 'Character::update_character');
+$routes->get('character/(:segment)/enable', 'Character::enable/$1');
+$routes->get('character/(:segment)/disable', 'Character::disable/$1');
 
 $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 

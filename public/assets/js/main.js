@@ -118,6 +118,7 @@ $(function() {
         let level = $(this).data("level");
         
         $("#modal-character-name").text(name);
+        $("#update-character-modal #name").val(name);
         $("#update-character-modal #uid").val(uid);
         $("#update-character-modal #class").val(cclass);
         $("#update-character-modal #level").val(level);

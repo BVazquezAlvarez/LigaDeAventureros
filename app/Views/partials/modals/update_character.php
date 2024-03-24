@@ -26,6 +26,12 @@
                 </button>
             </div>
             <div class="modal-body row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Nombre <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="name" class="form-control" required>
+                    </div>
+                </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label for="class">Clase <span class="text-danger">*</span></label>
@@ -40,8 +46,8 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>) <span class="text-danger">*</span></label>
-                        <input type="file" name="character_sheet" id="character_sheet" class="form-control-file" accept=".pdf" required>
+                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>)</label>
+                        <input type="file" name="character_sheet" id="character_sheet" class="form-control-file" accept=".pdf">
                     </div>
                 </div>
                 <input type="hidden" id="uid" name="uid">
