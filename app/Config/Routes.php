@@ -59,6 +59,7 @@ $routes->post('settings','Profile::settings_post');
 $routes->post('settings/email','Profile::settings_email');
 $routes->post('settings/delete-account','Profile::delete_account');
 $routes->get('profile/(:segment)','Profile::index/$1');
+$routes->get('profile','Profile::index');
 
 $routes->get('all-characters', 'Profile::all_characters');
 
