@@ -26,6 +26,13 @@ class Profile extends BaseController {
     }
 
     public function index($uid = NULL) {
+        if (!$uid) {
+            if ($this->isUserLoggedIn()) {
+                $uid = session('user_uid');
+            } else {
+                return redirect()->to('/');
+            }
+        }
         $user = $this->UserModel->getUser($uid);
 
         if (!$user) {
@@ -106,13 +113,14 @@ class Profile extends BaseController {
         $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,5120]');
 
         if ($validation->withRequest($this->request)->run()) {
+            $uid = uid_generate_unique('player_character');
             $data = array(
-                'uid'            => uid_generate_unique('player_character'),
+                'uid'            => $uid,
                 'user_uid'       => session('user_uid'),
                 'name'           => $this->request->getVar('name'),
                 'class'          => $this->request->getVar('class'),
                 'level'          => $this->request->getVar('level'),
-                'uploaded_sheet' => str_replace(' ', '_', $this->request->getVar('name')) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
+                'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
                 'date_uploaded'  => date('c'),
                 'active'         => 1,
             );
@@ -159,7 +167,7 @@ class Profile extends BaseController {
         $data = array(
             'class'          => $this->request->getVar('class'),
             'level'          => $this->request->getVar('level'),
-            'uploaded_sheet' => str_replace(' ', '_', $character->name) . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
+            'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
             'date_uploaded'  => date('c'),
             'active'         => 1,
         );
@@ -173,19 +181,12 @@ class Profile extends BaseController {
         return redirect()->to('profile/'.session('user_uid'));
     }
 
-    public function all_characters($page = 1) {
-        $limit = 25;
-        $start = $limit * ($page - 1);
-
-        $characters = $this->CharacterModel->getAllActiveCharacters($start, $limit);
-        $total = $this->CharacterModel->countAllActiveCharacters();
-
-        $pager = service('pager');
-        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 2);
+    public function all_characters() {
+        $characters = $this->CharacterModel->getAllActiveCharacters();
+        $total = $this->CharacterModel->countAllActiveCharacters();;
 
         $this->setData('characters',$characters);
         $this->setData('total',$total);
-        $this->setData('pagination',$pagination);
 
         $this->setTitle('Todos los personajes');
         return $this->loadView('profile/all_characters');

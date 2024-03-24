@@ -35,7 +35,7 @@ class Master extends BaseController {
     }
 
     public function index() {
-        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'), true);
+        $upcomingSessions = $this->SessionModel->getSessions(date('c', strtotime('today')), NULL, session('user_uid'), true, false);
 
         $this->setData('upcoming_sessions', $upcomingSessions);
         $this->setData('sheets_pending_count', $this->CharacterModel->getCharactersValidationPendingCount());
@@ -303,11 +303,14 @@ class Master extends BaseController {
             'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
+            'published' => $this->request->getVar('published') ? 1 : 0,
         ]);
         $this->email->session_updated($uid);
 
         session()->setFlashdata('success', 'Se ha editado la sesión.');
-        return redirect()->to('master');
+
+        $session = $this->SessionModel->getSession($uid);
+        return redirect()->to('master/adventure/'.$session->adventure_uid);
     }
 
     public function kick() {
@@ -316,7 +319,7 @@ class Master extends BaseController {
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
         $this->email->player_kicked_session($user_uid, $session_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
-        return redirect()->to('master');
+        return redirect()->back();
     }
 
 }

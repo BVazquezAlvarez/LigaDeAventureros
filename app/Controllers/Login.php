@@ -73,7 +73,7 @@ class Login extends BaseController {
     public function onetap() {
         if ($_COOKIE['g_csrf_token'] !== $this->request->getPost('g_csrf_token')) {
             // Invalid CSRF token
-            return back();
+            return redirect()->back();
         }
         
         $idToken = $this->request->getPost('credential'); 
@@ -123,6 +123,14 @@ class Login extends BaseController {
 
     public function logout() {
         session()->destroy();
+		return redirect()->to('/');
+    }
+
+    public function return_to_real_user() {
+        if (session('real_user')) {
+            session()->set(['user_uid' => session('real_user')['uid']]);
+            session()->remove('real_user');
+        }
 		return redirect()->to('/');
     }
 

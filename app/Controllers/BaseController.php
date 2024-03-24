@@ -69,6 +69,11 @@ abstract class BaseController extends Controller {
 
         $this->data = array();
 
+        if (setting('maintenance_mode') && !in_array($_SERVER['REMOTE_ADDR'], explode(';',setting('maintenance_mode_ips')))) {
+            echo view('maintenance_mode');
+            die();
+        }
+
         // Preload any models, libraries, etc, here.
         $this->email = new MyEmail();
 

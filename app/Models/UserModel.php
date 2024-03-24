@@ -36,16 +36,24 @@ class UserModel extends Model {
 		'delete_on'
 	];
 
-	public function getUsers($offset = NULL, $limit = NULL) {
+	public function getUsers($offset = NULL, $limit = NULL, $q = NULL) {
 		$builder = $this->db->table('user');
 		if ($limit) {
 			$builder->limit($limit, $offset);
 		}
+		if ($q) {
+			$builder->like('uid', $q);
+			$builder->orLike('display_name', $q);
+		}
 		return $builder->get()->getResult();
 	}
 
-	public function getTotalUsers() {
+	public function getTotalUsers($q = NULL) {
 		$builder = $this->db->table('user');
+		if ($q) {
+			$builder->like('uid', $q);
+			$builder->orLike('display_name', $q);
+		}
         return $builder->get()->getNumRows();
 	}
 

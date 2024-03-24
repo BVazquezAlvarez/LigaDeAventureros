@@ -35,12 +35,14 @@ class SessionModel extends Model {
         'published',
     ];
 
-    public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false) {
+    public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false, $published_only = true) {
         $builder = $this->db->table('session');
         $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
-        $builder->where('session.published', 1);
+        if ($published_only) {
+            $builder->where('session.published', 1);
+        }
         if ($start) {
             $builder->where('session.date >=', $start);
         }
@@ -74,7 +76,6 @@ class SessionModel extends Model {
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         $builder->join('player_session', 'session.uid = player_session.session_uid', 'left');
         $builder->where('session.adventure_uid', $adventure_uid);
-        $builder->where('session.published', 1);
         $builder->orderBy('session.date', 'DESC');
         $builder->groupBy('session.uid');
         return $builder->get()->getResult();

@@ -37,8 +37,8 @@
 			baseUrl = "<?= base_url() ?>";
 		</script>
 
-		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>"></script>
-		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>">
+		<script type="text/javascript" src="<?= base_url('assets/js/main.js') ?>?v=<?= filemtime('assets/js/main.js') ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/main.css') ?>?v=<?= filemtime('assets/css/main.css') ?>">
 	</head>
 
 	<body>
@@ -81,9 +81,9 @@
 								</li>
 							<? endif; ?>
 							<li class="nav-item"><a class="nav-link" href="<?= base_url('all-characters') ?>">Todos los personajes</a></li>
-							<? if (setting('wiki_link')) : ?>
-								<li class="nav-item"><a class="nav-link" href="<?= setting('wiki_link') ?>" target="_blank">Wiki</a></li>
-							<? endif; ?>
+							<? foreach (links_menu() as $link) : ?>
+								<li class="nav-item"><a class="nav-link" href="<?= $link->url ?>" <?= $link->new_tab ? 'target="_blank"' : '' ?>><?= $link->text ?></a></li>
+							<? endforeach; ?>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 							<? if ($userdata) : ?>
@@ -94,6 +94,10 @@
 									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 										<li><a class="dropdown-item" href="<?= base_url('profile') ?>/<?= $userdata['uid'] ?>">Mi perfil</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('settings') ?>">Configuración</a></li>
+										<? if (session('real_user')) : ?>
+											<li><hr class="dropdown-divider"></li>
+											<li><a class="dropdown-item" href="<?= base_url('admin/logout') ?>">Volver a <?= session('real_user')['display_name'] ?></a></li>
+										<? endif; ?>
 										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item" href="<?= base_url('logout') ?>">Cerrar Sesión</a></li>
 									</ul>

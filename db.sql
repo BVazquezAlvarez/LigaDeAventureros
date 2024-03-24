@@ -142,6 +142,27 @@ ALTER TABLE `user` ADD `password` VARCHAR(255) NULL AFTER `admin`;
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('google_secret', 'google_secret', '');
 
+CREATE TABLE `link_menu` (
+  `link_menu_id` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  `new_tab` tinyint(1) NOT NULL,
+  `position` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `link_menu`
+  ADD PRIMARY KEY (`link_menu_id`);
+
+ALTER TABLE `link_menu`
+  MODIFY `link_menu_id` int(11) NOT NULL AUTO_INCREMENT;
+
+DELETE FROM `settings` WHERE `id` = 'wiki_link';
+
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode', 'Activa el modo mantenimiento de la web. No se podrá acceder hasta que se desactive.', '0');
+
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('maintenance_mode_ips', 'Cuando el modo mantenimiento está activo, se podrá acceder desde estas IPs (separar con ;)', '');
+
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('no_reply_email', 'Email desde el que se enviarán comunicaciones', '');
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('bcc_email', 'Email al que se enviará copia de los emails enviados a los usuarios', '');

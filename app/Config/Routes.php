@@ -41,11 +41,9 @@ $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
 $routes->post('settings/email','Profile::settings_email');
 $routes->post('settings/delete-account','Profile::delete_account');
-
 $routes->get('profile/(:segment)','Profile::index/$1');
 
 $routes->get('all-characters', 'Profile::all_characters');
-$routes->get('all-characters/(:segment)', 'Profile::all_characters/$1');
 
 $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
@@ -86,6 +84,8 @@ $routes->get('admin/settings', 'Admin::settings');
 $routes->post('admin/settings', 'Admin::settings_post');
 $routes->get('admin/users', 'Admin::users');
 $routes->get('admin/users/(:segment)', 'Admin::users/$1');
+$routes->get('admin/user_login/(:segment)', 'Admin::user_login/$1');
+$routes->get('admin/logout', 'Login::return_to_real_user');
 $routes->post('admin/user-toggle-master', 'Admin::user_toggle_master');
 $routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
 $routes->post('admin/user-ban', 'Admin::user_ban');
