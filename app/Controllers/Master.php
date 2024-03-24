@@ -265,6 +265,7 @@ class Master extends BaseController {
 
     public function delete_session() {
         $uid = $this->request->getVar('uid');
+        $this->email->session_canceled($uid);
         $this->SessionModel->deleteSession($uid);
         session()->setFlashdata('success', 'Se han eliminado la sesión.');
         return redirect()->back();
@@ -304,6 +305,7 @@ class Master extends BaseController {
             'players_max' => $this->request->getVar('session_max_players'),
             'published' => $this->request->getVar('published') ? 1 : 0,
         ]);
+        $this->email->session_updated($uid);
 
         session()->setFlashdata('success', 'Se ha editado la sesión.');
 
@@ -315,6 +317,7 @@ class Master extends BaseController {
         $session_uid = $this->request->getVar('session-uid');
         $user_uid = $this->request->getVar('player-uid');
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
+        $this->email->player_kicked_session($user_uid, $session_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
         return redirect()->back();
     }

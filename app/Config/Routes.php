@@ -39,14 +39,24 @@ $routes->get('logout', 'Login::logout');
 
 $routes->get('settings','Profile::settings');
 $routes->post('settings','Profile::settings_post');
+$routes->post('settings/email','Profile::settings_email');
 $routes->post('settings/delete-account','Profile::delete_account');
-$routes->get('profile','Profile::index');
 $routes->get('profile/(:segment)','Profile::index/$1');
 
 $routes->get('all-characters', 'Profile::all_characters');
 
 $routes->post('new-character', 'Profile::new_character');
 $routes->post('update-character', 'Profile::update_character');
+
+$routes->post('adventure/data-ajax', 'Adventure::data_ajax');
+
+$routes->get('calendar', 'Session::calendar');
+$routes->get('calendar/(:segment)/(:segment)', 'Session::calendar/$1/$2');
+$routes->get('session/view/(:segment)', 'Session::view/$1');
+
+$routes->post('session/join', 'Session::join');
+$routes->post('session/swap', 'Session::swap');
+$routes->post('session/cancel', 'Session::cancel');
 
 $routes->get('master', 'Master::index');
 $routes->post('master/kick', 'Master::kick');
@@ -80,16 +90,6 @@ $routes->post('admin/user-toggle-master', 'Admin::user_toggle_master');
 $routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
 $routes->post('admin/user-ban', 'Admin::user_ban');
 $routes->post('admin/user-unban', 'Admin::user_unban');
-
-$routes->post('adventure/data-ajax', 'Adventure::data_ajax');
-
-$routes->get('calendar', 'Session::calendar');
-$routes->get('calendar/(:segment)/(:segment)', 'Session::calendar/$1/$2');
-$routes->get('session/view/(:segment)', 'Session::view/$1');
-
-$routes->post('session/join', 'Session::join');
-$routes->post('session/swap', 'Session::swap');
-$routes->post('session/cancel', 'Session::cancel');
 
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');

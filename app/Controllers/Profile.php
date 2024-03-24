@@ -21,6 +21,7 @@ class Profile extends BaseController {
 
     public function __construct() {
         $this->UserModel = model('UserModel');
+        $this->EmailSettingModel = model('EmailSettingModel');
         $this->CharacterModel = model('CharacterModel');
     }
 
@@ -55,6 +56,8 @@ class Profile extends BaseController {
         $user = $this->UserModel->getUser(session('user_uid'));
 
         $this->setData('user', $user);
+        $this->setData('email_settings', $this->EmailSettingModel->getUserSettings(session('user_uid')));
+        $this->setData('tab', $this->request->getVar('tab') ?: 'settings');
         $this->setTitle('Configuración');
         return $this->loadView('profile/settings');
     }
@@ -75,11 +78,31 @@ class Profile extends BaseController {
             }
             $this->UserModel->updateUser(session('user_uid'), $data);
             session()->setFlashdata('success', 'Configuración actualizada.');
-            return redirect()->to('profile/'.session('user_uid'));
+            return redirect()->to('settings');
         } else {
+            session()->setFlashdata('error', 'Se ha producido un error al guardar la configuración.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
         }
+    }
+
+    public function settings_email() {
+        $input_email_settings = $this->request->getVar('email_settings') ?: [];
+        $db_email_settings = $this->EmailSettingModel->getUserSettings(session('user_uid'));
+
+        $add_email_settings = array_diff($input_email_settings, $db_email_settings);
+        $delete_email_settings = array_diff($db_email_settings, $input_email_settings);
+
+        $added = $this->EmailSettingModel->addSettings(session('user_uid'), $add_email_settings);
+        $deleted = $this->EmailSettingModel->deleteSettings(session('user_uid'), $delete_email_settings);
+
+        if ($added + $deleted > 0) {
+            session()->setFlashdata('success', 'Se han actualizado tus opciones de email.');
+        } else {
+            session()->setFlashdata('error', 'No has modificado ninguna opción.');
+        }
+        
+        return redirect()->to('settings?tab=email');
     }
 
     public function new_character() {
@@ -171,6 +194,7 @@ class Profile extends BaseController {
 
     public function delete_account() {
         $date = strtotime('+ 15 days');
+        $this->email->confirm_delete_account(session('user_uid'));
         $this->UserModel->updateUser(session('user_uid'), [
             'delete_on' => date('Y-m-d', $date),
         ]);
