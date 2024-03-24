@@ -466,7 +466,21 @@ class MyEmail {
                     }
                 }
 
-                // TODO Enviar a jugador
+                $data['main'] = 'emails/session_updated';
+                $email->clear();
+    
+                $email->setTo($data['user']->email);
+                if (setting('bcc_email')) {
+                    $email->setBCC(setting('bcc_email'));
+                }
+                if ($master_email) {
+                    $email->setReplyTo($master->email, $master->display_name);
+                }
+                $email->setFrom(setting('no_reply_email'), setting('app_name'));
+                $email->setSubject("La partida $adventure->name ha sido modificada");
+                $email->setMessage(view('emails/template', $data));
+                $email->setMailType('html');
+                $email->send();
             }
         }
     }
@@ -498,7 +512,21 @@ class MyEmail {
                 $data['user'] = $this->UserModel->getUser($user->uid);
                 $data['character'] = $this->CharacterModel->getCharacter($user->character_uid);
 
-                // TODO Enviar a jugador
+                $data['main'] = 'emails/session_canceled';
+                $email->clear();
+    
+                $email->setTo($data['user']->email);
+                if (setting('bcc_email')) {
+                    $email->setBCC(setting('bcc_email'));
+                }
+                if ($master_email) {
+                    $email->setReplyTo($master->email, $master->display_name);
+                }
+                $email->setFrom(setting('no_reply_email'), setting('app_name'));
+                $email->setSubject("La partida $adventure->name ha sido cancelada");
+                $email->setMessage(view('emails/template', $data));
+                $email->setMailType('html');
+                $email->send();
             }
         }
     }
