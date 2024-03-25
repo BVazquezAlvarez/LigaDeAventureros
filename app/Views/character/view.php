@@ -16,11 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<div class="alert alert-warning text-center" role="alert">
-  <h4 class="alert-heading">WORK IN PROGRESS</h4>
-  <p class="mb-0">Este es un sitio en desarrollo y el diseño no es final.</p>
-</div>
-
 <div class="card <?= $character->active ? "" : "text-secondary" ?>">
     <div class="text-center card-header">
         <h1 class="d-inline h3"><?= $character->name ?></h1> <?= $character->active ? "" : "(Inactivo)" ?>
