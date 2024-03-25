@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,15 +63,37 @@
                 <div>Este jugador no tiene ningún personaje creado.</div>
             <? endif; ?>
         <? endif; ?>
-        <? if (!$isOwner && $userdata && $userdata['admin']) : ?>
-            <div class="col-md-12 mt-3">
-                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary">Suplantar</a>
-            </div>
-        <? endif; ?>
     </div>
+    <? if ($userdata && $userdata['admin']) : ?>
+        <div class="card-footer">
+            <? if (!$isOwner) : ?>
+                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary mt-1 mr-3">Suplantar</a>
+            <? endif; ?>
+            <? if ($user->confirmed && !$user->banned) : ?>
+                <? if ($user->master) : ?>
+                    <button class="btn btn-outline-primary mt-1 mr-1 js-master-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Master</span>
+                <? else : ?>
+                    <button class="btn btn-primary mt-1 mr-1 js-master-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Master</span>
+                <? endif; ?>
+                <? if (!$isOwner) : ?>
+                    <? if ($user->admin) : ?>
+                        <button class="btn btn-outline-primary mt-1 mr-1 js-admin-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Administrador</span>
+                    <? else : ?>
+                        <button class="btn btn-primary mt-1 mr-1 js-admin-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Administrador</span>
+                    <? endif; ?>
+                    <button class="btn btn-danger mt-1 mr-1 js-ban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Bloquear</span>
+                <? endif; ?>
+            <? endif; ?>
+            <? if ($user->banned) : ?>
+                <button class="btn btn-outline-danger mt-1 mr-1 js-unban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Desbloquear</span>
+            <? endif; ?>
+        </div>
+    <? endif; ?>
 </div>
 
 <? if ($isOwner) : ?>
     <?= view('partials/modals/new_character') ?>
-    <?= view('partials/modals/update_character') ?>
+<? endif; ?>
+<? if ($userdata && $userdata['admin']) : ?>
+    <?= view('partials/modals/admin_actions') ?>
 <? endif; ?>

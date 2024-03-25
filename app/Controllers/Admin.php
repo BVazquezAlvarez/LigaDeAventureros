@@ -84,7 +84,7 @@ class Admin extends BaseController {
             'master' => $this->request->getVar('master'),
         ];
         $this->UserModel->updateUser($uid, $data);
-        return redirect()->to('admin/users');
+        return redirect()->back();
     }
 
     public function user_toggle_admin() {
@@ -93,7 +93,7 @@ class Admin extends BaseController {
             'admin' => $this->request->getVar('admin'),
         ];
         $this->UserModel->updateUser($uid, $data);
-        return redirect()->to('admin/users');
+        return redirect()->back();
     }
 
     public function user_ban() {
@@ -104,7 +104,7 @@ class Admin extends BaseController {
             'banned' => 1,
         ];
         $this->UserModel->updateUser($uid, $data);
-        return redirect()->to('admin/users');
+        return redirect()->back();
     }
 
     public function user_unban() {
@@ -113,7 +113,7 @@ class Admin extends BaseController {
             'banned' => 0,
         ];
         $this->UserModel->updateUser($uid, $data);
-        return redirect()->to('admin/users');
+        return redirect()->back();
     }
 
     public function logs($page = 1) {
