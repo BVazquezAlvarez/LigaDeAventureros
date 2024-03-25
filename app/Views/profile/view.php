@@ -41,7 +41,7 @@
                                 </a>
                                 <div><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</div>
                                 <div>
-                                    <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalle</a>
+                                    <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalles</a>
                                     <? if ($char->uploaded_sheet != $char->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
                                         <span class="text-danger">(Sin validar)</span>
                                     <? endif; ?>

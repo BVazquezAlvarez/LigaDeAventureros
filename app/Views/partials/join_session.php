@@ -5,7 +5,7 @@
         </div>
         <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">
             <div class="row h-100">
-                <div class="col-sm-6 text-center p-2">
+                <div class="col-sm-6 text-center p-2 session-flex">
                     <div class="session-info">
                         <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                         <p>
