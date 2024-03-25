@@ -111,16 +111,30 @@ $(function() {
         $('#reject-sheet-modal').modal('show');
     });
 
-    $('.js-update-character-btn').on('click', function() {
+    $('.js-define-logsheet').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        let cclass = $(this).data("class");
-        let level = $(this).data("level");
+        let logsheet = $(this).data("logsheet");
         
-        $("#modal-character-name").text(name);
-        $("#update-character-modal #uid").val(uid);
-        $("#update-character-modal #class").val(cclass);
-        $("#update-character-modal #level").val(level);
+        $('#define-logsheet-modal #modal-character-name').text(name);
+        $('#define-logsheet-modal #modal-uid').val(uid);
+        $('#define-logsheet-modal #modal-logsheet').val(logsheet);
+
+        $('#define-logsheet-modal').modal('show');
+    });
+
+    $('.js-update-character-btn').on('click', function() {
+        let character = $(this).data("character");
+        console.log(character);
+        console.log();
+        
+        $("#modal-character-name").text(character.name);
+        $("#update-character-modal #name").val(character.name);
+        $("#update-character-modal #uid").val(character.uid);
+        $("#update-character-modal #class").val(character.class);
+        $("#update-character-modal #level").val(character.level);
+        $("#update-character-modal #wiki").val(character.wiki);
+        $("#update-character-modal #description").val(character.description);
 
         $('#update-character-modal').modal('show');
     });
@@ -289,11 +303,15 @@ $(function() {
         });
     });
 
-    $('#all-characters-search').on('keyup', function() {
-        let search = $(this).val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    function searchAllCharacters() {
+        let search = $('#all-characters-search').val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         let searchWords = search.split(/\s+/).filter(word => word.trim() !== '');
 
-        if (searchWords.length === 0) {
+        let ranks = $('.js-button-rank.active').map(function() {
+            return $(this).data('rank');
+        }).get();
+
+        if (searchWords.length === 0 && ranks.length === 0) {
             $('.js-all-characters-search').show();
             return;
         }
@@ -301,25 +319,66 @@ $(function() {
         $('.js-all-characters-search').each(function() {
             let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
+            let rank = $(this).data('rank');
 
-            let matchFound = false;
-            for (let i = 0; i < searchWords.length; i++) {
-                for (let j = 0; j < queryWords.length; j++) {
-                    if (queryWords[j].includes(searchWords[i])) {
-                        matchFound = true;
+            let rankValid = ranks.includes(rank) || ranks.length === 0;
+            let matchFound = true;
+            if (searchWords.length > 0) {
+                matchFound = false;
+                for (let i = 0; i < searchWords.length; i++) {
+                    for (let j = 0; j < queryWords.length; j++) {
+                        if (queryWords[j].includes(searchWords[i])) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                    if (matchFound) {
                         break;
                     }
                 }
-                if (matchFound) {
-                    break;
-                }
             }
 
-            if (matchFound) {
+            if (matchFound && rankValid) {
                 $(this).show();
             } else {
                 $(this).hide();
             }
         });
+    }
+
+    $('#all-characters-search').on('keyup', function() {
+        searchAllCharacters();
+    });
+
+    $('.js-button-rank').on('click', function() {
+        $(this).toggleClass('active');
+        searchAllCharacters();
+    });
+
+    let intervalRunning = false;
+    $('#delete-character-modal').on('show.bs.modal', function () {
+        var submitBtn = $('#delete-character-modal button[type="submit"]');
+        var originalText = submitBtn.html();
+
+        var countDown = 3;
+
+        function startInterval() {
+            intervalRunning = true;
+            submitBtn.prop('disabled', true).html(`${countDown}...`);
+            var interval = setInterval(function () {
+                countDown--;
+                if (countDown > 0) {
+                    submitBtn.html(`${countDown}...`);
+                } else {
+                    clearInterval(interval);
+                    intervalRunning = false;
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            }, 1000);
+        }
+
+        if (!intervalRunning) {
+            startInterval();
+        }
     });
 });

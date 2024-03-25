@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,16 +16,17 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<div class="modal fade" id="session-rm-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <form class="modal-content" method="post" action="<?= base_url('master/delete-session') ?>">
-            <div class="modal-body">
-                <h5>¿Quieres eliminar esa sesión?</h5>
-                <input type="hidden" id="uid" name="uid">
+<div class="modal fade" id="image-modal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <form class="modal-content" method="post" action="<?= base_url('master/reject-sheet') ?>">
+            <div class="modal-header">
+                <h5 class="modal-title"><?= $title ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Sí</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+            <div class="modal-body">
+                <img class="max-width" src="<?= $img ?>">
             </div>
         </form>
     </div>

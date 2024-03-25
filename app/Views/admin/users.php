@@ -41,7 +41,7 @@
                     <td class="align-middle">
                         <?= $user->display_name ?>
                         <? if ($user->uid != session('user_uid') && !$user->banned) : ?>
-                            <br/><a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>">Iniciar sesión</a>
+                            <br/><a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>">Suplantar</a>
                         <? endif; ?>
                     </td>
                     <td class="align-middle text-center"><?= date('d/m/Y H:i:s', strtotime($user->date_created)) ?></a></td>

@@ -36,7 +36,7 @@ class Cron extends BaseController {
 
         $folderPath = ROOTPATH . 'public/character_sheets';
         $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
-            return pathinfo($fileInFolder, PATHINFO_EXTENSION) === 'pdf';
+            return (strpos($fileInFolder, '.') !== 0);
         });
         $filesToDelete = array_diff($filesInFolder, $sheets);
 
@@ -68,9 +68,7 @@ class Cron extends BaseController {
 
         $folderPath = ROOTPATH . 'public/img/adventures';
         $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
-            $extension = pathinfo($fileInFolder, PATHINFO_EXTENSION);
-            $imageExtensions = ['jpg', 'jpeg', 'png'];
-            return in_array($extension, $imageExtensions);
+            return (strpos($fileInFolder, '.') !== 0);
         });
         $filesToDelete = array_diff($filesInFolder, $thumbnails);
 
@@ -84,6 +82,38 @@ class Cron extends BaseController {
             }
         }
         echo "$count thumbnails eliminados.";
+    }
+
+    public function delete_character_images() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('player_character');
+        $builder->select('image');
+        $chars = $builder->get()->getResult();
+
+        $images = array();
+        foreach ($chars as $char) {
+            $images[] = $char->image;
+        }
+        $images = array_unique(array_filter($images, function($img) {
+            return $img !== null;
+        }));
+
+        $folderPath = ROOTPATH . 'public/img/characters';
+        $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
+            return (strpos($fileInFolder, '.') !== 0);
+        });
+        $filesToDelete = array_diff($filesInFolder, $images);
+
+        $count = 0;
+        foreach ($filesToDelete as $fileToDelete) {
+            $filePathToDelete = $folderPath . DIRECTORY_SEPARATOR . $fileToDelete;
+            if (file_exists($filePathToDelete)) {
+                unlink($filePathToDelete);
+                echo "Eliminado: $fileToDelete.".PHP_EOL;
+                $count++;
+            }
+        }
+        echo "$count imágenes eliminadas.";
     }
 
     public function delete_accounts_requested() {

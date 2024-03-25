@@ -20,21 +20,25 @@ use CodeIgniter\Model;
 
 class CharacterModel extends Model {
 
-	protected $table = 'player_character';
-	protected $primaryKey = 'uid';
+    protected $table = 'player_character';
+    protected $primaryKey = 'uid';
 
-	protected $allowedFields = [
-		'uid',
-		'user_uid',
-		'display_name',
-		'name',
+    protected $allowedFields = [
+        'uid',
+        'user_uid',
+        'display_name',
+        'name',
         'class',
         'level',
-		'uploaded_sheet',
+        'uploaded_sheet',
         'date_uploaded',
         'validated_sheet',
         'active',
-	];
+        'image',
+        'wiki',
+        'logsheet',
+        'description',
+    ];
 
     public function getCharacter($uid) {
         $builder = $this->db->table('player_character');
@@ -116,10 +120,16 @@ class CharacterModel extends Model {
         $builder->where('player_character.validated_sheet IS NOT NULL');
         if ($q) {
             $builder->like('player_character.name', $q);
-			$builder->orLike('player_character.class', $q);
-			$builder->orLike('user.display_name', $q);
+            $builder->orLike('player_character.class', $q);
+            $builder->orLike('user.display_name', $q);
         }
         return $builder->countAllResults();
+    }
+
+    public function deleteCharacter($uid) {
+        $builder = $this->db->table('player_character');
+        $builder->where('uid', $uid);
+        $builder->delete();
     }
 
 }

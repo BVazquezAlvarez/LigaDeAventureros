@@ -66,7 +66,7 @@ class Master extends BaseController {
         }
 
         session()->setFlashdata('success', 'Se ha validado la ficha de '.$character->name);
-        return redirect()->to('master/sheets');
+        return redirect()->back();
     }
 
     public function reject_sheet() {
@@ -83,7 +83,21 @@ class Master extends BaseController {
         }
 
         session()->setFlashdata('success', 'Se ha rechazado la ficha de '.$character->name);
-        return redirect()->to('master/sheets');
+        return redirect()->back();
+    }
+
+    public function define_logsheet() {
+        $uid = $this->request->getVar('uid');
+        $character = $this->CharacterModel->getCharacter($uid);
+        $logsheet = $this->request->getVar('logsheet');
+
+        $data = [
+            'logsheet' => $logsheet
+        ];
+        $this->CharacterModel->updateCharacter($uid, $data);
+
+        session()->setFlashdata('success', 'Se ha actualizado la logsheet de '.$character->name);
+        return redirect()->back();
     }
 
     public function adventures() {

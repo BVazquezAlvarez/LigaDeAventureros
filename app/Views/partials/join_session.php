@@ -3,18 +3,22 @@
         <div class="card-header text-center">
             <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h1>
         </div>
-        <div class="card-body py-0">
+        <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">
             <div class="row h-100">
-                <div class="col-sm-6 border-join-session text-center p-2">
-                    <p><strong><?= rank_full_text($session->rank) ?></strong></p>
-                    <p>
-                        <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?><br/>
-                        <?= date('H:i', strtotime($session->time)) ?><br/>
-                        <?= $session->location ?><br/>
-                        <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
-                    </p>
-                    <p><a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a></p> 
-                    <p><button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button></p>
+                <div class="col-sm-6 text-center p-2">
+                    <div class="session-info">
+                        <p><strong><?= rank_full_text($session->rank) ?></strong></p>
+                        <p>
+                            <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?><br/>
+                            <?= date('H:i', strtotime($session->time)) ?><br/>
+                            <?= $session->location ?><br/>
+                            <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
+                        </p>
+                        <p class="mb-0">
+                            <a href="<?= base_url('profile') ?>/<?= $session->master_uid ?>"><?= $session->master ?></a>
+                        </p>
+                    </div>
+                    <button type="button" class="btn btn-primary js-adventure-info" data-uid="<?= $session->adventure_uid ?>">Más informacion</button>
                 </div>
                 <div class="col-sm-6 text-center p-2">
                     <div class="registered-players-block">

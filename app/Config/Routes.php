@@ -61,10 +61,13 @@ $routes->post('settings/delete-account','Profile::delete_account');
 $routes->get('profile/(:segment)','Profile::index/$1');
 $routes->get('profile','Profile::index');
 
-$routes->get('all-characters', 'Profile::all_characters');
-
-$routes->post('new-character', 'Profile::new_character');
-$routes->post('update-character', 'Profile::update_character');
+$routes->get('character/(:segment)','Character::index/$1');
+$routes->get('all-characters', 'Character::all_characters');
+$routes->post('new-character', 'Character::new_character');
+$routes->post('update-character', 'Character::update_character');
+$routes->get('character/(:segment)/enable', 'Character::enable/$1');
+$routes->get('character/(:segment)/disable', 'Character::disable/$1');
+$routes->post('character/delete', 'Character::delete');
 
 $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 
@@ -81,6 +84,7 @@ $routes->post('master/kick', 'Master::kick');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->post('master/reject-sheet', 'Master::reject_sheet');
+$routes->post('master/define-logsheet', 'Master::define_logsheet');
 $routes->get('master/adventures', 'Master::adventures');
 $routes->post('master/adventures', 'Master::adventures_post');
 $routes->get('master/adventure/(:segment)', 'Master::adventure/$1');
@@ -113,6 +117,7 @@ $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 $routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
 $routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
+$routes->get('cron/delete-character-images', 'Cron::delete_character_images');
 
 /*
  * --------------------------------------------------------------------

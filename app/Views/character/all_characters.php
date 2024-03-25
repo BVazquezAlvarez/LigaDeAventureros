@@ -17,7 +17,13 @@
 ?>
 
 <div class="row mb-3">
-    <div class="col-md-6 offset-md-6">
+    <div class="col-md-6 buttons-ranks">
+        <button class="js-button-rank" data-rank="1"><?= rank_name(1) ?></button>
+        <button class="js-button-rank" data-rank="2"><?= rank_name(2) ?></button>
+        <button class="js-button-rank" data-rank="3"><?= rank_name(3) ?></button>
+        <button class="js-button-rank" data-rank="4"><?= rank_name(4) ?></button>
+    </div>
+    <div class="col-md-6">
         <input type="text" class="form-control" id="all-characters-search" placeholder="Búsqueda...">
     </div>
 </div>
@@ -35,9 +41,9 @@
         </thead>
         <tbody>
             <? foreach ($characters as $char) : ?>
-                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-warning' : '' ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= $char->level ?> <?= strtolower(rank_name(rank_get($char->level))) ?>">
-                    <th scope="row"><a href="<?= base_url('character_sheets') ?>/<?= $char->uploaded_sheet ?>" target="_blank"><?= $char->name ?></th>
-                    <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>" target="_blank"><?= $char->display_name ?></a></td>
+                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-warning' : '' ?>" data-rank="<?= rank_get($char->level) ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= $char->level ?>">
+                    <th scope="row"><a href="<?= base_url('character') ?>/<?= $char->uid ?>"><?= $char->name ?></th>
+                    <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>"><?= $char->display_name ?></a></td>
                     <td><?= $char->class ?></td>
                     <td><?= $char->level ?></td>
                     <td><?= rank_name(rank_get($char->level)) ?></td>

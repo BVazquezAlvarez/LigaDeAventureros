@@ -37,7 +37,7 @@ class SessionModel extends Model {
 
     public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false, $published_only = true) {
         $builder = $this->db->table('session');
-        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.thumbnail');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         if ($published_only) {
