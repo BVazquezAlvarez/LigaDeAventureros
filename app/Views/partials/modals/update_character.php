@@ -58,6 +58,14 @@
                                 <input type="file" name="character_image" id="character_image" class="form-control-file" accept="image/*">
                             </div>
                         </div>
+                        <div class="col-md-12" id="delete_image_block">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="delete_image" name="delete_image" class="form-check-input">
+                                    <label class="form-check-label" for="delete_image">Eliminar imagen</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="wiki">Enlace Wiki</label>
@@ -69,7 +77,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="description">Biografía</label>
-                        <textarea name="description" id="description" rows="14" class="form-control"></textarea>
+                        <textarea name="description" id="description" rows="16" class="form-control"></textarea>
                     </div>
                 </div>
                 <input type="hidden" id="uid" name="uid">

@@ -125,8 +125,6 @@ $(function() {
 
     $('.js-update-character-btn').on('click', function() {
         let character = $(this).data("character");
-        console.log(character);
-        console.log();
         
         $("#modal-character-name").text(character.name);
         $("#update-character-modal #name").val(character.name);
@@ -135,6 +133,12 @@ $(function() {
         $("#update-character-modal #level").val(character.level);
         $("#update-character-modal #wiki").val(character.wiki);
         $("#update-character-modal #description").val(character.description);
+
+        if (character.image) {
+            $("#update-character-modal #delete_image_block").show();
+        } else {
+            $("#update-character-modal #delete_image_block").hide();
+        }
 
         $('#update-character-modal').modal('show');
     });

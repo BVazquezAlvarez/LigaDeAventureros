@@ -130,7 +130,9 @@ class Character extends BaseController {
             upload_log('public/character_sheets', $data['uploaded_sheet']);
         }
 
-        if ($this->request->getFile('character_image')->isValid() && $this->request->getFile('character_image')->getSize() > 0) {
+        if ($this->request->getVar('delete_image')) {
+            $data['image'] = NULL;
+        } else if ($this->request->getFile('character_image')->isValid() && $this->request->getFile('character_image')->getSize() > 0) {
             $characterImg = $this->request->getFile('character_image');
             $extension = pathinfo($characterImg->getName(), PATHINFO_EXTENSION);
             $data['image'] = "$uid.$extension";
