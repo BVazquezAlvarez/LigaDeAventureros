@@ -177,4 +177,9 @@ ALTER TABLE `email_setting`
 
 ALTER TABLE `email_setting` ADD FOREIGN KEY (`user_uid`) REFERENCES `user`(`uid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `player_character` 
+  ADD COLUMN `image` VARCHAR(255) NULL,
+  ADD COLUMN `wiki` VARCHAR(255) NULL,
+  ADD COLUMN `description` TEXT NULL;
+
 COMMIT;

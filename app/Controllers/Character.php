@@ -119,14 +119,23 @@ class Character extends BaseController {
             'level'          => $this->request->getVar('level'),
             'date_uploaded'  => date('c'),
             'active'         => 1,
+            'wiki'           => $this->request->getVar('wiki'),
+            'description'    => $this->request->getVar('description'),
         );
 
         if ($this->request->getFile('character_sheet')->isValid() && $this->request->getFile('character_sheet')->getSize() > 0) {
             $characterSheet = $this->request->getFile('character_sheet');
             $data['uploaded_sheet'] = $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf';
-            $data['date_uploaded'] = date('c');
             $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
             upload_log('public/character_sheets', $data['uploaded_sheet']);
+        }
+
+        if ($this->request->getFile('character_image')->isValid() && $this->request->getFile('character_image')->getSize() > 0) {
+            $characterImg = $this->request->getFile('character_image');
+            $extension = pathinfo($characterImg->getName(), PATHINFO_EXTENSION);
+            $data['image'] = "$uid.$extension";
+            $characterImg->move(ROOTPATH . 'public/img/characters', $data['image']);
+            upload_log('public/img/characters', $data['image']);
         }
 
         $this->CharacterModel->updateCharacter($uid, $data);

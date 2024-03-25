@@ -116,6 +116,7 @@ $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 $routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
 $routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
+$routes->get('cron/delete-character-images', 'Cron::delete_character_images');
 
 /*
  * --------------------------------------------------------------------

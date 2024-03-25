@@ -27,18 +27,28 @@
         <div><a href="<?= base_url('profile') ?>/<?= $player->uid ?>"><?= $player->display_name ?></a></div>
     </div>
     <div class="card-body">
-      <a href="#" data-toggle="modal" data-target="#image-modal" class="character-image">
-        <div class="image-box">
-          <img src="https://s1.elespanol.com/2017/08/16/actualidad/actualidad_239489274_129989410_1706x960.jpg">
-        </div>
-      </a>
+      <? if ($isOwner && !$character->active) : ?>
+        <p>
+          Mientras el personaje esté inactivo, no podrás anotarte a partidas ni aparecerá en la lista de todos los personajes.<br>
+          Otros usuarios seguirán pudiendo verlo mediante enlace directo o a través de tu perfil.
+        </p>
+      <? endif; ?>
+      <? if ($character->image) : ?>
+        <a href="#" data-toggle="modal" data-target="#image-modal" class="character-image">
+          <div class="image-box">
+            <img src="<?= base_url('img/characters') ?>/<?= $character->image ?>">
+          </div>
+        </a>
+      <? endif; ?>
       <p>
         <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong><br/>
         Rango <?= rank_name(rank_get($character->level)) ?>
       </p>
-      <p>
-        <a href="#">Ver página de Wiki</a>
-      </p>
+      <? if ($character->wiki) : ?>
+        <p>
+          <a href="<?= $character->wiki ?>" target="_blank">Ver página de Wiki</a>
+        </p>
+      <? endif; ?>
       <p>
         <a href="#" data-toggle="modal" data-target="#character-sheet-modal">Hoja de personaje</a>
         <? if ($character->uploaded_sheet != $character->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
@@ -50,16 +60,16 @@
         <? endif; ?>
       </p>
       <div class="character-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nunc tellus, porta vitae varius eget, bibendum ut mi. Aenean sed metus tristique, ornare purus eget, luctus diam. Maecenas ut augue nunc. Ut facilisis, ex id dignissim accumsan, sapien eros porttitor nisi, et dignissim mi magna non diam. Proin suscipit accumsan ornare. Curabitur posuere purus eros, quis elementum odio consequat at. Etiam lobortis nulla nec ex ultrices consequat. Nam interdum justo id nisi iaculis efficitur. Integer pharetra imperdiet ultrices. Mauris vitae finibus massa. Vestibulum maximus metus in tortor bibendum pretium. Nam quam ex, sagittis sed elit a, laoreet vestibulum diam.<br/>
-        Fusce imperdiet justo ipsum, eget tincidunt est mattis ut. Fusce varius, augue non aliquet volutpat, metus nulla vehicula dui, in efficitur magna tellus quis nunc. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam at nisi a risus tincidunt auctor. In hac habitasse platea dictumst. Vestibulum fermentum ultricies vulputate. Integer a fermentum nisl.<br/>
-        Curabitur sit amet imperdiet ante. Nam sit amet ante et sapien semper tristique. Etiam tincidunt enim leo, eu elementum nibh porta sit amet. Nullam non imperdiet ex. Aenean ornare lacus libero, vel interdum lacus scelerisque sed. Suspendisse tempor ultrices lacus nec aliquet. Cras vitae ante quis nulla volutpat malesuada.<br/>
-        In faucibus rutrum facilisis. Quisque condimentum malesuada vestibulum. Quisque aliquam nulla lorem, eu convallis ipsum rutrum a. Donec ut tellus vel lacus pulvinar laoreet id at lectus. Ut at finibus nulla. Duis aliquam congue diam sed commodo. Phasellus pretium quam ac sapien molestie rutrum. Vivamus at mi ullamcorper, mollis nibh sed, accumsan felis.<br/>
-        Maecenas at ligula enim. Vivamus quis dapibus arcu, molestie vehicula mi. Vivamus nec lectus elementum, consectetur nisi ac, ultricies orci. Duis et lorem vestibulum, semper metus quis, fringilla ex. Aliquam ut vehicula libero, at laoreet felis. Quisque a convallis enim. Maecenas ultrices velit nec neque fermentum, eu congue tortor pretium. Nam iaculis, lectus quis malesuada efficitur, nibh dolor consectetur erat, ac lobortis ante nunc eu nisl. Praesent nunc ipsum, hendrerit nec tellus et, pulvinar sollicitudin nibh. Sed eleifend urna est, nec blandit ligula elementum eget. 
+        <? if ($character->description) : ?>
+          <?= preg_replace('/(\r\n)+/', '<br>', htmlspecialchars($character->description)) ?>
+        <? else : ?>
+          El propietario de este personaje no ha proporcionado una biografía. <span class="emoji">&#x1F641;</span>
+        <? endif; ?>
       </div>
     </div>
     <? if ($isOwner && $userdata['confirmed']) : ?>
       <div class="card-footer">
-        <button type="button" class="btn btn-primary js-update-character-btn" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-class="<?= $character->class ?>" data-level="<?= $character->level ?>">Actualizar</button>
+        <button type="button" class="btn btn-primary js-update-character-btn" data-character="<?= htmlspecialchars(json_encode($character)) ?>">Actualizar</button>
         <? if ($character->active) : ?>
           <a href="<?= base_url('character') ?>/<?= $character->uid ?>/disable" class="btn btn-outline-danger">Desactivar</a>
         <? else : ?>
@@ -86,5 +96,7 @@
 <? if ($character->uploaded_sheet != $character->validated_sheet && ($userdata && $userdata['master'])) : ?>
   <?= view('partials/modals/validate_sheets') ?>
 <? endif; ?>
-<?= view('partials/modals/image', ['title' => $character->name, 'img' => 'https://s1.elespanol.com/2017/08/16/actualidad/actualidad_239489274_129989410_1706x960.jpg']) ?>
+<? if ($character->image) : ?>
+  <?= view('partials/modals/image', ['title' => $character->name, 'img' => (base_url('img/characters').'/'.$character->image) ]) ?>
+<? endif; ?>
 <?= view('partials/modals/delete_character') ?>

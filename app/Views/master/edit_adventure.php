@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group">
                     <label for="adventure_thumbnail">Imagen (Tamaño máximo: <strong>50MB</strong>)</label>
-                    <input type="file" name="adventure_thumbnail" id="adventure_thumbnail" class="form-control-file" accept="image/jpeg, image/png">
+                    <input type="file" name="adventure_thumbnail" id="adventure_thumbnail" class="form-control-file" accept="image/*>
                 </div>
                 <div class="form-group">
                     <div class="form-check">

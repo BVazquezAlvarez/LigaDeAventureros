@@ -112,16 +112,17 @@ $(function() {
     });
 
     $('.js-update-character-btn').on('click', function() {
-        let uid = $(this).data("uid");
-        let name = $(this).data("name");
-        let cclass = $(this).data("class");
-        let level = $(this).data("level");
+        let character = $(this).data("character");
+        console.log(character);
+        console.log();
         
-        $("#modal-character-name").text(name);
-        $("#update-character-modal #name").val(name);
-        $("#update-character-modal #uid").val(uid);
-        $("#update-character-modal #class").val(cclass);
-        $("#update-character-modal #level").val(level);
+        $("#modal-character-name").text(character.name);
+        $("#update-character-modal #name").val(character.name);
+        $("#update-character-modal #uid").val(character.uid);
+        $("#update-character-modal #class").val(character.class);
+        $("#update-character-modal #level").val(character.level);
+        $("#update-character-modal #wiki").val(character.wiki);
+        $("#update-character-modal #description").val(character.description);
 
         $('#update-character-modal').modal('show');
     });
@@ -324,20 +325,30 @@ $(function() {
         });
     });
 
+    let intervalRunning = false;
     $('#delete-character-modal').on('show.bs.modal', function () {
         var submitBtn = $('#delete-character-modal button[type="submit"]');
         var originalText = submitBtn.html();
 
         var countDown = 3;
-        submitBtn.prop('disabled', true).html(`${countDown}...`);
-        var interval = setInterval(function () {
-          countDown--;
-          if (countDown > 0) {
-            submitBtn.html(`${countDown}...`);
-          } else {
-            clearInterval(interval); 
-            submitBtn.prop('disabled', false).html(originalText); 
-          }
-        }, 1000);
-      });
+
+        function startInterval() {
+            intervalRunning = true;
+            submitBtn.prop('disabled', true).html(`${countDown}...`);
+            var interval = setInterval(function () {
+                countDown--;
+                if (countDown > 0) {
+                    submitBtn.html(`${countDown}...`);
+                } else {
+                    clearInterval(interval);
+                    intervalRunning = false;
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            }, 1000);
+        }
+
+        if (!intervalRunning) {
+            startInterval();
+        }
+    });
 });
