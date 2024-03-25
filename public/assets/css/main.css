@@ -244,3 +244,30 @@ footer {
     border-radius: 50%;
     padding: 2px;
 }
+
+.buttons-ranks {
+    display: flex;
+}
+
+.buttons-ranks button {
+    flex: 1;
+    margin-right: 0;
+    background-color: white;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 0;
+}
+
+.buttons-ranks button + button {
+    margin-left: -1px;
+}
+
+.buttons-ranks button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.buttons-ranks button:hover {
+    background-color: #0056b3;
+    color: white;
+}

@@ -303,11 +303,15 @@ $(function() {
         });
     });
 
-    $('#all-characters-search').on('keyup', function() {
-        let search = $(this).val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    function searchAllCharacters() {
+        let search = $('#all-characters-search').val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         let searchWords = search.split(/\s+/).filter(word => word.trim() !== '');
 
-        if (searchWords.length === 0) {
+        let ranks = $('.js-button-rank.active').map(function() {
+            return $(this).data('rank');
+        }).get();
+
+        if (searchWords.length === 0 && ranks.length === 0) {
             $('.js-all-characters-search').show();
             return;
         }
@@ -315,26 +319,40 @@ $(function() {
         $('.js-all-characters-search').each(function() {
             let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
+            let rank = $(this).data('rank');
 
-            let matchFound = false;
-            for (let i = 0; i < searchWords.length; i++) {
-                for (let j = 0; j < queryWords.length; j++) {
-                    if (queryWords[j].includes(searchWords[i])) {
-                        matchFound = true;
+            let rankValid = ranks.includes(rank) || ranks.length === 0;
+            let matchFound = true;
+            if (searchWords.length > 0) {
+                matchFound = false;
+                for (let i = 0; i < searchWords.length; i++) {
+                    for (let j = 0; j < queryWords.length; j++) {
+                        if (queryWords[j].includes(searchWords[i])) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                    if (matchFound) {
                         break;
                     }
                 }
-                if (matchFound) {
-                    break;
-                }
             }
 
-            if (matchFound) {
+            if (matchFound && rankValid) {
                 $(this).show();
             } else {
                 $(this).hide();
             }
         });
+    }
+
+    $('#all-characters-search').on('keyup', function() {
+        searchAllCharacters();
+    });
+
+    $('.js-button-rank').on('click', function() {
+        $(this).toggleClass('active');
+        searchAllCharacters();
     });
 
     let intervalRunning = false;
