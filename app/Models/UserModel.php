@@ -42,8 +42,13 @@ class UserModel extends Model {
 			$builder->limit($limit, $offset);
 		}
 		if ($q) {
-			$builder->like('uid', $q);
-			$builder->orLike('display_name', $q);
+			$keywords = array_filter(explode(' ', $q));
+			$builder->groupStart();
+			foreach ($keywords as $keyword) {
+				$builder->orLike('uid', $keyword);
+				$builder->orLike('display_name', $keyword);
+			}
+			$builder->groupEnd();
 		}
 		return $builder->get()->getResult();
 	}
@@ -51,8 +56,13 @@ class UserModel extends Model {
 	public function getTotalUsers($q = NULL) {
 		$builder = $this->db->table('user');
 		if ($q) {
-			$builder->like('uid', $q);
-			$builder->orLike('display_name', $q);
+			$keywords = array_filter(explode(' ', $q));
+			$builder->groupStart();
+			foreach ($keywords as $keyword) {
+				$builder->orLike('uid', $keyword);
+				$builder->orLike('display_name', $keyword);
+			}
+			$builder->groupEnd();
 		}
         return $builder->get()->getNumRows();
 	}
