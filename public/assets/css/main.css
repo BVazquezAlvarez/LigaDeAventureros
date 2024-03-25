@@ -258,6 +258,17 @@ footer {
     border-radius: 0;
 }
 
+@media screen and (max-width: 767px) {
+    .buttons-ranks {
+        margin-bottom: .5rem;
+    }
+
+    .buttons-ranks button {
+        padding-top: .3rem;
+        padding-bottom: .3rem;
+    }
+}
+
 .buttons-ranks button + button {
     margin-left: -1px;
 }
