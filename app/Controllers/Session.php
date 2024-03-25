@@ -55,7 +55,17 @@ class Session extends BaseController {
             $week = array();
             for ($i = 0; $i < 7; $i++) {
                 if (date('Y-m', strtotime($current_date)) === date('Y-m', strtotime($date_from))) {
-                    $week[date('j', strtotime($current_date))] = $sessions_by_date[date('Y-m-d', strtotime($current_date))];
+                    $day_data = [
+                        'sessions' => $sessions_by_date[date('Y-m-d', strtotime($current_date))],
+                        'background' => NULL,
+                    ];
+                    foreach ($day_data['sessions'] as $session) {
+                        if ($session->thumbnail) {
+                            $day_data['background'] = $session->thumbnail;
+                            break;
+                        }
+                    }
+                    $week[date('j', strtotime($current_date))] = $day_data;
                 }
                 $current_date = date('Y-m-d', strtotime($current_date . ' + 1 day'));
             }

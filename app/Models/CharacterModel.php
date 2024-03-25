@@ -36,6 +36,7 @@ class CharacterModel extends Model {
         'active',
         'image',
         'wiki',
+        'logsheet',
         'description',
     ];
 

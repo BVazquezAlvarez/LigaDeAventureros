@@ -111,6 +111,18 @@ $(function() {
         $('#reject-sheet-modal').modal('show');
     });
 
+    $('.js-define-logsheet').on('click', function() {
+        let uid = $(this).data("uid");
+        let name = $(this).data("name");
+        let logsheet = $(this).data("logsheet");
+        
+        $('#define-logsheet-modal #modal-character-name').text(name);
+        $('#define-logsheet-modal #modal-uid').val(uid);
+        $('#define-logsheet-modal #modal-logsheet').val(logsheet);
+
+        $('#define-logsheet-modal').modal('show');
+    });
+
     $('.js-update-character-btn').on('click', function() {
         let character = $(this).data("character");
         console.log(character);

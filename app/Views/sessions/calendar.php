@@ -46,13 +46,13 @@
                             <td class="table-secondary"></td>
                         <? endfor; ?>
                     <? endif; ?>
-                    <? foreach ($week as $day => $sessions) : ?>
-                        <td>
+                    <? foreach ($week as $day => $data) : ?>
+                        <td class="day-row" style="<?= $data['background'] ? "background-image:url('".base_url('img/adventures')."/".$data['background']."')" : '' ?>">
                             <div class="text-right text-secondary table-top-right">
-                                <small><?= $day ?></small>
+                                <small class="day-row-number"><?= $day ?></small>
                             </div>
                             <div class="table-sessions">
-                                <? foreach ($sessions as $session) : ?>
+                                <? foreach ($data['sessions'] as $session) : ?>
                                     <a href="#" data-uid="<?= $session->uid ?>" class="js-calendar-load-session badge badge-primary w-100 text-left" data-toggle="tooltip" data-placement="bottom" title="<?= $session->adventure_name ?>">
                                         <?= date("H:i", strtotime($session->time)) ?> <?= rank_name($session->rank) ?><br/>
                                         <?= substr($session->adventure_name, 0, 10) ?>...

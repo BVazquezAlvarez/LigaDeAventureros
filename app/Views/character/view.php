@@ -59,6 +59,11 @@
             <? endif; ?>
         <? endif; ?>
       </p>
+      <? if ($character->logsheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
+        <p>
+          <a href="<?= $character->logsheet ?>" target="_blank">Logsheet</a>
+        </p>
+      <? endif; ?>
       <div class="character-description">
         <? if ($character->description) : ?>
           <?= preg_replace('/(\r\n)+/', '<br>', htmlspecialchars($character->description)) ?>
@@ -78,10 +83,13 @@
         <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#delete-character-modal">Eliminar</button>
       </div>
     <? endif; ?>
-    <? if ($character->uploaded_sheet != $character->validated_sheet && ($userdata && $userdata['master'])) : ?>
+    <? if ($userdata && $userdata['master']) : ?>
       <div class="card-footer">
-        <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Validar hoja de personaje</button>
-        <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Rechazar hoja de personaje</button>
+        <button class="btn btn-outline-primary js-define-logsheet mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-logsheet="<?= $character->logsheet ?>">Definir logsheet</button>
+        <? if ($character->uploaded_sheet != $character->validated_sheet) : ?>
+          <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Validar hoja de personaje</button>
+          <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Rechazar hoja de personaje</button>
+        <? endif; ?>
       </div>
     <? endif; ?>
 </div>
@@ -93,8 +101,9 @@
 <? if ($isOwner) : ?>
     <?= view('partials/modals/update_character') ?>
 <? endif; ?>
-<? if ($character->uploaded_sheet != $character->validated_sheet && ($userdata && $userdata['master'])) : ?>
+<? if ($userdata && $userdata['master']) : ?>
   <?= view('partials/modals/validate_sheets') ?>
+  <?= view('partials/modals/define_logsheet') ?>
 <? endif; ?>
 <? if ($character->image) : ?>
   <?= view('partials/modals/image', ['title' => $character->name, 'img' => (base_url('img/characters').'/'.$character->image) ]) ?>

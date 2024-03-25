@@ -86,6 +86,20 @@ class Master extends BaseController {
         return redirect()->back();
     }
 
+    public function define_logsheet() {
+        $uid = $this->request->getVar('uid');
+        $character = $this->CharacterModel->getCharacter($uid);
+        $logsheet = $this->request->getVar('logsheet');
+
+        $data = [
+            'logsheet' => $logsheet
+        ];
+        $this->CharacterModel->updateCharacter($uid, $data);
+
+        session()->setFlashdata('success', 'Se ha actualizado la logsheet de '.$character->name);
+        return redirect()->back();
+    }
+
     public function adventures() {
         $filters = [
             'q'        => session('adventures.filters.q'),

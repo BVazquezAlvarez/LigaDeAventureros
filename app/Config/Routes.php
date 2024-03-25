@@ -84,6 +84,7 @@ $routes->post('master/kick', 'Master::kick');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->post('master/reject-sheet', 'Master::reject_sheet');
+$routes->post('master/define-logsheet', 'Master::define_logsheet');
 $routes->get('master/adventures', 'Master::adventures');
 $routes->post('master/adventures', 'Master::adventures_post');
 $routes->get('master/adventure/(:segment)', 'Master::adventure/$1');

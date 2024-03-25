@@ -26,22 +26,44 @@
                     <th scope="col">Jugador</th>
                     <th scope="col">Nueva hoja</th>
                     <th scope="col">Última hoja validada</th>
+                    <th scope="col">Logsheet</th>
                     <th scope="col" colspan="2"></th>
                 </tr>
             </thead>
             <tbody>
                 <? foreach ($sheets as $sheet) : ?>
                     <tr>
-                        <th class="align-middle" scope="row"><?= $sheet->name ?></th>
+                        <th class="align-middle" scope="row">
+                            <a href="<?= base_url('character') ?>/<?= $sheet->uid ?>">
+                                <?= $sheet->name ?>
+                            </a>
+                        </th>
                         <td class="align-middle"><?= $sheet->class ?> <strong><?= $sheet->level ?></strong> (<?= rank_name(rank_get($sheet->level)) ?>)</td>
-                        <td class="align-middle"><a href="<?= base_url('profile') ?>/<?= $sheet->user_uid ?>" target="_blank"><?= $sheet->display_name ?></a></td>
-                        <td class="align-middle"><a href="<?= base_url('character_sheets') ?>/<?= $sheet->uploaded_sheet ?>" target="_blank">Ver</a></td>
+                        <td class="align-middle">
+                            <a href="<?= base_url('profile') ?>/<?= $sheet->user_uid ?>">
+                                <?= $sheet->display_name ?>
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            <a href="<?= base_url('character_sheets') ?>/<?= $sheet->uploaded_sheet ?>" target="_blank">
+                            Ver
+                            </a>
+                        </td>
                         <td class="align-middle">
                             <? if ($sheet->validated_sheet) : ?>
                                 <a href="<?= base_url('character_sheets') ?>/<?= $sheet->validated_sheet ?>" target="_blank">Ver</a>
                             <? else : ?>
                                 <span class="text-danger">No hay una hoja anterior</span>
                             <? endif; ?>
+                        </td>
+                        <td>
+                            <? if ($sheet->logsheet) : ?>
+                                <a href="<?= $sheet->logsheet ?>" target="_blank">Logsheet</a>
+                            <? else : ?>
+                                <span class="text-danger">No se ha definido el logsheet</span>
+                            <? endif; ?>
+                            <br/>
+                            <a href="#" class="js-define-logsheet" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>" data-logsheet="<?= $sheet->logsheet ?>">(Modificar)</a>
                         </td>
                         <td class="align-middle">
                             <button class="btn btn-primary js-validate-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>">Validar</button>
@@ -62,3 +84,4 @@
 <? endif; ?>
 
 <?= view('partials/modals/validate_sheets') ?>
+<?= view('partials/modals/define_logsheet') ?>

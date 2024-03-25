@@ -25,7 +25,6 @@
         <? if ($user->banned) : ?><h5 class="d-inline-block"><span class="badge badge-danger">Usuario bloqueado</span></h5><? endif; ?>
     </div>
     <div class="card-body">
-        <h2 class="h3">Lista de personajes</h2>
         <? if ($characters) : ?>
             <div class="row">
                 <? foreach ($characters as $char) : ?>
@@ -35,18 +34,18 @@
                                 <h3 class="d-inline h5 mb-0"><?= $char->name ?></h1> <?= $char->active ? "" : "(Inactivo)" ?>
                             </div>
                             <div class="card-body">
-                                <div class="character-image-profile">
+                                <a href="<?= base_url('character') ?>/<?= $char->uid ?>" class="character-image-profile">
                                     <div class="image-box">
                                         <img src="<?= $char->image ? (base_url('img/characters').'/'.$char->image) : base_url('img/placeholder.png') ?>">
                                     </div>
-                                </div>
-                                <p><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</p>
-                                <p>
+                                </a>
+                                <div><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</div>
+                                <div>
                                     <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalle</a>
                                     <? if ($char->uploaded_sheet != $char->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
                                         <span class="text-danger">(Sin validar)</span>
                                     <? endif; ?>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,7 +65,7 @@
         <? endif; ?>
         <? if (!$isOwner && $userdata && $userdata['admin']) : ?>
             <div class="col-md-12 mt-3">
-                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary">Iniciar sesión</a>
+                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary">Suplantar</a>
             </div>
         <? endif; ?>
     </div>
