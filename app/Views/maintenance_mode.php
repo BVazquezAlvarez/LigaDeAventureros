@@ -59,7 +59,7 @@
 		</main>
 
 		<footer class="text-center">
-			Liga de Aventureros de Vigo
+			<?= setting('app_name') ?>
 			<div class="links-container">
 				<a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
 			</div>
