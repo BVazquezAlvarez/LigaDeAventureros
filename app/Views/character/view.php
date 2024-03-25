@@ -37,7 +37,7 @@
       <? endif; ?>
       <p>
         <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong><br/>
-        <span class="badge badge-rank-<?= rank_get($character->level) ?>">Rango <?= rank_name(rank_get($character->level)) ?></span>
+        <span class="badge badge-pill badge-rank-<?= rank_get($character->level) ?>">Rango <?= rank_name(rank_get($character->level)) ?></span>
       </p>
       <? if ($character->wiki) : ?>
         <p>
