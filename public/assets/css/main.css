@@ -230,6 +230,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .session-info {
@@ -238,6 +239,7 @@ footer {
     padding-top: 5px;
     padding-bottom: 5px;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .day-row {
@@ -287,4 +289,35 @@ footer {
 .buttons-ranks button:hover {
     background-color: #0056b3;
     color: white;
+}
+
+.character-card {
+    border-radius: .75rem 0;
+}
+
+.character-card .card-header {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.badge-rank-4 {
+    background: linear-gradient(to bottom right, #90AFC5, #52616B, #B24848);
+    color: #FFFFFF;
+}
+
+.badge-rank-3 {
+    background-color: #FFD700;
+    color: #000000;
+}
+
+.badge-rank-2 {
+    background-color: #C0C0C0;
+    color: #000000;
+}
+
+.badge-rank-1 {
+    background-color: #CD7F32;
+    color: #000000;
 }

@@ -29,7 +29,7 @@
             <div class="row">
                 <? foreach ($characters as $char) : ?>
                     <div class="col-lg-4 col-md-6 mb-2">
-                        <div class="card <?= $char->active ? "" : "text-secondary" ?>">
+                        <div class="card character-card <?= $char->active ? "" : "text-secondary" ?>">
                             <div class="card-header">
                                 <h3 class="d-inline h5 mb-0"><?= $char->name ?></h1> <?= $char->active ? "" : "(Inactivo)" ?>
                             </div>

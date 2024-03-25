@@ -78,12 +78,16 @@ class Master extends BaseController {
                 'uploaded_sheet' => $character->validated_sheet
             ];
             $this->CharacterModel->updateCharacter($uid, $data);
+
+            $redirect = redirect()->back();
         } else {
             $this->CharacterModel->where('uid', $uid)->delete();
+
+            $redirect = redirect()->to('master/sheets');
         }
 
         session()->setFlashdata('success', 'Se ha rechazado la ficha de '.$character->name);
-        return redirect()->back();
+        return $redirect;
     }
 
     public function define_logsheet() {

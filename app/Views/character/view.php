@@ -31,13 +31,13 @@
       <? if ($character->image) : ?>
         <a href="#" data-toggle="modal" data-target="#image-modal" class="character-image">
           <div class="image-box">
-            <img src="<?= base_url('img/characters') ?>/<?= $character->image ?>">
+            <img class="rounded" src="<?= base_url('img/characters') ?>/<?= $character->image ?>">
           </div>
         </a>
       <? endif; ?>
       <p>
         <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong><br/>
-        Rango <?= rank_name(rank_get($character->level)) ?>
+        <span class="badge badge-rank-<?= rank_get($character->level) ?>">Rango <?= rank_name(rank_get($character->level)) ?></span>
       </p>
       <? if ($character->wiki) : ?>
         <p>
