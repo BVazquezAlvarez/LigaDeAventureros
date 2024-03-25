@@ -67,21 +67,21 @@
         <? endif; ?>
       </div>
     </div>
-    <? if ($isOwner && $userdata['confirmed']) : ?>
+    <? if (($isOwner && $userdata['confirmed']) || ($userdata && $userdata['admin'])) : ?>
       <div class="card-footer">
-        <button type="button" class="btn btn-primary js-update-character-btn" data-character="<?= htmlspecialchars(json_encode($character)) ?>">Actualizar</button>
+        <button type="button" class="btn btn-primary js-update-character-btn mt-1" data-character="<?= htmlspecialchars(json_encode($character)) ?>">Actualizar</button>
         <? if ($character->active) : ?>
-          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/disable" class="btn btn-outline-danger">Desactivar</a>
+          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/disable" class="btn btn-outline-danger mt-1">Desactivar</a>
         <? else : ?>
-          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/enable" class="btn btn-outline-success">Reactivar</a>
+          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/enable" class="btn btn-outline-success mt-1">Reactivar</a>
         <? endif; ?>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-character-modal">Eliminar</button>
+        <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#delete-character-modal">Eliminar</button>
       </div>
     <? endif; ?>
     <? if ($character->uploaded_sheet != $character->validated_sheet && ($userdata && $userdata['master'])) : ?>
       <div class="card-footer">
-        <button class="btn btn-primary js-validate-btn" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Validar hoja de personaje</button>
-        <button class="btn btn-danger js-reject-btn" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Rechazar hoja de personaje</button>
+        <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Validar hoja de personaje</button>
+        <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Rechazar hoja de personaje</button>
       </div>
     <? endif; ?>
 </div>

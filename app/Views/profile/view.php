@@ -35,6 +35,11 @@
                                 <h3 class="d-inline h5 mb-0"><?= $char->name ?></h1> <?= $char->active ? "" : "(Inactivo)" ?>
                             </div>
                             <div class="card-body">
+                                <div class="character-image-profile">
+                                    <div class="image-box">
+                                        <img src="<?= $char->image ? (base_url('img/characters').'/'.$char->image) : base_url('img/placeholder.png') ?>">
+                                    </div>
+                                </div>
                                 <p><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</p>
                                 <p>
                                     <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalle</a>

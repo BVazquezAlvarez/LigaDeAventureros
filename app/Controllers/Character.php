@@ -97,7 +97,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid')) {
+        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -144,6 +144,18 @@ class Character extends BaseController {
     }
 
     public function enable($uid) {
+        $character = $this->CharacterModel->getCharacter($uid);
+
+        if (!$character) {
+            session()->setFlashdata('error', 'No se ha encontrado el personaje.');
+            return redirect()->back();
+        }
+
+        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+            session()->setFlashdata('error', 'Ese personaje no te pertenece.');
+            return redirect()->back();
+        }
+
         $data = array(
             'active' => 1,
         );
@@ -153,6 +165,18 @@ class Character extends BaseController {
     }
 
     public function disable($uid) {
+        $character = $this->CharacterModel->getCharacter($uid);
+
+        if (!$character) {
+            session()->setFlashdata('error', 'No se ha encontrado el personaje.');
+            return redirect()->back();
+        }
+
+        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+            session()->setFlashdata('error', 'Ese personaje no te pertenece.');
+            return redirect()->back();
+        }
+
         $data = array(
             'active' => 0,
         );
@@ -163,6 +187,18 @@ class Character extends BaseController {
 
     public function delete() {
         $uid = $this->request->getVar('uid');
+        $character = $this->CharacterModel->getCharacter($uid);
+
+        if (!$character) {
+            session()->setFlashdata('error', 'No se ha encontrado el personaje.');
+            return redirect()->back();
+        }
+
+        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+            session()->setFlashdata('error', 'Ese personaje no te pertenece.');
+            return redirect()->back();
+        }
+
         $this->CharacterModel->deleteCharacter($uid);
         return redirect()->to('profile');
     }

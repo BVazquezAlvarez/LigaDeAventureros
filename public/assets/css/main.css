@@ -213,3 +213,10 @@ footer {
 .emoji {
     font-style: normal !important;
 }
+
+.character-image-profile {
+    margin: -1rem;
+    width: 25%;
+    float: left;
+    margin-right: 1em;
+}
