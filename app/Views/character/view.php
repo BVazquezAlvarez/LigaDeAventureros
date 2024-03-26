@@ -93,7 +93,7 @@
 <? if (($character->uploaded_sheet != $character->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) && $character->validated_sheet) : ?>
   <?= view('partials/modals/character_sheet_validated') ?>
 <? endif; ?>
-<? if ($isOwner) : ?>
+<? if ($isOwner || ($userdata && $userdata['admin'])) : ?>
     <?= view('partials/modals/update_character') ?>
 <? endif; ?>
 <? if ($userdata && $userdata['master']) : ?>
