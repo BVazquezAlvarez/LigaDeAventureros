@@ -66,7 +66,7 @@
     </div>
     <? if ($userdata && $userdata['admin']) : ?>
         <div class="card-footer">
-            <? if (!$isOwner) : ?>
+            <? if (!$isOwner && !$user->banned) : ?>
                 <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary mt-1 mr-3">Suplantar</a>
             <? endif; ?>
             <? if ($user->confirmed && !$user->banned) : ?>
@@ -81,8 +81,10 @@
                     <? else : ?>
                         <button class="btn btn-primary mt-1 mr-1 js-admin-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Administrador</span>
                     <? endif; ?>
-                    <button class="btn btn-danger mt-1 mr-1 js-ban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Bloquear</span>
                 <? endif; ?>
+            <? endif; ?>
+            <? if (!$isOwner && !$user->banned) : ?>
+                <button class="btn btn-danger mt-1 mr-1 js-ban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Bloquear</span>
             <? endif; ?>
             <? if ($user->banned) : ?>
                 <button class="btn btn-outline-danger mt-1 mr-1 js-unban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Desbloquear</span>
