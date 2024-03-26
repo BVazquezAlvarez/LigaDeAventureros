@@ -44,3 +44,11 @@
         </tbody>
     </table>
 </div>
+
+<div>
+    Datos de conexión:
+    <ul>
+        <li>User UID: <strong><?= $userdata['uid'] ?></strong></li>
+        <li>Dirección IP: <strong><?= $_SERVER['REMOTE_ADDR'] ?></strong></li>
+    </ul>
+</div>

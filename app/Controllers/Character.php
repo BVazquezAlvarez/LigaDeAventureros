@@ -123,24 +123,41 @@ class Character extends BaseController {
             'description'    => $this->request->getVar('description'),
         );
 
+        $upload_errors = [];
         if ($this->request->getFile('character_sheet')->isValid() && $this->request->getFile('character_sheet')->getSize() > 0) {
             $characterSheet = $this->request->getFile('character_sheet');
-            $data['uploaded_sheet'] = $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf';
-            $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
-            upload_log('public/character_sheets', $data['uploaded_sheet']);
+            if ($characterSheet->getSize() > (5 * 1024 * 1024)) {
+                $upload_errors[] = "El tamaño de la hoja de personaje supera el límite permitido de 5MB.";
+            } else if ($characterSheet->getMimeType() != 'application/pdf') {
+                $upload_errors[] = "La hoja de personaje debe estar en PDF.";
+            } else {
+                $data['uploaded_sheet'] = $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf';
+                $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
+                upload_log('public/character_sheets', $data['uploaded_sheet']);
+            }
         }
 
         if ($this->request->getVar('delete_image')) {
             $data['image'] = NULL;
         } else if ($this->request->getFile('character_image')->isValid() && $this->request->getFile('character_image')->getSize() > 0) {
             $characterImg = $this->request->getFile('character_image');
-            $extension = pathinfo($characterImg->getName(), PATHINFO_EXTENSION);
-            $data['image'] = "$uid.$extension";
-            $characterImg->move(ROOTPATH . 'public/img/characters', $data['image']);
-            upload_log('public/img/characters', $data['image']);
+            if ($characterImg->getSize() > (5 * 1024 * 1024)) {
+                $upload_errors[] = "El tamaño de la imagen supera el límite permitido de 5MB.";
+            } else if (!is_array(getimagesize($characterImg))) {
+                $upload_errors[] = "La imagen debe ser un formato de imagen válido.";
+            } else {
+                $extension = pathinfo($characterImg->getName(), PATHINFO_EXTENSION);
+                $date = date('YmdHis');
+                $data['image'] = "$uid$date.$extension";
+                $characterImg->move(ROOTPATH . 'public/img/characters', $data['image']);
+                upload_log('public/img/characters', $data['image']);
+            }
         }
 
         $this->CharacterModel->updateCharacter($uid, $data);
+        if ($upload_errors) {
+            session()->setFlashdata('error', implode('<br/>',$upload_errors));
+        }
         session()->setFlashdata('success', 'Se ha actualizado el personaje ' . $data['name'] . '.');
         return redirect()->to('character/'.$uid);
     }
