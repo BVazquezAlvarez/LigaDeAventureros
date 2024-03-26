@@ -41,7 +41,10 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="level">Nivel <span class="text-danger">*</span></label>
-                        <input type="number" min="1" max="20" name="level" id="level" class="form-control" value="1" required>
+                        <select name="level" id="level" class="form-control">
+                            <option value="1">Nivel 1</option>
+                            <option value="5">Nivel 5</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">
