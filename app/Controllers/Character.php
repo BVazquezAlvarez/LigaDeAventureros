@@ -97,7 +97,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -170,7 +170,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -191,7 +191,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -213,7 +213,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$userdata['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
