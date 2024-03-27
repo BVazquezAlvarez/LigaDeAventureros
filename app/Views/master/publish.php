@@ -60,6 +60,6 @@
 <? else : ?>
     <p class="text-center">No hay ninguna sesión sin publicar</p>
     <p class="text-center">
-        <a href="<?= base_url('master/new-session') ?>">¿Por qué creas una nueva?</a>
+        <a href="<?= base_url('master/new-session') ?>">¿Por qué no creas una nueva?</a>
     </p>
 <? endif; ?>

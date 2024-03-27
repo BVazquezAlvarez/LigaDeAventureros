@@ -321,3 +321,16 @@ footer {
     background-color: #CD7F32;
     color: #000000;
 }
+
+.new-player-banner {
+    overflow: hidden;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: #1A1A2E;
+    color: white;
+}
+
+.new-player-banner .text-accent {
+    font-weight: bold;
+    color: #3EC7E8;
+}

@@ -68,6 +68,7 @@ $routes->post('update-character', 'Character::update_character');
 $routes->get('character/(:segment)/enable', 'Character::enable/$1');
 $routes->get('character/(:segment)/disable', 'Character::disable/$1');
 $routes->post('character/delete', 'Character::delete');
+$routes->get('new-player-help', 'Character::new_player_help');
 
 $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 

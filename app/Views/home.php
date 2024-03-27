@@ -16,6 +16,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
+<? if ($userdata && count($characters) == 0) : ?>
+    <div class="jumbotron new-player-banner">
+        <h1 class="display-4 text-center">¡Bienvenido!</h1>
+        <p class="lead text-center">Visita nuestra guía paso a paso para crear <span class="text-accent">tu primer personaje</span> y poder participar en nuestras partidas.</p>
+        <p class="text-center">
+            <a class="btn btn-light btn-lg" href="<?= base_url('new-player-help') ?>" role="button">Ir a la guía</a>
+        </p>
+    </div>
+<? endif; ?>
+
 <? if ($sessions_today) : ?>
     <div class="card mt-3 mb-3">
         <div class="card-header text-center">
@@ -37,7 +47,7 @@
 
 <div class="card mt-3">
     <div class="card-header text-center">
-        <h2 class="d-inline-block mb-0">Próximas partidas</h1>
+        <h2 class="d-inline-block mb-0">Próximas partidas</h2>
     </div>
     <div class="card-body">
         <div class="row">
@@ -49,7 +59,7 @@
             <? endif; ?>
         </div>
     </div>
-<div>
+</div>
 
 <?= view('partials/modals/session_inscription') ?>
 <?= view('partials/modals/adventure_info') ?>

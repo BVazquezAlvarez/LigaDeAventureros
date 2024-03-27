@@ -80,7 +80,7 @@ class Character extends BaseController {
 
             $this->CharacterModel->addCharacter($data);
             session()->setFlashdata('success', 'Personaje creado correctamente.');
-            return redirect()->to('profile/'.session('user_uid'));
+            return redirect()->to('character/'.$uid);
         } else {
             session()->setFlashdata('error', 'No se ha podido crear el personaje.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
@@ -97,7 +97,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->getUserData()['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -170,7 +170,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->getUserData()['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -191,7 +191,7 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->getUserData()['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
@@ -213,13 +213,22 @@ class Character extends BaseController {
             return redirect()->back();
         }
 
-        if ($character->user_uid != session('user_uid') && !$this->data['userdata']['admin']) {
+        if ($character->user_uid != session('user_uid') && !$this->getUserData()['admin']) {
             session()->setFlashdata('error', 'Ese personaje no te pertenece.');
             return redirect()->back();
         }
 
         $this->CharacterModel->deleteCharacter($uid);
         return redirect()->to('profile');
+    }
+
+    public function new_player_help() {
+        if (!$this->getUserData()) {
+            return redirect()->to('/');
+        }
+
+        $this->setTitle('Guía para nuevos jugadores');
+        return $this->loadView('character/new_player_help');
     }
 
 }
