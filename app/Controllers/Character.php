@@ -55,6 +55,13 @@ class Character extends BaseController {
     }
 
     public function new_character() {
+        if (!$this->getUserData()['confirmed']) {
+            $characters = $this->CharacterModel->getPlayerCharacters($this->getUserData()['uid']);
+            if (count($characters) > 0) {
+                session()->setFlashdata('error', 'Los nuevos jugadores no pueden crear más de un personaje mientras no sean verificados.');
+                return redirect()->back();
+            }
+        }
         $validation = \Config\Services::validation();
         $validation->setRule('name', 'nombre', 'trim|required');
         $validation->setRule('class', 'clase', 'trim|required');
@@ -89,6 +96,10 @@ class Character extends BaseController {
     }
 
     public function update_character() {
+        if (!$this->getUserData()['confirmed']) {
+            session()->setFlashdata('error', 'Los nuevos jugadores no pueden actualizar sus personajes mientras no sean verificados.');
+            return redirect()->back();
+        }
         $uid = $this->request->getVar('uid');
         $character = $this->CharacterModel->getCharacter($uid);
 

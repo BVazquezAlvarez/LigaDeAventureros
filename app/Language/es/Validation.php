@@ -19,4 +19,7 @@ return [
     'required'      => 'El campo {field} es obligatorio.',
     'valid_email'   => 'El campo {field} debe contener una dirección de correo electrónico válida.',
     'matches'       => 'Las contraseñas no coinciden.',
+    'uploaded'      => 'El campo {field} es obligatorio.',
+    'ext_in'        => 'El archivo {field} no es del tipo correcto.',
+    'max_size'      => 'El tamaño del archivo {field} excede el tamaño máximo.',
 ];

@@ -30,12 +30,18 @@
                     <div class="form-group">
                         <label for="name">Nombre <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" class="form-control" required>
+                        <? if (isset(session('validation_errors')['name'])) : ?>
+                            <small class="text-danger"><?= session('validation_errors')['name'] ?></small>
+                        <? endif; ?>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <label for="class">Clase <span class="text-danger">*</span></label>
                         <input type="text" name="class" id="class" class="form-control" required>
+                        <? if (isset(session('validation_errors')['class'])) : ?>
+                            <small class="text-danger"><?= session('validation_errors')['class'] ?></small>
+                        <? endif; ?>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -45,6 +51,9 @@
                             <option value="1">Nivel 1</option>
                             <option value="5">Nivel 5</option>
                         </select>
+                        <? if (isset(session('validation_errors')['level'])) : ?>
+                            <small class="text-danger"><?= session('validation_errors')['level'] ?></small>
+                        <? endif; ?>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -52,6 +61,9 @@
                         <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>) <span class="text-danger">*</span></label>
                         <input type="file" name="character_sheet" id="character_sheet" class="form-control-file" accept=".pdf" required>
                     </div>
+                    <? if (isset(session('validation_errors')['character_sheet'])) : ?>
+                        <small class="text-danger"><?= session('validation_errors')['character_sheet'] ?></small>
+                    <? endif; ?>
                 </div>
             </div>
             <div class="modal-footer">

@@ -28,6 +28,24 @@
           Otros usuarios seguirán pudiendo verlo mediante enlace directo o a través de tu perfil.
         </p>
       <? endif; ?>
+      <? if ($isOwner && !$userdata['confirmed']) : ?>
+        <div class="alert alert-info" role="alert">
+          <p>
+            ¡Enhorabuena! Has creado tu primer personaje.
+          </p>
+          <p>
+            En cuanto sea aprobado por un master, podrás:
+            <ul>
+              <li>Anotarte a partidas</li>
+              <li>Actualizar los datos del personaje. Por ejemplo, podrás añadir una imagen y una biografía</li>
+              <li>Crear nuevos personajes</li>
+            </ul>
+          </p>
+          <p>
+            Mientras tanto, echa un vistazo a <a href="<?= base_url('settings') ?>">tu configuración</a>. Podrás configurar el nombre que verán el resto de jugadores y elegir que notificaciones quieres recibir por correo electrónico.
+          </p>
+        </div>
+      <? endif; ?>
       <? if ($character->image) : ?>
         <a href="#" data-toggle="modal" data-target="#image-modal" class="character-image">
           <div class="image-box">

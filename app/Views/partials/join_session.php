@@ -44,7 +44,7 @@
                 <? if (strtotime($session->date . ' ' . $session->time) <= time()) : ?>
                     <div class="text-center text-secondary">Ya no te puedes anotar a esta partida</div>
                 <? elseif (!$characters) : ?>
-                    <div class="text-center text-secondary"><a href="<?= base_url('profile') ?>">¡Crea un personaje!</a></div>
+                    <div class="text-center text-secondary"><a href="<?= base_url('new-player-help') ?>">¡Crea un personaje!</a></div>
                 <? elseif (!$userdata['confirmed']) : ?>
                     <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
                 <? else : ?>

@@ -17,7 +17,7 @@
 ?>
 
 <? if ($userdata && count($characters) == 0) : ?>
-    <div class="jumbotron new-player-banner">
+    <div class="jumbotron new-player-banner mb-3">
         <h1 class="display-4 text-center">¡Bienvenido!</h1>
         <p class="lead text-center">Visita nuestra guía paso a paso para crear <span class="text-accent">tu primer personaje</span> y poder participar en nuestras partidas.</p>
         <p class="text-center">
