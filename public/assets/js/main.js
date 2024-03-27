@@ -385,4 +385,32 @@ $(function() {
             startInterval();
         }
     });
+
+    $('.js-select-class').on('click', function(e) {
+        e.preventDefault();
+        let cclass = $(this).data('class');
+        $('#class').val(cclass).trigger('input');
+    });
+
+    $('.js-btn-continue').on('click', function() {
+        let section = $(this).data('section');
+        let input = $(this).data('input');
+
+        if (!$(input).val()) {
+            $(input).addClass('input-error');
+            $(input).focus();
+            return;
+        }
+        
+        $(this).hide();
+        $(section).fadeIn(1000);
+        
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(section).offset().top
+        }, 2000);
+    });
+
+    $(document).on('input', '.input-error', function() {
+        $(this).removeClass('input-error');
+    });
 });

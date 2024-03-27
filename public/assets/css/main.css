@@ -334,3 +334,15 @@ footer {
     font-weight: bold;
     color: #3EC7E8;
 }
+
+.new-character-guide-section {
+    margin-bottom: 2em;
+}
+
+.new-character-guide-section h2 {
+    color: #1A1A2E;
+}
+
+.input-error {
+    border: 2px solid red;
+}
