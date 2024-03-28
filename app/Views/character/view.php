@@ -16,6 +16,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
+<? if ($isOwner && !$userdata['confirmed']) : ?>
+    <?= view('partials/new_player_banner' , ['character_count' => 1]) ?>
+<? endif; ?>
+
 <div class="card <?= $character->active ? "" : "text-secondary" ?>">
     <div class="text-center card-header">
         <h1 class="d-inline h3"><?= $character->name ?></h1> <?= $character->active ? "" : "(Inactivo)" ?>
@@ -27,24 +31,6 @@
           Mientras el personaje esté inactivo, no podrás anotarte a partidas ni aparecerá en la lista de todos los personajes.<br>
           Otros usuarios seguirán pudiendo verlo mediante enlace directo o a través de tu perfil.
         </p>
-      <? endif; ?>
-      <? if ($isOwner && !$userdata['confirmed']) : ?>
-        <div class="alert alert-info" role="alert">
-          <p>
-            ¡Enhorabuena! Has creado tu primer personaje.
-          </p>
-          <p>
-            En cuanto sea aprobado por un master, podrás:
-            <ul>
-              <li>Anotarte a partidas</li>
-              <li>Actualizar los datos del personaje. Por ejemplo, podrás añadir una imagen y una biografía</li>
-              <li>Crear nuevos personajes</li>
-            </ul>
-          </p>
-          <p>
-            Mientras tanto, echa un vistazo a <a href="<?= base_url('settings') ?>">tu configuración</a>. Podrás configurar el nombre que verán el resto de jugadores y elegir que notificaciones quieres recibir por correo electrónico.
-          </p>
-        </div>
       <? endif; ?>
       <? if ($character->image) : ?>
         <a href="#" data-toggle="modal" data-target="#image-modal" class="character-image">

@@ -326,6 +326,10 @@ footer {
     overflow: hidden;
     padding-top: 1em;
     padding-bottom: 1em;
+    margin-bottom: 1rem;
+}
+
+.banner-dark {
     background-color: #1A1A2E;
     color: white;
 }

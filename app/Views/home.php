@@ -16,14 +16,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<? if ($userdata && count($characters) == 0) : ?>
-    <div class="jumbotron new-player-banner mb-3">
-        <h1 class="display-4 text-center">¡Bienvenido!</h1>
-        <p class="lead text-center">Visita nuestra guía paso a paso para crear <span class="text-accent">tu primer personaje</span> y poder participar en nuestras partidas.</p>
-        <p class="text-center">
-            <a class="btn btn-light btn-lg" href="<?= base_url('new-player-help') ?>" role="button">Ir a la guía</a>
-        </p>
-    </div>
+<? if ($userdata && !$userdata['confirmed']) : ?>
+    <?= view('partials/new_player_banner' , ['character_count' => count($characters)]) ?>
 <? endif; ?>
 
 <? if ($sessions_today) : ?>

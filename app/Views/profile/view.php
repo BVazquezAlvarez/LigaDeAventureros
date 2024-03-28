@@ -16,6 +16,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
+<? if ($isOwner && !$userdata['confirmed']) : ?>
+    <?= view('partials/new_player_banner' , ['character_count' => count($characters)]) ?>
+<? endif; ?>
+
 <div class="card">
     <div class="card-header">
         <h1 class="d-inline-block mb-0"><?= $user->display_name ?></h1>

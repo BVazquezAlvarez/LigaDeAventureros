@@ -21,6 +21,26 @@
   <p class="mb-0">Este es un sitio en desarrollo y el diseño no es final.</p>
 </div>
 
+<? if (session('validation_errors')) : ?>
+    <div class="text-danger">
+        Por favor, revisa los errores de validación:
+        <ul>
+            <? if (isset(session('validation_errors')['level'])) : ?>
+                <li><?= session('validation_errors')['level'] ?></li>
+            <? endif; ?>
+            <? if (isset(session('validation_errors')['class'])) : ?>
+                <li><?= session('validation_errors')['class'] ?></li>
+            <? endif; ?>
+            <? if (isset(session('validation_errors')['name'])) : ?>
+                <li><?= session('validation_errors')['name'] ?></li>
+            <? endif; ?>
+            <? if (isset(session('validation_errors')['character_sheet'])) : ?>
+                <li><?= session('validation_errors')['character_sheet'] ?></li>
+            <? endif; ?>
+        </ul>
+    </div>
+<? endif; ?>
+
 <form method="post" action="<?= base_url('new-character') ?>" enctype="multipart/form-data">
     <section id="section-level" class="new-character-guide-section">
         <h2>Nivel</h2>
