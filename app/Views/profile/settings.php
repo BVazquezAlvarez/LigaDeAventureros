@@ -18,8 +18,8 @@
 
 <nav class="mb-3">
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link <?= $tab == 'settings' ? 'active' : '' ?>" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab">Configuración general</a>
-        <a class="nav-item nav-link <?= $tab == 'email' ? 'active' : '' ?>" id="nav-email-tab" data-toggle="tab" href="#nav-email" role="tab">Opciones de email</a>
+        <a class="nav-item nav-link <?= $tab == 'settings' ? 'active' : '' ?>" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab"><i class="fa-solid fa-gear"></i> Configuración general</a>
+        <a class="nav-item nav-link <?= $tab == 'email' ? 'active' : '' ?>" id="nav-email-tab" data-toggle="tab" href="#nav-email" role="tab"><i class="fa-solid fa-envelope"></i> Opciones de email</a>
     </div>
 </nav>
 
@@ -46,13 +46,13 @@
             </div>
             <div class="col-12">
                 <div class="form-group text-right">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                 </div>
             </div>
         </form>
         <div class="col-md-6 offset-md-3">
             <div class="form-group text-center">
-                <button type="button" data-toggle="modal" data-target="#delete-account-modal" class="btn btn-outline-danger">Eliminar mi cuenta</button>
+                <button type="button" data-toggle="modal" data-target="#delete-account-modal" class="btn btn-outline-danger"><i class="fa-solid fa-user-slash"></i> Eliminar mi cuenta</button>
             </div>
         </div>
     </div>
@@ -115,7 +115,7 @@
                 </div>
             <? endif; ?>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
             </div>
         </form>
     </div>

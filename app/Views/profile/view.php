@@ -22,18 +22,18 @@
 
 <div class="card">
     <div class="card-header">
-        <h1 class="d-inline-block mb-0"><?= $user->display_name ?></h1>
-        <? if ($user->admin) : ?><h5 class="d-inline-block"><span class="badge badge-secondary">Administrador</span></h5><? endif; ?>
-        <? if ($user->master) : ?><h5 class="d-inline-block"><span class="badge badge-primary">Master</span></h5><? endif; ?>
-        <? if (!$user->confirmed) : ?><h5 class="d-inline-block"><span class="badge badge-warning">Usuario sin confirmar</span></h5><? endif; ?>
-        <? if ($user->banned) : ?><h5 class="d-inline-block"><span class="badge badge-danger">Usuario bloqueado</span></h5><? endif; ?>
+        <h1 class="d-inline-block mb-0 mr-2"><?= $user->display_name ?></h1>
+        <? if ($user->admin) : ?><h5 class="d-inline-block mb-0"><span class="badge badge-secondary">Administrador</span></h5><? endif; ?>
+        <? if ($user->master) : ?><h5 class="d-inline-block mb-0"><span class="badge badge-primary">Master</span></h5><? endif; ?>
+        <? if (!$user->confirmed) : ?><h5 class="d-inline-block mb-0"><span class="badge badge-warning">Usuario sin confirmar</span></h5><? endif; ?>
+        <? if ($user->banned) : ?><h5 class="d-inline-block mb-0"><span class="badge badge-danger">Usuario bloqueado</span></h5><? endif; ?>
     </div>
     <div class="card-body">
         <? if ($characters) : ?>
             <div class="row">
                 <? foreach ($characters as $char) : ?>
                     <div class="col-lg-4 col-md-6 mb-2">
-                        <div class="card character-card <?= $char->active ? "" : "text-secondary" ?>">
+                        <div class="card bg-light character-card <?= $char->active ? "" : "text-secondary" ?>">
                             <div class="card-header">
                                 <h3 class="d-inline h5 mb-0"><?= $char->name ?></h3> <?= $char->active ? "" : "(Inactivo)" ?>
                             </div>
@@ -56,7 +56,7 @@
                 <? endforeach; ?>
                 <? if ($isOwner && $userdata['confirmed']) : ?>
                     <div class="col-md-12 mt-3">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-character-modal">Nuevo personaje</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-character-modal"><i class="fa-solid fa-plus"></i> Nuevo personaje</button>
                     </div>
                 <? endif; ?>
             </div>

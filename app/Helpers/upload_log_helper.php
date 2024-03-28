@@ -18,7 +18,7 @@
 function upload_log($directory, $file) {
     $db = \Config\Database::connect();
     $data = [
-        'user_uid' => session('user_uid'),
+        'user_uid' => session('real_user') ? session('real_user')['uid'] : session('user_uid'),
         'directory' => $directory,
         'file' => $file,
         'remote_addr' => $_SERVER['REMOTE_ADDR'],

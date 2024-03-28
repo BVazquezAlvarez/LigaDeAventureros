@@ -73,21 +73,21 @@
     </div>
     <? if (($isOwner && $userdata['confirmed']) || ($userdata && $userdata['admin'])) : ?>
       <div class="card-footer">
-        <button type="button" class="btn btn-primary js-update-character-btn mt-1" data-character="<?= htmlspecialchars(json_encode($character)) ?>">Actualizar</button>
+        <button type="button" class="btn btn-primary js-update-character-btn mt-1" data-character="<?= htmlspecialchars(json_encode($character)) ?>"><i class="fa-solid fa-pen"></i> Actualizar</button>
         <? if ($character->active) : ?>
-          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/disable" class="btn btn-outline-danger mt-1">Desactivar</a>
+          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/disable" class="btn btn-outline-danger mt-1"><i class="fa-solid fa-eye"></i> Desactivar</a>
         <? else : ?>
-          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/enable" class="btn btn-outline-success mt-1">Reactivar</a>
+          <a href="<?= base_url('character') ?>/<?= $character->uid ?>/enable" class="btn btn-outline-success mt-1"><i class="fa-solid fa-eye"></i> Reactivar</a>
         <? endif; ?>
-        <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#delete-character-modal">Eliminar</button>
+        <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#delete-character-modal"><i class="fa-solid fa-trash"></i> Eliminar</button>
       </div>
     <? endif; ?>
     <? if ($userdata && $userdata['master']) : ?>
       <div class="card-footer">
-        <button class="btn btn-outline-primary js-define-logsheet mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-logsheet="<?= $character->logsheet ?>">Definir logsheet</button>
+        <button class="btn btn-outline-primary js-define-logsheet mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-logsheet="<?= $character->logsheet ?>"><i class="fa-solid fa-file"></i> Definir logsheet</button>
         <? if ($character->uploaded_sheet != $character->validated_sheet) : ?>
-          <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Validar hoja de personaje</button>
-          <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>">Rechazar hoja de personaje</button>
+          <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>"><i class="fa-solid fa-check"></i> Validar hoja de personaje</button>
+          <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>"><i class="fa-solid fa-x"></i> Rechazar hoja de personaje</button>
         <? endif; ?>
       </div>
     <? endif; ?>

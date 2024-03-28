@@ -36,7 +36,7 @@
 <? endif; ?>
 
 <div class="text-center">
-    <a href="<?= base_url('calendar') ?>" class="btn btn-primary btn-lg">Ver calendario</a>
+    <a href="<?= base_url('calendar') ?>" class="btn btn-primary btn-lg"><i class="fa-solid fa-calendar"></i> Calendario</a>
 </div>
 
 <div class="card mt-3">

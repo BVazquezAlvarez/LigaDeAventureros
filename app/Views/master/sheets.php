@@ -66,8 +66,8 @@
                             <a href="#" class="js-define-logsheet" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>" data-logsheet="<?= $sheet->logsheet ?>">(Modificar)</a>
                         </td>
                         <td class="align-middle">
-                            <button class="btn btn-primary js-validate-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>">Validar</button>
-                            <button class="btn btn-danger js-reject-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>">Rechazar</button>
+                            <button class="btn btn-primary js-validate-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>"><i class="fa-solid fa-check"></i> Validar</button>
+                            <button class="btn btn-danger js-reject-btn" data-uid="<?= $sheet->uid ?>" data-name="<?= $sheet->name ?>"><i class="fa-solid fa-x"></i> Rechazar</button>
                         </td>
                         <td class="align-middle">
                             <? if (!$sheet->confirmed) : ?>

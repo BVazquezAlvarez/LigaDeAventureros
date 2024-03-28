@@ -151,6 +151,14 @@ footer {
     padding-bottom: 150%;
     height: 0;
 }
+
+.image-box.image-box-square, .image-box.image-box-circle {
+    padding-bottom: 100%;
+}
+
+.image-box.image-box-circle img {
+    border-radius: 50%
+}
    
 .image-box img {
     width: 100%;
@@ -219,6 +227,20 @@ footer {
     width: 25%;
     float: left;
     margin-right: 1em;
+}
+
+.row-character {
+    padding: 0.25rem 0.75rem !important;
+}
+
+.row-character .flexbox {
+    display: flex;
+    align-items: center;
+}
+
+.character-image-all-characters {
+    width: 2.5rem;
+    margin-right: .5rem;
 }
 
 .card-session {
@@ -322,25 +344,25 @@ footer {
     color: #000000;
 }
 
-.new-player-banner {
+.jumbotron {
     overflow: hidden;
     padding-top: 1em;
     padding-bottom: 1em;
     margin-bottom: 1rem;
 }
 
-.banner-dark {
+.jumbotron-dark {
     background-color: #1A1A2E;
     color: white;
 }
 
-.new-player-banner .text-accent {
+.jumbotron .text-accent {
     font-weight: bold;
     color: #3EC7E8;
 }
 
-.new-character-guide-section {
-    margin-bottom: 2em;
+.new-character-guide-section:not(:first-child) {
+    margin-top: 2em;
 }
 
 .new-character-guide-section h2 {
@@ -349,4 +371,9 @@ footer {
 
 .input-error {
     border: 2px solid red;
+}
+
+.menu-icon {
+    min-width: 1em;
+    margin-right: 0.5em;
 }

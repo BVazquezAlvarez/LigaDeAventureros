@@ -17,7 +17,7 @@
 ?>
 
 <? if ($character_count > 0) : ?>
-  <div class="jumbotron new-player-banner">
+  <div class="jumbotron">
     <h1 class="h3 text-center">
       ¡Enhorabuena! Has creado tu primer personaje
     </h1>
@@ -35,7 +35,7 @@
     </p>
   </div>
 <? else : ?>
-  <div class="jumbotron new-player-banner banner-dark">
+  <div class="jumbotron jumbotron-dark">
     <h1 class="display-4 text-center">¡Bienvenido!</h1>
     <p class="lead text-center">Visita nuestra guía paso a paso para crear <span class="text-accent">tu primer personaje</span> y poder participar en nuestras partidas.</p>
     <p class="text-center">

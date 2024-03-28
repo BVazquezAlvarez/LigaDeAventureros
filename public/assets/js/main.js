@@ -315,11 +315,15 @@ $(function() {
             return $(this).data('rank');
         }).get();
 
+        $('#no-results').hide();
+
         if (searchWords.length === 0 && ranks.length === 0) {
             $('.js-all-characters-search').show();
+            $('#filtered-results-count').hide();
             return;
         }
         
+        let total = 0;
         $('.js-all-characters-search').each(function() {
             let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
@@ -344,10 +348,17 @@ $(function() {
 
             if (matchFound && rankValid) {
                 $(this).show();
+                total++;
             } else {
                 $(this).hide();
             }
         });
+
+        $('#filtered-results-count').show();
+        $('#filtered-results-count span').html(total);
+        if (total == 0) {
+            $('#no-results').show();
+        }
     }
 
     $('#all-characters-search').on('keyup', function() {

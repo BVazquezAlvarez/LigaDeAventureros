@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <button class="btn btn-primary" id="applyFiltersBtn">Aplicar Filtros</button>
+                    <button class="btn btn-primary" id="applyFiltersBtn"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                 </div>
             </div>
         </form>

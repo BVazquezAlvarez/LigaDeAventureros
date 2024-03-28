@@ -40,15 +40,33 @@
             </tr>
         </thead>
         <tbody>
+            <tr id="no-results" style="display:none">
+                <td class="text-center" colspan="5">
+                    No hay ningún personaje que coincida con esos filtros
+                </td>
+            </tr>
             <? foreach ($characters as $char) : ?>
-                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-warning' : '' ?>" data-rank="<?= rank_get($char->level) ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?> <?= $char->level ?>">
-                    <th scope="row"><a href="<?= base_url('character') ?>/<?= $char->uid ?>"><?= $char->name ?></th>
+                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-secondary' : '' ?>" data-rank="<?= rank_get($char->level) ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?>">
+                    <th class="row-character" scope="row">
+                        <div class="flexbox">
+                            <a href="<?= base_url('character') ?>/<?= $char->uid ?>" class="character-image-all-characters">
+                                <div class="image-box image-box-circle">
+                                    <img src="<?= $char->image ? (base_url('img/characters').'/'.$char->image) : base_url('img/placeholder.png') ?>">
+                                </div>
+                            </a>
+                            <a href="<?= base_url('character') ?>/<?= $char->uid ?>"><?= $char->name ?></a>
+                        </div>
+                    </th>
                     <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>"><?= $char->display_name ?></a></td>
                     <td><?= $char->class ?></td>
-                    <td><?= $char->level ?></td>
+                    <td><strong><?= $char->level ?></strong></td>
                     <td><?= rank_name(rank_get($char->level)) ?></td>
                 </tr>
             <? endforeach; ?>
         </tbody>
     </table>
+</div>
+
+<div class="text-muted">
+    <span id="filtered-results-count" style="display:none;"><span></span> de</span> <?= count($characters) ?> personajes
 </div>

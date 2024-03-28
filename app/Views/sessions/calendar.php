@@ -17,9 +17,9 @@
 ?>
 
 <div class="d-flex justify-content-between align-items-center">
-  <a href="<?= base_url("calendar/$prev_month") ?>" class="btn btn-primary">&laquo; <?= $prev_month_name ?></a>
+  <a href="<?= base_url("calendar/$prev_month") ?>" class="btn btn-primary"><i class="fa-solid fa-backward"></i> <?= $prev_month_name ?></a>
   <h1 class="d-none d-md-block"><?= $header_title ?></h1>
-  <a href="<?= base_url("calendar/$next_month") ?>" class="btn btn-primary"><?= $next_month_name ?> &raquo;</a>
+  <a href="<?= base_url("calendar/$next_month") ?>" class="btn btn-primary"><?= $next_month_name ?> <i class="fa-solid fa-forward"></i></a>
 </div>
 
 <h1 class="d-block d-md-none text-center"><?= $header_title_mobile ?></h1>

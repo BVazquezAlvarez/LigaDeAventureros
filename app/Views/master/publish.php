@@ -19,7 +19,7 @@
 <? if ($sessions) : ?>
     <form id="publish-sessions-form" method="post">
         <div class="mb-1 text-right">
-            <button type="submit" class="btn btn-primary">Publicar seleccionadas</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-eye"></i> Publicar seleccionadas</button>
         </div>
         <div class="table-responsive">
             <table class="table table-hover">

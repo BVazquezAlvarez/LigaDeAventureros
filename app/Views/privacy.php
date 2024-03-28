@@ -27,7 +27,7 @@
 <p>Utilizamos la información recopilada para proporcionarte acceso y hacer funcionar los servicios de <strong><?= setting('app_name') ?></strong>. Tu dirección de correo electrónico y nombre público se utilizan para personalizar tu experiencia en la plataforma y para comunicarnos contigo en relación con tu cuenta.</p>
 <p>En el caso de que se suba contenido ilegal o que viole nuestros términos de uso, nos reservamos el derecho de poner esta información a disposición de las autoridades competentes, en cumplimiento con las leyes aplicables.</p>
 
-<h2 class="mt-4">3. Cookies</h2>
+<h2 class="mt-4">3. Cookies <i class="fa-solid fa-cookie-bite"></i></h2>
 <p>Utilizamos cookies con el único propósito de hacer que la plataforma funcione de manera eficiente. Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo para recordar información y preferencias. No utilizamos cookies para recopilar información personal sin tu consentimiento.</p>
 
 <h2 class="mt-4">4. Seguridad de la información</h2>

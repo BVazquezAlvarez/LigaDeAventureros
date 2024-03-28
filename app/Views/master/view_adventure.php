@@ -36,7 +36,7 @@
                     </p>
                     <p><i><?= str_replace("\r\n", '<br>', $adventure->description) ?></i></p>
                     <p><?= str_replace("\r\n", '<br>', $adventure->rewards) ?></p>
-                    <a href="<?= base_url('master/edit-adventure') ?>/<?= $adventure->uid ?>" class="btn btn-primary">Editar</a>
+                    <a href="<?= base_url('master/edit-adventure') ?>/<?= $adventure->uid ?>" class="btn btn-primary"><i class="fa-solid fa-pen"></i> Editar</a>
                 </div>
             </div>
             <div class="col-md-6">
