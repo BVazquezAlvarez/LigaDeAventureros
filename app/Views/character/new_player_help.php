@@ -74,7 +74,7 @@
             <section id="section-class" class="new-character-guide-section" style="display:none;">
                 <h2>Clase</h2>
                 <p>
-                    Tienes las siguientes clases disponibles para elegir:
+                    Puedes elegir cualquier de las clases oficiales de Dungeons & Dragons:
                 </p>
                 <ul>
                     <li class="mb-1"><strong><a href="https://www.dndbeyond.com/classes/barbarian" target="_blank">Bárbaro</a></strong>, maestro del combate cuerpo a cuerpo y resistencia sobrehumana. <a href="#" class="js-select-class" data-class="Bárbaro">Seleccionar</a></li>
@@ -121,6 +121,18 @@
             </section>
             <section id="section-cs" class="new-character-guide-section" style="display:none;">
                 <h2>Hoja de personaje</h2>
+                <p>
+                    Para crear tu hoja de personaje, te recomendamos usar D&D Beyond y asegurarte de incluir toda la información necesaria para tu personaje. Esto incluye detalles como la raza, clase, habilidades, equipo, etc.
+                </p>
+                <p>
+                    Si tienes alguna pregunta o necesitas ayuda durante el proceso, no dudes en consultarnos a través del <a href="<?= base_url('contact') ?>">formulario de contacto</a> o por medio de <a href="<?= setting('whatsapp') ?>"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>.
+                </p>
+                <p>
+                    Por favor, sube tu ficha de personaje como un archivo PDF de no más de 5MB. Un master deberá validarla antes de que puedas empezar a anotarte a partidas.
+                </p>
+                <p>
+                    Si tienes problemas técnicos al subir tu hoja de personaje, no dudes en contactarnos para recibir asistencia adicional.
+                </p>
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-4">
                         <input type="file" name="character_sheet" id="character_sheet" class="form-control form-control-file" accept=".pdf" required>

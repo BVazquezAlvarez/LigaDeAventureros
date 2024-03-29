@@ -183,4 +183,6 @@ ALTER TABLE `player_character`
   ADD COLUMN `logsheet` VARCHAR(255) NULL,
   ADD COLUMN `description` TEXT NULL;
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('whatsapp', 'Enlace de invitación al grupo de WhatsApp', '');
+
 COMMIT;
