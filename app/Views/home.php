@@ -23,7 +23,7 @@
 <? if ($sessions_today) : ?>
     <div class="card mt-3 mb-3">
         <div class="card-header text-center">
-            <h2 class="d-inline-block mb-0">¡Hoy!</h1>
+            <h2 class="d-inline-block mb-0">¡Hoy!</h2>
         </div>
         <div class="card-body">
             <div class="row">

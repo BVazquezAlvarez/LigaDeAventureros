@@ -1,7 +1,7 @@
 <div class="col-md-6 col-lg-4 mb-3">
     <div class="card card-join-session h-100">
         <div class="card-header text-center">
-            <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h1>
+            <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h3>
         </div>
         <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">
             <div class="row h-100">
