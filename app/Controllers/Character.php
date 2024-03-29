@@ -128,7 +128,6 @@ class Character extends BaseController {
             'name'           => $this->request->getVar('name'),
             'class'          => $this->request->getVar('class'),
             'level'          => $this->request->getVar('level'),
-            'date_uploaded'  => date('c'),
             'active'         => 1,
             'wiki'           => $this->request->getVar('wiki'),
             'description'    => $this->request->getVar('description'),
@@ -143,6 +142,7 @@ class Character extends BaseController {
                 $upload_errors[] = "La hoja de personaje debe estar en PDF.";
             } else {
                 $data['uploaded_sheet'] = $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf';
+                $data['date_uploaded']  = date('c');
                 $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
                 upload_log('public/character_sheets', $data['uploaded_sheet']);
             }

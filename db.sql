@@ -185,4 +185,6 @@ ALTER TABLE `player_character`
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('whatsapp', 'Enlace de invitación al grupo de WhatsApp', '');
 
+ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 COMMIT;
