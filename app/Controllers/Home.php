@@ -62,7 +62,7 @@ class Home extends BaseController {
 
         $this->setData('sessions_today', $sessions['today']);
         $this->setData('sessions_upcoming', $sessions['upcoming']);
-        $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid')));
+        $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid'), true));
         return $this->loadView('home');
     }
 

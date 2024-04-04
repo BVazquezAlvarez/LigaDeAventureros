@@ -46,11 +46,14 @@ class CharacterModel extends Model {
         return $builder->get()->getRow();
     }
 
-    public function getPlayerCharacters($user_uid) {
+    public function getPlayerCharacters($user_uid, $activeOnly = false) {
         $builder = $this->db->table('player_character');
         $builder->where('user_uid', $user_uid);
         $builder->orderBy('active', 'DESC');
         $builder->orderBy('level', 'DESC');
+        if ($activeOnly) {
+            $builder->where('active', 1);
+        }
         return $builder->get()->getResult();
     }
 
