@@ -16,11 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<div class="alert alert-warning text-center" role="alert">
-  <h4 class="alert-heading">WORK IN PROGRESS</h4>
-  <p class="mb-0">Este es un sitio en desarrollo y el diseño no es final.</p>
-</div>
-
 <div class="card bg-light">
     <div class="card-header">
         <h1 class="h2 text-center">Nuevo personaje</h1>
