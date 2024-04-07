@@ -325,7 +325,7 @@ class MyEmail {
             $email->send();
         }
 
-        if ($session->players_max >= count($session_players)) {
+        if ($session->players_max <= count($session_players)) {
             $next_user = $session_players[($session->players_max - 1)];
             $this->next_in_waitlist($next_user->uid, $session_uid, $next_user->character_uid);
         }
@@ -375,7 +375,7 @@ class MyEmail {
             $email->send();
         }
 
-        if ($session->players_max >= count($session_players)) {
+        if ($session->players_max <= count($session_players)) {
             $next_user = $session_players[($session->players_max - 1)];
             $this->next_in_waitlist($next_user->uid, $session_uid, $next_user->character_uid);
         }
