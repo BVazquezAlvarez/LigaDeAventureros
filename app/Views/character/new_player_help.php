@@ -45,19 +45,13 @@
             <section id="section-level" class="new-character-guide-section">
                 <h2>Nivel</h2>
                 <p>
-                    Puedes elegir crear tu personaje a <strong>nivel 1</strong> o a <strong>nivel 5</strong>.
-                </p>
-                <p>
-                    Si decides comenzar en el <strong>nivel 1</strong>, entrarás en el rango <?= rank_name(1) ?>. Aquí, te embarcarás en aventuras iniciales diseñadas para enseñarte los fundamentos de D&D y familiarizarte con el mundo del juego.
-                </p>
-                <p>
-                    Por otro lado, si decides crear un personaje de <strong>nivel 5</strong>, te lanzarás directamente al rango <?= rank_name(2) ?>. Aquí, te esperan desafíos más intensos, adecuados para aquellos que ya tienen cierto dominio del juego y están listos para enfrentarse a aventuras más complejas.
+                    Puedes elegir crear tu personaje a <strong>nivel 1</strong> o a <strong>nivel 3</strong>.
                 </p>
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-4">
                         <select name="level" id="level" class="form-control" required>
                             <option value="1">Nivel 1</option>
-                            <option value="5">Nivel 5</option>
+                            <option value="3">Nivel 3</option>
                         </select>
                         <? if (isset(session('validation_errors')['level'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['level'] ?></small>

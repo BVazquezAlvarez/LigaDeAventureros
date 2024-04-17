@@ -49,7 +49,7 @@
                         <label for="level">Nivel <span class="text-danger">*</span></label>
                         <select name="level" id="level" class="form-control">
                             <option value="1">Nivel 1</option>
-                            <option value="5">Nivel 5</option>
+                            <option value="3">Nivel 3</option>
                         </select>
                         <? if (isset(session('validation_errors')['level'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['level'] ?></small>
