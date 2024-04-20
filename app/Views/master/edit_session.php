@@ -32,18 +32,27 @@
                                     <option value="<?= $master->uid ?>" <?= $session->master_uid == $master->uid ? 'selected' : '' ?>><?= $master->display_name ?></option>
                                 <? endforeach; ?>
                             </select>
+                            <? if (isset(session('validation_errors')['session_master'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['session_master'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="session_date">Fecha <span class="text-danger">*</span></label>
                             <input type="date" name="session_date" id="session_date" class="form-control" value="<?= date('Y-m-d', strtotime($session->date)) ?>" required>
+                            <? if (isset(session('validation_errors')['session_date'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['session_date'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="session_time">Hora <span class="text-danger">*</span></label>
                             <input type="time" name="session_time" id="session_time" class="form-control" value="<?= date('H:i', strtotime($session->time)) ?>" required>
+                            <? if (isset(session('validation_errors')['session_time'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['session_time'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -55,6 +64,9 @@
                                     <option value="<?= $location->location ?>">
                                 <? endforeach; ?>
                             </datalist>
+                            <? if (isset(session('validation_errors')['location'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['location'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -64,12 +76,18 @@
                         <div class="form-group">
                             <label for="session_min_players">Mínimo <span class="text-danger">*</span></label>
                             <input type="text" name="session_min_players" id="session_min_players" value="<?= $session->players_min ?>" class="form-control" required>
+                            <? if (isset(session('validation_errors')['session_min_players'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['session_min_players'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="session_max_players">Máximo <span class="text-danger">*</span></label>
                             <input type="text" name="session_max_players" id="session_max_players" value="<?= $session->players_max ?>" class="form-control" required>
+                            <? if (isset(session('validation_errors')['session_max_players'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['session_max_players'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -78,6 +96,9 @@
                                 <input type="checkbox" name="published" id="published" <?= $session->published ? 'checked' : '' ?> class="form-check-input">
                                 <label class="form-check-label" for="published">Publicada</label>
                             </div>
+                            <? if (isset(session('validation_errors')['published'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['published'] ?></small>
+                            <? endif; ?>
                         </div>
                     </div>
                     <div class="col-md-12">

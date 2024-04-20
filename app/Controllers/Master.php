@@ -254,6 +254,12 @@ class Master extends BaseController {
             $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/*]|max_size[adventure_thumbnail,51200]');
         }
 
+        if (!$validation->withRequest($this->request)->run()) {
+            session()->setFlashdata('error', 'Se ha producido un error al editar la aventura.');
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+
         $data = [
             'name' => $this->request->getVar('adventure_name'),
             'rank' => $this->request->getVar('adventure_rank') ?: NULL,
