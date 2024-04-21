@@ -20,5 +20,8 @@
     <? if (setting('whatsapp')) : ?>
         <a href="<?= setting('whatsapp') ?>" target="_blank"><i class="fab fa-whatsapp fa-2x text-secondary"></i></a>
     <? endif; ?>
+    <? if (setting('instagram')) : ?>
+        <a href="<?= setting('instagram') ?>" target="_blank"><i class="fab fa-instagram fa-2x text-secondary"></i></a>
+    <? endif; ?>
     <a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
 </div>

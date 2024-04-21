@@ -187,4 +187,6 @@ INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('whatsapp', 'Enlac
 
 ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enlace de Instagram', '');
+
 COMMIT;
