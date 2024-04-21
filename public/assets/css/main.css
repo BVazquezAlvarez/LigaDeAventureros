@@ -111,6 +111,10 @@ footer {
     transform: translateY(-50%);
 }
 
+.links-container a{
+    margin-left: .3em;
+}
+
 .table-calendar th {
     padding: .5em;
 }
@@ -131,7 +135,7 @@ footer {
 
 @media screen and (max-width: 720px) {
     .footer-links {
-        text-align: center;
+        text-align: left;
         margin-top: 10px;
     }
 
@@ -142,6 +146,11 @@ footer {
 
     .footer-links .separator {
         display: none;
+    }
+
+    .links-container {
+        top: auto;
+        bottom: 0;
     }
 }
 

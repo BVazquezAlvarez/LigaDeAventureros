@@ -164,6 +164,9 @@
 				<small><a href="<?= base_url('contact') ?>">Contacto</a></small>
 			</div>
 			<div class="links-container">
+				<? if (setting('whatsapp')) : ?>
+					<a href="<?= setting('whatsapp') ?>" target="_blank"><i class="fab fa-whatsapp fa-2x text-secondary"></i></a>
+				<? endif; ?>
 				<a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
 			</div>
 		</footer>
