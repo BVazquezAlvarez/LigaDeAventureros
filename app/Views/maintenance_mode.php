@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -60,9 +60,7 @@
 
 		<footer class="text-center">
 			<?= setting('app_name') ?>
-			<div class="links-container">
-				<a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
-			</div>
+			<?= view('partials/footer_icon_links') ?>
 		</footer>
 
 	</body>
