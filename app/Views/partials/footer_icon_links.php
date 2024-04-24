@@ -23,5 +23,5 @@
     <? if (setting('instagram')) : ?>
         <a href="<?= setting('instagram') ?>" target="_blank"><i class="fab fa-instagram fa-2x text-secondary"></i></a>
     <? endif; ?>
-    <a href="https://github.com/SantiGonzalezLago/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
+    <a href="https://github.com/BVazquezAlvarez/LigaDeAventureros" target="_blank"><i class="fab fa-github fa-2x text-secondary"></i></a>
 </div>
