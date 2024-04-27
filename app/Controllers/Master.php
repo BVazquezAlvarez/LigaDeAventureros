@@ -158,7 +158,7 @@ class Master extends BaseController {
             $validation->setRule('adventure_description', 'descripción', 'trim|required');
             $validation->setRule('adventure_rewards', 'recompensas', 'trim');
             if ($_FILES['adventure_thumbnail']['name']) {
-                $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/*]|max_size[adventure_thumbnail,51200]');
+                $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png,image/webp,image/gif]|max_size[adventure_thumbnail,51200]');
             }
         }
         $validation->setRule('session_master', 'master', 'trim|required');
@@ -251,7 +251,7 @@ class Master extends BaseController {
         $validation->setRule('adventure_description', 'descripción', 'trim|required');
         $validation->setRule('adventure_rewards', 'recompensas', 'trim');
         if ($_FILES['adventure_thumbnail']['name']) {
-            $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/*]|max_size[adventure_thumbnail,51200]');
+            $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png,image/webp,image/gif]|max_size[adventure_thumbnail,51200]');
         }
 
         if (!$validation->withRequest($this->request)->run()) {
