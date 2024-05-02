@@ -69,6 +69,7 @@
                 <th scope="col">Rango</th>
                 <th scope="col">Duración</th>
                 <th scope="col">Jugadores</th>
+                <th scope="col">Modalidad</th>
                 <th scope="col">Sesiones jugadas</th>
                 <th scope="col">Última sesión</th>
                 <th scope="col">Sesiones programadas</th>
@@ -82,6 +83,13 @@
                     <td class="align-middle"><?= rank_full_text($adv->rank) ?></td>
                     <td class="align-middle"><?= $adv->duration ?></td>
                     <td class="align-middle"><?= $adv->players_min_recommended ?> a <?= $adv->players_max_recommended ?></td>
+                    <td class="align-middle">
+                        <? if ($adv->w_setting_id == 0) : ?>
+                           Todas las modalidades
+                        <? else : ?>
+                            <?= $adv->w_setting_name ?> (<?= $adv->timeline ?>)
+                        <? endif; ?>
+                    </td>
                     <td class="align-middle"><?= $adv->total_past ?></td>
                     <td class="align-middle">
                         <? if ($adv->last_session_datetime) : ?>

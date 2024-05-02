@@ -28,6 +28,7 @@ class Master extends BaseController {
         $this->CharacterModel = model('CharacterModel');
         $this->AdventureModel = model('AdventureModel');
         $this->SessionModel = model('SessionModel');
+        $this->WorldSettingModel = model('WorldSettingModel');
     }
 
     protected function setTitle(string $title) {
@@ -139,6 +140,7 @@ class Master extends BaseController {
         $this->setData('adventures', $this->AdventureModel->getAdventureList());
         $this->setData('masters', $this->UserModel->getMasters());
         $this->setData('locations', $this->SessionModel->getLocations());
+        $this->setData('world_settings', $this->WorldSettingModel->getWorldSettingList());
         $this->setTitle('Nueva sesión');
         return $this->loadView('master/new_session');
     }
@@ -158,7 +160,7 @@ class Master extends BaseController {
             $validation->setRule('adventure_description', 'descripción', 'trim|required');
             $validation->setRule('adventure_rewards', 'recompensas', 'trim');
             if ($_FILES['adventure_thumbnail']['name']) {
-                $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/*]|max_size[adventure_thumbnail,51200]');
+                $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png,image/webp,image/gif]|max_size[adventure_thumbnail,51200]');
             }
         }
         $validation->setRule('session_master', 'master', 'trim|required');
@@ -181,8 +183,8 @@ class Master extends BaseController {
                 $thumbnail = $this->request->getFile('adventure_thumbnail');
                 $thumbnailExtension = pathinfo($thumbnail->getName(), PATHINFO_EXTENSION);
                 $thumbnailName = "adv_$adventureUid.$thumbnailExtension";
-                $thumbnail->move(ROOTPATH . 'public/img/adventures', $thumbnailName);
-                upload_log('public/img/adventures', $thumbnailName);
+                $thumbnail->move(ROOTPATH . 'public_html/img/adventures', $thumbnailName);
+                upload_log('public_html/img/adventures', $thumbnailName);
             } else {
                 $thumbnailName = NULL;
             }
@@ -198,6 +200,7 @@ class Master extends BaseController {
                 'description' => $this->request->getVar('adventure_description'),
                 'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
                 'thumbnail' => $thumbnailName,
+                'w_setting_id' => $this->request->getVar('w_setting_id'),
             ]);
         } else {
             $adventureUid = $this->request->getVar('adventure');
@@ -236,6 +239,7 @@ class Master extends BaseController {
         $adventure = $this->AdventureModel->getAdventure($uid);
 
         $this->setData('adventure', $adventure);
+        $this->setData('world_settings', $this->WorldSettingModel->getWorldSettingList());
         $this->setTitle('Editar '.$adventure->name);
         return $this->loadView('master/edit_adventure');
     }
@@ -251,7 +255,7 @@ class Master extends BaseController {
         $validation->setRule('adventure_description', 'descripción', 'trim|required');
         $validation->setRule('adventure_rewards', 'recompensas', 'trim');
         if ($_FILES['adventure_thumbnail']['name']) {
-            $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/*]|max_size[adventure_thumbnail,51200]');
+            $validation->setRule('adventure_thumbnail', 'imagen', 'uploaded[adventure_thumbnail]|mime_in[adventure_thumbnail,image/jpeg,image/png,image/webp,image/gif]|max_size[adventure_thumbnail,51200]');
         }
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -269,6 +273,7 @@ class Master extends BaseController {
             'themes' => $this->request->getVar('adventure_themes') ?: NULL,
             'description' => $this->request->getVar('adventure_description'),
             'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
+            'w_setting_id' => $this->request->getVar('w_setting_id'),
         ];
         
         if ($this->request->getVar('delete_thumbnail')) {
@@ -277,8 +282,8 @@ class Master extends BaseController {
             $thumbnail = $this->request->getFile('adventure_thumbnail');
             $thumbnailExtension = pathinfo($thumbnail->getName(), PATHINFO_EXTENSION);
             $thumbnailName = "adv_".$uid."_".date('YmdHis').".".$thumbnailExtension;
-            $thumbnail->move(ROOTPATH . 'public/img/adventures', $thumbnailName);
-            upload_log('public/img/adventures', $thumbnailName);
+            $thumbnail->move(ROOTPATH . 'public_html/img/adventures', $thumbnailName);
+            upload_log('public_html/img/adventures', $thumbnailName);
             $data['thumbnail'] = $thumbnailName;
         }
 

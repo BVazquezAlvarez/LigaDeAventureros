@@ -23,6 +23,7 @@ class Profile extends BaseController {
         $this->UserModel = model('UserModel');
         $this->EmailSettingModel = model('EmailSettingModel');
         $this->CharacterModel = model('CharacterModel');
+        $this->WorldSettingModel = model('WorldSettingModel');
     }
 
     public function index($uid = NULL) {
@@ -39,7 +40,8 @@ class Profile extends BaseController {
             session()->setFlashdata('error', 'No se ha encontrado el usuario.');
             return redirect()->to(base_url());
         }
-
+        $world_settings = $this->WorldSettingModel->getWorldSettingList();
+        $this->setData('world_settings', $world_settings);
         $this->setData('user', $user);
         $this->setData('characters', $this->CharacterModel->getPlayerCharacters($uid));
         $this->setData('isOwner', $user->uid == session('user_uid'));

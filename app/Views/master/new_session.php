@@ -82,6 +82,15 @@
                         <? if (isset(session('validation_errors')['adventure_duration'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['adventure_duration'] ?></small>
                         <? endif; ?>
+                </div>
+                    <div class="form-group">
+                        <label for="w_setting_id">Modalidad <span class="text-danger">*</span></label>
+                        <select name="w_setting_id" id="w_setting_id" class="form-control">
+                            <option value="0">Todas las modalidades</option>
+                            <? foreach ($world_settings as $setting) : ?>
+                            <option value="<?=$setting->id ?>"><?=$setting->name ?>  (<?= $setting->timeline ?>)</option>
+                            <? endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="adventure_themes">Temas</label>

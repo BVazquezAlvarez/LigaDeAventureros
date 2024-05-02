@@ -315,9 +315,13 @@ $(function() {
             return $(this).data('rank');
         }).get();
 
+        let w_settings = $('.js-button-wsetting.active').map(function() {
+            return $(this).data('wsetting');
+        }).get();
+
         $('#no-results').hide();
 
-        if (searchWords.length === 0 && ranks.length === 0) {
+        if (searchWords.length === 0 && ranks.length === 0 && w_settings.length === 0) {
             $('.js-all-characters-search').show();
             $('#filtered-results-count').hide();
             return;
@@ -328,8 +332,9 @@ $(function() {
             let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let queryWords = query.split(/\s+/).filter(word => word.trim() !== '');
             let rank = $(this).data('rank');
-
+            let wsetting  = $(this).data('wsetting');
             let rankValid = ranks.includes(rank) || ranks.length === 0;
+            let wsettingValid = w_settings.includes(wsetting) || w_settings.length === 0;
             let matchFound = true;
             if (searchWords.length > 0) {
                 matchFound = false;
@@ -346,7 +351,7 @@ $(function() {
                 }
             }
 
-            if (matchFound && rankValid) {
+            if (matchFound && rankValid && wsettingValid) {
                 $(this).show();
                 total++;
             } else {
@@ -365,7 +370,7 @@ $(function() {
         searchAllCharacters();
     });
 
-    $('.js-button-rank').on('click', function() {
+    $(document).on("click",'.js-button-rank, .js-button-wsetting', function() {
         $(this).toggleClass('active');
         searchAllCharacters();
     });

@@ -38,21 +38,29 @@ class CharacterModel extends Model {
         'wiki',
         'logsheet',
         'description',
+        'w_setting_id'
     ];
 
     public function getCharacter($uid) {
         $builder = $this->db->table('player_character');
+        $builder->select('player_character.*, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
         $builder->where('uid', $uid);
         return $builder->get()->getRow();
     }
 
-    public function getPlayerCharacters($user_uid, $activeOnly = false) {
+    public function getPlayerCharacters($user_uid, $activeOnly = false, $w_setting_id = null) {
         $builder = $this->db->table('player_character');
+        $builder->select('player_character.*, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
         $builder->where('user_uid', $user_uid);
-        $builder->orderBy('active', 'DESC');
+        $builder->orderBy('player_character.active', 'DESC');
         $builder->orderBy('level', 'DESC');
         if ($activeOnly) {
-            $builder->where('active', 1);
+            $builder->where('player_character.active', 1);
+        }
+        if($w_setting_id && $w_setting_id != 0){
+            $builder->where('w_setting_id', $w_setting_id);
         }
         return $builder->get()->getResult();
     }
@@ -70,8 +78,9 @@ class CharacterModel extends Model {
 
     public function getCharactersValidationPending() {
         $builder = $this->db->table('player_character');
-        $builder->select('player_character.*, user.display_name, user.confirmed');
+        $builder->select('player_character.*, user.display_name, user.confirmed, world_setting.name AS w_setting_name, world_setting.timeline');
         $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
         $builder->groupStart();
         $builder->where('player_character.uploaded_sheet != player_character.validated_sheet');
         $builder->orWhere('player_character.validated_sheet IS NULL');
@@ -98,8 +107,10 @@ class CharacterModel extends Model {
 
     public function getAllActiveCharacters($offset = NULL, $limit = NULL, $q = NULL) {
         $builder = $this->db->table('player_character');
-        $builder->select('player_character.*, user.display_name');
+        $builder->select('player_character.*, user.display_name, world_setting.name AS w_setting_name, world_setting.timeline');
         $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
+        $builder->where('world_setting.active', 1);
         $builder->where('player_character.active', 1);
         $builder->where('user.banned', 0);
         $builder->where('player_character.validated_sheet IS NOT NULL');
@@ -118,7 +129,9 @@ class CharacterModel extends Model {
     public function countAllActiveCharacters($q = NULL) {
         $builder = $this->db->table('player_character');
         $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
         $builder->where('player_character.active', 1);
+        $builder->where('world_setting.active', 1);
         $builder->where('user.banned', 0);
         $builder->where('player_character.validated_sheet IS NOT NULL');
         if ($q) {

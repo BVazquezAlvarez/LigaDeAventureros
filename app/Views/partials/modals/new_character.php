@@ -47,13 +47,20 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="level">Nivel <span class="text-danger">*</span></label>
-                        <select name="level" id="level" class="form-control">
-                            <option value="1">Nivel 1</option>
-                            <option value="3">Nivel 3</option>
-                        </select>
+                        <input  name="level" id="level" class="form-control" type="number" min="1" max="20" required>
                         <? if (isset(session('validation_errors')['level'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['level'] ?></small>
                         <? endif; ?>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="w_setting_id">Modalidad <span class="text-danger">*</span></label>
+                        <select name="w_setting_id" id="w_setting_id" class="form-control">
+                          <? foreach ($world_settings as $setting) : ?>
+                            <option value="<?=$setting->id ?>"><?=$setting->name ?>  (<?= $setting->timeline ?>)</option>
+                        <? endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">

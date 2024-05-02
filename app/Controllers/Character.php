@@ -23,10 +23,14 @@ class Character extends BaseController {
         $this->UserModel = model('UserModel');
         $this->EmailSettingModel = model('EmailSettingModel');
         $this->CharacterModel = model('CharacterModel');
+        $this->WorldSettingModel = model('WorldSettingModel');
+
     }
 
     public function index($uid) {
         $character = $this->CharacterModel->getCharacter($uid);
+        $world_settings = $this->WorldSettingModel->getWorldSettingList();
+
 
         if (!$character) {
             session()->setFlashdata('error', 'No se ha encontrado el personaje.');
@@ -34,7 +38,8 @@ class Character extends BaseController {
         }
 
         $player = $this->UserModel->getUser($character->user_uid);
-
+    
+        $this->setData('world_settings', $world_settings);
         $this->setData('character', $character);
         $this->setData('player', $player);
         $this->setData('isOwner', $player->uid == session('user_uid'));
@@ -45,10 +50,12 @@ class Character extends BaseController {
 
     public function all_characters() {
         $characters = $this->CharacterModel->getAllActiveCharacters();
-        $total = $this->CharacterModel->countAllActiveCharacters();;
-
+        $total = $this->CharacterModel->countAllActiveCharacters();
+        $world_settings = $this->WorldSettingModel->getWorldSettingList();
+        
         $this->setData('characters',$characters);
         $this->setData('total',$total);
+        $this->setData('world_settings', $world_settings);
 
         $this->setTitle('Todos los personajes');
         return $this->loadView('character/all_characters');
@@ -78,12 +85,13 @@ class Character extends BaseController {
                 'level'          => $this->request->getVar('level'),
                 'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
                 'date_uploaded'  => date('c'),
+                'w_setting_id'   => $this->request->getVar('w_setting_id'),
                 'active'         => 1,
             );
 
             $characterSheet = $this->request->getFile('character_sheet');
-            $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
-            upload_log('public/character_sheets', $data['uploaded_sheet']);
+            $characterSheet->move(ROOTPATH . 'public_html/character_sheets', $data['uploaded_sheet']);
+            upload_log('public_html/character_sheets', $data['uploaded_sheet']);
 
             $this->CharacterModel->addCharacter($data);
             session()->setFlashdata('success', 'Personaje creado correctamente.');
@@ -131,6 +139,7 @@ class Character extends BaseController {
             'active'         => 1,
             'wiki'           => $this->request->getVar('wiki'),
             'description'    => $this->request->getVar('description'),
+            'w_setting_id'    => $this->request->getVar('w_setting_id'),
         );
 
         $upload_errors = [];
@@ -143,8 +152,8 @@ class Character extends BaseController {
             } else {
                 $data['uploaded_sheet'] = $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf';
                 $data['date_uploaded']  = date('c');
-                $characterSheet->move(ROOTPATH . 'public/character_sheets', $data['uploaded_sheet']);
-                upload_log('public/character_sheets', $data['uploaded_sheet']);
+                $characterSheet->move(ROOTPATH . 'public_html/character_sheets', $data['uploaded_sheet']);
+                upload_log('public_html/character_sheets', $data['uploaded_sheet']);
             }
         }
 
@@ -160,8 +169,8 @@ class Character extends BaseController {
                 $extension = pathinfo($characterImg->getName(), PATHINFO_EXTENSION);
                 $date = date('YmdHis');
                 $data['image'] = "$uid$date.$extension";
-                $characterImg->move(ROOTPATH . 'public/img/characters', $data['image']);
-                upload_log('public/img/characters', $data['image']);
+                $characterImg->move(ROOTPATH . 'public_html/img/characters', $data['image']);
+                upload_log('public_html/img/characters', $data['image']);
             }
         }
 
@@ -237,8 +246,9 @@ class Character extends BaseController {
         if (!$this->getUserData()) {
             return redirect()->to('/');
         }
-
+        $world_settings = $this->WorldSettingModel->getWorldSettingList();
         $this->setTitle('Guía para nuevos jugadores');
+        $this->setData('world_settings', $world_settings);
         return $this->loadView('character/new_player_help');
     }
 

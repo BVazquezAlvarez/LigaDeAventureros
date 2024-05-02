@@ -45,14 +45,11 @@
             <section id="section-level" class="new-character-guide-section">
                 <h2>Nivel</h2>
                 <p>
-                    Puedes elegir crear tu personaje a <strong>nivel 1</strong> o a <strong>nivel 3</strong>.
+                    Si quieres crear un personaje totalmente nuevo o si acabas de comenzar tu historia en La Liga de Aventureros elige el <b>Nivel 1</b>. Si eres veterano de la Liga y quieres recuperar a tu personaje antiguo escoge el nivel que tenía anteriormente.
                 </p>
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-4">
-                        <select name="level" id="level" class="form-control" required>
-                            <option value="1">Nivel 1</option>
-                            <option value="3">Nivel 3</option>
-                        </select>
+                        <input  name="level" id="level" class="form-control" type="number" min="1" max="20" required>
                         <? if (isset(session('validation_errors')['level'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['level'] ?></small>
                         <? endif; ?>
@@ -106,7 +103,23 @@
                         <? endif; ?>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary js-btn-continue" data-section="#section-cs" data-input="#name">Continuar</button>
+                <button type="button" class="btn btn-primary js-btn-continue" data-section="#section-setting" data-input="#name">Continuar</button>
+            </section>
+            <section id="section-setting" class="new-character-guide-section" style="display:none;">
+                <h2>Modalidad</h2>
+                <p>
+                    Si quieres crear un personaje totalmente nuevo o si acabas de comenzar tu historia en La Liga de Aventureros escoge Ravenloft (Estándar). Si eres veterano de la Liga y quieres recuperar a tu personaje antiguo elige Faerûn (Legacy)
+                </p>
+                <div class="row">
+                    <div class="form-group col-md-6 col-lg-4">
+                        <select name="w_setting_id" id="w_setting_id" class="form-control">
+                        <? foreach ($world_settings as $setting) : ?>
+                        <option value="<?=$setting->id ?>"><?=$setting->name ?>  (<?= $setting->timeline ?>)</option>
+                        <? endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary js-btn-continue" data-section="#section-cs" data-input="#w_setting_id">Continuar</button>
             </section>
             <section id="section-cs" class="new-character-guide-section" style="display:none;">
                 <h2>Hoja de personaje</h2>

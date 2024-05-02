@@ -23,7 +23,12 @@
         <button class="js-button-rank" data-rank="3"><?= rank_name(3) ?></button>
         <button class="js-button-rank" data-rank="4"><?= rank_name(4) ?></button>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3 buttons-ranks">
+    <? foreach ($world_settings as $setting) : ?>
+        <button class="js-button-wsetting" data-wsetting="<?= $setting->id ?>"><?= $setting->name ?></button>
+    <? endforeach; ?>
+    </div>
+    <div class="col-md-3">
         <input type="text" class="form-control" id="all-characters-search" placeholder="Búsqueda...">
     </div>
 </div>
@@ -37,6 +42,7 @@
                 <th scope="col">Clase</th>
                 <th scope="col">Nivel</th>
                 <th scope="col">Rango</th>
+                <th scope="col">Modalidad</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +52,7 @@
                 </td>
             </tr>
             <? foreach ($characters as $char) : ?>
-                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-secondary' : '' ?>" data-rank="<?= rank_get($char->level) ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?>">
+                <tr class="js-all-characters-search <?= $userdata && $char->user_uid == $userdata['uid'] ? 'table-secondary' : '' ?>" data-rank="<?= rank_get($char->level) ?>" data-wsetting="<?= $char->w_setting_id ?>" data-query="<?= strtolower($char->name) ?> <?= strtolower($char->display_name) ?> <?= strtolower($char->class) ?>">
                     <th class="row-character" scope="row">
                         <div class="flexbox">
                             <a href="<?= base_url('character') ?>/<?= $char->uid ?>" class="character-image-all-characters">
@@ -61,6 +67,7 @@
                     <td><?= $char->class ?></td>
                     <td><strong><?= $char->level ?></strong></td>
                     <td><?= rank_name(rank_get($char->level)) ?></td>
+                    <td><?= $char->w_setting_name ?> (<?= $char->timeline ?>)</td>
                 </tr>
             <? endforeach; ?>
         </tbody>

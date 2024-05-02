@@ -116,8 +116,8 @@ class Login extends BaseController {
             'email' => $email,
             'display_name' => $display_name,
         ]);
-        $user = $this->UserModel->getUserByEmail($email);
-        $this->email->confirm_registration($user);
+       $user = $this->UserModel->getUserByEmail($email);
+        //$this->email->confirm_registration($user);
         return $user;
     }
 

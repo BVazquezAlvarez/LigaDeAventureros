@@ -34,7 +34,7 @@ class Cron extends BaseController {
             return $sheet !== null;
         }));
 
-        $folderPath = ROOTPATH . 'public/character_sheets';
+        $folderPath = ROOTPATH . 'public_html/character_sheets';
         $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
             return (strpos($fileInFolder, '.') !== 0);
         });
@@ -66,7 +66,7 @@ class Cron extends BaseController {
             return $thumbnail !== null;
         }));
 
-        $folderPath = ROOTPATH . 'public/img/adventures';
+        $folderPath = ROOTPATH . 'public_html/img/adventures';
         $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
             return (strpos($fileInFolder, '.') !== 0);
         });
@@ -98,7 +98,7 @@ class Cron extends BaseController {
             return $img !== null;
         }));
 
-        $folderPath = ROOTPATH . 'public/img/characters';
+        $folderPath = ROOTPATH . 'public_html/img/characters';
         $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
             return (strpos($fileInFolder, '.') !== 0);
         });

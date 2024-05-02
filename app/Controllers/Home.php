@@ -57,6 +57,7 @@ class Home extends BaseController {
                     'playing' => array_pad(array_slice($players, 0, $session->players_max), $session->players_max, NULL),
                     'waitlist' => array_slice($players, $session->players_max),
                 ];
+                $session->player_characters = $this->CharacterModel->getPlayerCharacters(session('user_uid'), true, $session->w_setting_id);
             }
         }
 

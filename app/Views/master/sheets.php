@@ -24,6 +24,7 @@
                     <th scope="col">Personaje</th>
                     <th scope="col">Clase y nivel</th>
                     <th scope="col">Jugador</th>
+                    <th scope="col">Modalidad</th>
                     <th scope="col">Nueva hoja</th>
                     <th scope="col">Última hoja validada</th>
                     <th scope="col">Logsheet</th>
@@ -43,6 +44,9 @@
                             <a href="<?= base_url('profile') ?>/<?= $sheet->user_uid ?>">
                                 <?= $sheet->display_name ?>
                             </a>
+                        </td>
+                        <td class="align-middle">
+                                <?= $sheet->w_setting_name ?> (<?= $sheet->timeline ?>)
                         </td>
                         <td class="align-middle">
                             <a href="<?= base_url('character_sheets') ?>/<?= $sheet->uploaded_sheet ?>" target="_blank">

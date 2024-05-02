@@ -124,7 +124,7 @@ class Admin extends BaseController {
         foreach ($logs as $log) {
             $filePath = ROOTPATH . $log->directory . '/' . $log->file;
             $log->is_deleted = !file_exists($filePath);
-            $log->base_url = str_replace("public/", "", $log->directory);
+            $log->base_url = str_replace("public_html/", "", $log->directory);
         }
         $total = $this->UploadLogModel->getTotalLogs();
 

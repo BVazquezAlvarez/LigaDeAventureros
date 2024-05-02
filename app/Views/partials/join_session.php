@@ -2,6 +2,11 @@
     <div class="card card-join-session h-100">
         <div class="card-header text-center">
             <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h3>
+             <? if ($session->w_setting_id != 0) : ?>
+            <h6 class="d-inline-block mb-0"><?= $session->w_setting_name ?> (<?=$session->timeline?>)</h6>
+            <? else: ?>
+            <h6 class="d-inline-block mb-0">Todas las modalidades </h6>
+             <? endif; ?>
         </div>
         <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">
             <div class="row h-100">
@@ -43,8 +48,10 @@
             <div class="card-footer">
                 <? if (strtotime($session->date . ' ' . $session->time) <= time()) : ?>
                     <div class="text-center text-secondary">Ya no te puedes anotar a esta partida</div>
-                <? elseif (!$characters) : ?>
+                <? elseif ($session->w_setting_id == 0 && !$session->player_characters) : ?>
                     <div class="text-center text-secondary"><a href="<?= base_url('new-player-help') ?>">¡Crea un personaje!</a></div>
+                <? elseif (!$session->player_characters) : ?>
+                    <div class="text-center text-secondary"><a href="<?= base_url('new-player-help') ?>">¡Crea un personaje en <?= $session->w_setting_name ?> (<?=$session->timeline?>)!</a></div>
                 <? elseif (!$userdata['confirmed']) : ?>
                     <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
                 <? else : ?>
@@ -52,7 +59,7 @@
                         <? if (!$session->joined) : ?>
                             <option selected disabled value="__default">¡Anótate!</option>
                         <? endif; ?>
-                        <? foreach ($characters as $char) : ?>
+                        <? foreach ($session->player_characters as $char) : ?>
                             <option value="<?= $char->uid ?>" data-rank="<?= rank_name(rank_get($char->level)) ?>" data-char-name="<?= $char->name ?>" <?= $char->uid == $session->joined ? 'selected disabled' : '' ?>><?= $session->joined ? ($char->uid == $session->joined ? 'Anotado con ' : 'Cambiar a ') : '' ?><?= $char->name ?></option>
                         <? endforeach; ?>
                         <? if ($session->joined) : ?>

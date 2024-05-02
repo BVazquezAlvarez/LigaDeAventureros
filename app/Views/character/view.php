@@ -40,7 +40,7 @@
         </a>
       <? endif; ?>
       <p>
-        <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong><br/>
+        <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong> en <?= $character->w_setting_name ?> (<?= $character->timeline ?>)<br/>
         <span class="badge badge-pill badge-rank-<?= rank_get($character->level) ?>">Rango <?= rank_name(rank_get($character->level)) ?></span>
       </p>
       <? if ($character->wiki) : ?>

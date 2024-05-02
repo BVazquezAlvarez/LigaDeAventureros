@@ -27,6 +27,12 @@
                     <img class="img-fluid" src="<?= base_url('img/adventures') ?>/<?= $adventure->thumbnail ?>" alt="<?= $adventure->name ?>">
                     <h2><?= $adventure->name ?></h2>
                     <h4><?= rank_full_text($adventure->rank) ?></h4>
+                    <? if ($adventure->w_setting_id == 0) : ?>
+                        <h4>Todas las modalidades</h4>
+                    <? else :?>
+                        <h4><?= $adventure->w_setting_name?> (<?= $adventure->timeline ?>)</h4>
+                    <? endif; ?>
+                    <h4><?= $adventure->w_setting_name?> (<?= $adventure->timeline ?>)</h4>
                     <p>
                         <div><strong>Jugadores:</strong> <?= $adventure->players_min_recommended ?>-<?= $adventure->players_max_recommended ?></div>
                         <div><strong>Duración:</strong> <?= $adventure->duration ?></div>
