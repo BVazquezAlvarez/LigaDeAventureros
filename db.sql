@@ -189,4 +189,6 @@ ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT C
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enlace de Instagram', '');
 
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('discord', 'Enlace de Discord', '');
+
 COMMIT;
