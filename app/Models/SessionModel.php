@@ -84,7 +84,7 @@ class SessionModel extends Model {
 
     public function getUnpublishedSessions() {
         $builder = $this->db->table('session');
-        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
