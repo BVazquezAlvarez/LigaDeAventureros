@@ -151,10 +151,15 @@
               <? if ($ls->total_items) : ?>
                 <span class="link-dotted" data-toggle="tooltip" data-placement="bottom" title="<?= $ls->items ?>"><?= $ls->total_items ?> objeto<?= $ls->total_items != 1 ? 's' : '' ?> mágico<?= $ls->total_items != 1 ? 's' : '' ?></span>
               <? else : ?>
-                <span>O objetos mágicos</span>
+                <span>0 objetos mágicos</span>
               <? endif; ?>
             </td>
-            <td><?= $ls->notes ?></td>
+            <td>
+              <? if ($ls->death) : ?>
+                <strong class="pl-1 pr-1 text-white bg-dark"><i class="fa-solid fa-skull"></i> ¡MUERE!</strong>
+              <? endif; ?>
+              <?= $ls->notes ?>
+            </td>
           </tr>
         <? endforeach; ?>
       </tbody>

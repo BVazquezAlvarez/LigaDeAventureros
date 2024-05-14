@@ -67,6 +67,7 @@
                                     <th scope="col">Oro</th>
                                     <th scope="col">PT</th>
                                     <th scope="col">Objetos mágicos</th>
+                                    <th scope="col">Muere</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,10 +98,14 @@
                                                 <? endforeach; ?>
                                             </select>
                                         </td>
+                                        <td>
+                                            <input type="checkbox" id="death-<?= $sp->character_uid ?>" name="death[]" value="<?= $sp->character_uid ?>">
+                                            <label for="death-<?= $sp->character_uid ?>"><i class="fa-solid fa-skull"></i></label>
+                                        </td>
                                     </tr>
                                 <? endforeach; ?>
                                 <tr>
-                                    <td colspan="6" class="text-center font-weight-bold">
+                                    <td colspan="7" class="text-center font-weight-bold">
                                         <label>Recompensa de master</label>
                                     </td>
                                 <tr>
@@ -129,6 +134,7 @@
                                             <? endforeach; ?>
                                         </select>
                                     </td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

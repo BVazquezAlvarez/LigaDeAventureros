@@ -160,7 +160,7 @@ class CharacterModel extends Model {
         return $builder->get()->getResult();
     }
 
-    public function createLogsheetEntry($character_uid, $session_uid = NULL, $master = NULL, $notes = NULL) {
+    public function createLogsheetEntry($character_uid, $session_uid = NULL, $master = NULL, $notes = NULL, $death = 0) {
         $character = $this->getCharacter($character_uid);
         $items = array();
         foreach ($this->getCharacterItems($character_uid) as $i) {
@@ -176,6 +176,7 @@ class CharacterModel extends Model {
             'total_items' => count($items),
             'items' => implode(', ',$items),
             'notes' => $notes,
+            'death' => $death,
         );
         $this->db->table('logsheet')->insert($data);
     }

@@ -67,6 +67,12 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
+                        <input type="checkbox" id="death" name="death" value="1">
+                        <label for="death">¡MUERE! <i class="fa-solid fa-skull"></i></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
                         <label for="notes">Notas</label>
                         <textarea class="form-control" id="notes" name="notes" rows="5"></textarea>
                     </div>

@@ -256,4 +256,7 @@ ALTER TABLE `logsheet`
   ADD CONSTRAINT `logsheet_ibfk_2` FOREIGN KEY (`master`) REFERENCES `user` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `logsheet_ibfk_3` FOREIGN KEY (`session_uid`) REFERENCES `session` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL;
 
+ALTER TABLE `logsheet`
+  ADD COLUMN `death` TINYINT(1) NOT NULL DEFAULT 0;
+
 COMMIT;

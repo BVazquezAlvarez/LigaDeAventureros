@@ -373,12 +373,14 @@ class Master extends BaseController {
         $gold = $this->request->getVar('gold');
         $treasure_points = $this->request->getVar('treasure_points');
         $items = $this->request->getVar('items') ?? [];
+        $death = $this->request->getVar('death') ?? [];
 
         $notes = $this->request->getVar('notes');
         $master_uid = session('user_uid');
 
         foreach ($characters_to_log as $ctl) {
             $character = $this->CharacterModel->getCharacter($ctl);
+            $character_death = in_array($ctl, $death);
 
             $data = array(
                 'gold' => (int)$character->gold + (int)$gold[$ctl],
@@ -386,6 +388,9 @@ class Master extends BaseController {
             );
             if (!$character->reject_level) {
                 $data['level'] = min(20, ((float)$character->level + (float)$level[$ctl]));
+            }
+            if ($character_death) {
+                $data['active'] = 0;
             }
             $this->CharacterModel->updateCharacter($ctl, $data);
 
@@ -400,7 +405,7 @@ class Master extends BaseController {
                 $this->CharacterModel->addItems($data_items);
             }
 
-            $this->CharacterModel->createLogsheetEntry($ctl, $session_uid, $master_uid, $notes);
+            $this->CharacterModel->createLogsheetEntry($ctl, $session_uid, $master_uid, $notes, $character_death);
         }
 
         $master_character = $this->request->getVar('master_character');
@@ -451,6 +456,7 @@ class Master extends BaseController {
         $magic_items_add = $this->request->getVar('magic_items_add') ?? [];
         $magic_items_rm = $this->request->getVar('magic_items_rm') ?? [];
         $notes = $this->request->getVar('notes');
+        $death = $this->request->getVar('death') ? 1 : 0;
 
         $character = $this->CharacterModel->getCharacter($character_uid);
 
@@ -460,6 +466,9 @@ class Master extends BaseController {
         );
         if (!$character->reject_level) {
             $data['level'] = min(20, ((float)$character->level + (float)$level));
+        }
+        if ($death) {
+            $data['active'] = 0;
         }
         $this->CharacterModel->updateCharacter($character_uid, $data);
 
@@ -478,7 +487,7 @@ class Master extends BaseController {
             $this->CharacterModel->rmItems($magic_items_rm);
         }
 
-        $this->CharacterModel->createLogsheetEntry($character_uid, NULL, session('user_uid'), $notes);
+        $this->CharacterModel->createLogsheetEntry($character_uid, NULL, session('user_uid'), $notes, $death);
 
         session()->setFlashdata('success', 'Se ha añadido el log.');
         return redirect()->back();
