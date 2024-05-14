@@ -222,12 +222,12 @@ CREATE TABLE `character_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 ALTER TABLE `character_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `character_item`
   ADD PRIMARY KEY (`id`),
   ADD KEY `player_character_uid` (`player_character_uid`),
   ADD KEY `item_id` (`item_id`);
+
+ALTER TABLE `character_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `character_item`
   ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`player_character_uid`) REFERENCES `player_character` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE,
