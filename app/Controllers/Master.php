@@ -437,7 +437,7 @@ class Master extends BaseController {
                 $this->CharacterModel->addItems($data_items);
             }
 
-            $this->CharacterModel->createLogsheetEntry($master_character, $session_uid, $master_uid, 'Partida como master.' . $notes);
+            $this->CharacterModel->createLogsheetEntry($master_character, $session_uid, $master_uid, 'Partida como master. ' . $notes);
         }
 
         $this->SessionModel->updateSession($session_uid, [
