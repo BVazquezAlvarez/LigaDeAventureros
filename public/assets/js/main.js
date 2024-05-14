@@ -432,6 +432,8 @@ $(function() {
         allowClear: true
     });
 
+    $(".s2-simple").select2();
+
     $('#logsheet-visual-control').on('change', function() {
         let val = $(this).val();
         if (val) {
