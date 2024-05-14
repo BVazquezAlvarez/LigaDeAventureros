@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,26 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function rank_get($level): int {
-    $level = (int) $level;
-    if ($level <= 4) return 1;
-    if ($level <= 10) return 2;
-    if ($level <= 16) return 3;
-    return 4;
-}
+namespace App\Models;
+use CodeIgniter\Model;
 
-function rank_name($rank) : string {
-    if ($rank == 1) return 'Bronce';
-    if ($rank == 2) return 'Plata';
-    if ($rank == 3) return 'Oro';
-    if ($rank == 4) return 'Mithril';
-    return 'Todos';
-}
+class ItemModel extends Model {
 
-function rank_full_text($rank) : string {
-    if ($rank == 1) return 'Bronce (1-4)';
-    if ($rank == 2) return 'Plata (5-10)';
-    if ($rank == 3) return 'Oro (11-16)';
-    if ($rank == 4) return 'Mithril (17-20)';
-    return 'Todos los rangos';
+    protected $table = 'item';
+    protected $primaryKey = 'id';
+
+    protected $allowedFields = [
+        'name',
+        'source',
+        'page',
+        'rarity',
+        'type',
+        'attunement',
+        'full_description',
+    ];
+
+    public function getItems() {
+        $builder = $this->db->table('item');
+        return $builder->get()->getResult();
+    }
+
 }

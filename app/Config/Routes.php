@@ -98,6 +98,9 @@ $routes->post('master/publish', 'Master::publish_post');
 $routes->post('master/delete-session', 'Master::delete_session');
 $routes->get('master/edit-session/(:segment)', 'Master::edit_session/$1');
 $routes->post('master/edit-session/(:segment)', 'Master::edit_session_post/$1');
+$routes->get('master/logsheets', 'Master::logsheets');
+$routes->post('master/logsheet_create', 'Master::logsheet_create');
+$routes->post('master/logsheet_create_standalone', 'Master::logsheet_create_standalone');
 
 $routes->get('admin', 'Admin::index');
 $routes->get('admin/logs', 'Admin::logs');

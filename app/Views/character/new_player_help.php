@@ -130,6 +130,17 @@
                         <? endif; ?>
                     </div>
                 </div>
+                <p>
+                    Indica también el oro inicial de tu personaje, según indica tu transfondo
+                </p>
+                <div class="row">
+                    <div class="form-group col-md-6 col-lg-4">
+                        <input type="number" name="gold" id="gold" class="form-control" placeholder="Oro inicial" required>
+                        <? if (isset(session('validation_errors')['gold'])) : ?>
+                            <small class="text-danger"><?= session('validation_errors')['gold'] ?></small>
+                        <? endif; ?>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-primary js-btn-continue" data-section="#section-end" data-input="#character_sheet">Continuar</button>
             </section>
             <section id="section-end" class="new-character-guide-section" style="display:none;">

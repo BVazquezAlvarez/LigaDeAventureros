@@ -117,7 +117,7 @@ abstract class BaseController extends Controller {
 			return $this->data['userdata'];
 		}
 
-        if ($this->isUserLoggedIn()) {            
+        if ($this->isUserLoggedIn()) {
             $userModel = model('UserModel');
             $data = $userModel->getValidUser(session('user_uid'));
 

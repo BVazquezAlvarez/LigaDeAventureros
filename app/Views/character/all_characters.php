@@ -59,7 +59,7 @@
                     </th>
                     <td><a href="<?= base_url('profile') ?>/<?= $char->user_uid ?>"><?= $char->display_name ?></a></td>
                     <td><?= $char->class ?></td>
-                    <td><strong><?= $char->level ?></strong></td>
+                    <td><strong><?= (int) $char->level ?></strong></td>
                     <td><?= rank_name(rank_get($char->level)) ?></td>
                 </tr>
             <? endforeach; ?>

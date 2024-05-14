@@ -40,9 +40,21 @@
         </a>
       <? endif; ?>
       <p>
-        <strong><?= $character->class ?></strong> de nivel <strong><?= $character->level ?></strong><br/>
+        <strong><?= $character->class ?></strong> de nivel <strong><?= (int) $character->level ?></strong><br/>
         <span class="badge badge-pill badge-rank-<?= rank_get($character->level) ?>">Rango <?= rank_name(rank_get($character->level)) ?></span>
       </p>
+      <div class="ml-3 mb-3">
+        <? if ($character->level < 20) : ?>
+          <div>Progreso de nivel: <strong><?= $character->reject_level ? 'Nivel bloqueado' : 100 * fmod($character->level, 1) . '%' ?></strong></div>
+        <? endif; ?>
+        <div>Oro: <strong><?= $character->gold ?></strong></div>
+        <div>Puntos de Tesoro: <strong><?= $character->treasure_points ?></strong></div>
+        <? if (count($items)) : ?>
+          <a href="#" class="link-dotted" data-toggle="modal" data-target="#magic-items-modal"><?= count($items) ?> objeto<?= count($items) != 1 ? 's' : '' ?> mágico<?= count($items) != 1 ? 's' : '' ?></a>
+        <? else : ?>
+          <div>0 objetos mágicos</div>
+        <? endif; ?>
+      </div>
       <? if ($character->wiki) : ?>
         <p>
           <a href="<?= $character->wiki ?>" target="_blank">Ver página de Wiki</a>
@@ -60,7 +72,7 @@
       </p>
       <? if ($character->logsheet && ($isOwner || ($userdata && $userdata['master']))) : ?>
         <p>
-          <a href="<?= $character->logsheet ?>" target="_blank">Logsheet</a>
+          <a href="<?= $character->logsheet ?>" target="_blank">Logsheet (OBSOLETO)</a>
         </p>
       <? endif; ?>
       <div class="character-description">
@@ -84,7 +96,7 @@
     <? endif; ?>
     <? if ($userdata && $userdata['master']) : ?>
       <div class="card-footer">
-        <button class="btn btn-outline-primary js-define-logsheet mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>" data-logsheet="<?= $character->logsheet ?>"><i class="fa-solid fa-file"></i> Definir logsheet</button>
+        <button class="btn btn-outline-primary mt-1" data-toggle="modal" data-target="#add-log-modal"><i class="fa-solid fa-pencil"></i> Añadir log</button>
         <? if ($character->uploaded_sheet != $character->validated_sheet) : ?>
           <button class="btn btn-primary js-validate-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>"><i class="fa-solid fa-check"></i> Validar hoja de personaje</button>
           <button class="btn btn-danger js-reject-btn mt-1" data-uid="<?= $character->uid ?>" data-name="<?= $character->name ?>"><i class="fa-solid fa-x"></i> Rechazar hoja de personaje</button>
@@ -93,18 +105,77 @@
     <? endif; ?>
 </div>
 
+<? if ($logsheet) : ?>
+  <div class="row mt-2">
+    <div class="col-lg-4 col-md-6">
+      <select class="form-control" id="logsheet-visual-control">
+        <option value="">Mostrar todos los logs</option>
+        <option value="logsheet-row-session">Mostrar solo las partidas</option>
+      </select>
+  </div>
+  </div>
+  <div class="table-responsive mt-1">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Fecha</th>
+          <th scope="col">Partida</th>
+          <th scope="col">Master</th>
+          <th scope="col">Nivel</th>
+          <th scope="col">Oro</th>
+          <th scope="col"><span class="link-dotted" data-toggle="tooltip" data-placement="bottom" title="Puntos de Tesoro">PT</span></th>
+          <th scope="col">Objetos mágicos</th>
+          <th scope="col">Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <? foreach ($logsheet as $ls) : ?>
+          <tr class="logsheet-row <?= $ls->session_uid ? 'logsheet-row-session' : ''?>">
+            <th scope="col"><?= date('d/m/Y H:i', strtotime($ls->date)) ?></th>
+            <td>
+              <? if ($ls->session_uid) : ?>
+                <a href="<?= base_url('session/view') ?>/<?= $ls->session_uid   ?>" class="text-dark font-weight-bold"><?= $ls->adventure ?></a>
+              <? else : ?>
+                -
+              <? endif; ?>
+            </td>
+            <td>
+              <? if ($ls->master) : ?>
+                <a href="<?= base_url('profile') ?>/<?= $ls->master ?>"><?= $ls->master_name ?></a>
+              <? endif; ?>
+            </td>
+            <td><?= (int) $ls->level ?> <? if (fmod($ls->level, 1)) : ?><span class="text-small">(+<?= fmod($ls->level, 1) ?>)</span><? endif; ?></td>
+            <td><?= $ls->gold ?></td>
+            <td><?= $ls->treasure_points ?></td>
+            <td>
+              <? if ($ls->total_items) : ?>
+                <span class="link-dotted" data-toggle="tooltip" data-placement="bottom" title="<?= $ls->items ?>"><?= $ls->total_items ?> objeto<?= $ls->total_items != 1 ? 's' : '' ?> mágico<?= $ls->total_items != 1 ? 's' : '' ?></span>
+              <? else : ?>
+                <span>O objetos mágicos</span>
+              <? endif; ?>
+            </td>
+            <td><?= $ls->notes ?></td>
+          </tr>
+        <? endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+<? endif; ?>
+
 <?= view('partials/modals/character_sheet') ?>
 <? if (($character->uploaded_sheet != $character->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) && $character->validated_sheet) : ?>
   <?= view('partials/modals/character_sheet_validated') ?>
 <? endif; ?>
 <? if ($isOwner || ($userdata && $userdata['admin'])) : ?>
     <?= view('partials/modals/update_character') ?>
+  <?= view('partials/modals/delete_character') ?>
 <? endif; ?>
 <? if ($userdata && $userdata['master']) : ?>
   <?= view('partials/modals/validate_sheets') ?>
   <?= view('partials/modals/define_logsheet') ?>
+  <?= view('partials/modals/log_add', ['character' => $character, 'character_items' => $items, 'all_items' => $all_items]) ?>
 <? endif; ?>
 <? if ($character->image) : ?>
   <?= view('partials/modals/image', ['title' => $character->name, 'img' => (base_url('img/characters').'/'.$character->image) ]) ?>
 <? endif; ?>
-<?= view('partials/modals/delete_character') ?>
+<?= view('partials/modals/magic_items', ['items' => $items, 'userdata' => $userdata]) ?>

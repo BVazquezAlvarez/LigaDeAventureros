@@ -35,7 +35,7 @@
                         <? endif; ?>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="class">Clase <span class="text-danger">*</span></label>
                         <input type="text" name="class" id="class" class="form-control" required>
@@ -44,15 +44,24 @@
                         <? endif; ?>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="level">Nivel <span class="text-danger">*</span></label>
-                        <select name="level" id="level" class="form-control">
+                        <label for="level">Nivel inicial <span class="text-danger">*</span></label>
+                        <select name="level" id="level" class="form-control" required>
                             <option value="1">Nivel 1</option>
                             <option value="3">Nivel 3</option>
                         </select>
                         <? if (isset(session('validation_errors')['level'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['level'] ?></small>
+                        <? endif; ?>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="class">Oro inicial <span class="text-danger">*</span></label>
+                        <input type="number" name="gold" id="gold" class="form-control" required>
+                        <? if (isset(session('validation_errors')['gold'])) : ?>
+                            <small class="text-danger"><?= session('validation_errors')['gold'] ?></small>
                         <? endif; ?>
                     </div>
                 </div>

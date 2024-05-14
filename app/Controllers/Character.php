@@ -23,6 +23,7 @@ class Character extends BaseController {
         $this->UserModel = model('UserModel');
         $this->EmailSettingModel = model('EmailSettingModel');
         $this->CharacterModel = model('CharacterModel');
+        $this->ItemModel = model('ItemModel');
     }
 
     public function index($uid) {
@@ -37,6 +38,11 @@ class Character extends BaseController {
 
         $this->setData('character', $character);
         $this->setData('player', $player);
+        $this->setData('items', $this->CharacterModel->getCharacterItems($uid));
+        if ($this->getUserdata() && $this->getUserdata()['master']) {
+            $this->setData('all_items', $this->ItemModel->getItems());
+        }
+        $this->setData('logsheet', $this->CharacterModel->getLogsheet($uid));
         $this->setData('isOwner', $player->uid == session('user_uid'));
 
         $this->setTitle($character->name);
@@ -65,7 +71,8 @@ class Character extends BaseController {
         $validation = \Config\Services::validation();
         $validation->setRule('name', 'nombre', 'trim|required');
         $validation->setRule('class', 'clase', 'trim|required');
-        $validation->setRule('level', 'Nivel', 'trim|required|greater_than_equal_to[1]|less_than_equal_to[20]');
+        $validation->setRule('level', 'nivel', 'trim|required|greater_than_equal_to[1]|less_than_equal_to[20]');
+        $validation->setRule('gold', 'oro inicial', 'trim|required');
         $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,5120]');
 
         if ($validation->withRequest($this->request)->run()) {
@@ -76,6 +83,7 @@ class Character extends BaseController {
                 'name'           => $this->request->getVar('name'),
                 'class'          => $this->request->getVar('class'),
                 'level'          => $this->request->getVar('level'),
+                'gold'           => $this->request->getVar('gold'),
                 'uploaded_sheet' => $uid . '_' . $this->request->getVar('level') . '_' . date('YmdHis') . '.pdf',
                 'date_uploaded'  => date('c'),
                 'active'         => 1,
@@ -116,21 +124,20 @@ class Character extends BaseController {
         $validation = \Config\Services::validation();
         $validation->setRule('name', 'nombre', 'trim|required');
         $validation->setRule('class', 'clase', 'trim|required');
-        $validation->setRule('level', 'Nivel', 'trim|required|greater_than_equal_to[1]|less_than_equal_to[20]');
 
-        if (!$validation->withRequest($this->request)->run()) {    
+        if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'No se ha podido actualizar el personaje.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
         }
-    
+
         $data = array(
             'name'           => $this->request->getVar('name'),
             'class'          => $this->request->getVar('class'),
-            'level'          => $this->request->getVar('level'),
             'active'         => 1,
             'wiki'           => $this->request->getVar('wiki'),
             'description'    => $this->request->getVar('description'),
+            'reject_level'   => $this->request->getVar('reject_level') ? 1 : 0,
         );
 
         $upload_errors = [];

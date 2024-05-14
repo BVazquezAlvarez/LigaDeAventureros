@@ -115,7 +115,7 @@ $(function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
         let logsheet = $(this).data("logsheet");
-        
+
         $('#define-logsheet-modal #modal-character-name').text(name);
         $('#define-logsheet-modal #modal-uid').val(uid);
         $('#define-logsheet-modal #modal-logsheet').val(logsheet);
@@ -125,7 +125,7 @@ $(function() {
 
     $('.js-update-character-btn').on('click', function() {
         let character = $(this).data("character");
-        
+
         $("#modal-character-name").text(character.name);
         $("#update-character-modal #name").val(character.name);
         $("#update-character-modal #uid").val(character.uid);
@@ -133,6 +133,9 @@ $(function() {
         $("#update-character-modal #level").val(character.level);
         $("#update-character-modal #wiki").val(character.wiki);
         $("#update-character-modal #description").val(character.description);
+        if (character.reject_level == 1) {
+            $("#update-character-modal #reject_level").prop('checked', true);
+        }
 
         if (character.image) {
             $("#update-character-modal #delete_image_block").show();
@@ -167,7 +170,7 @@ $(function() {
                         loadAdventure(data.adventure);
                         $('#adventure-data').show();
                     }
-                }  
+                }
             });
         }
     });
@@ -196,7 +199,7 @@ $(function() {
                     loadAdventure(data.adventure);
                     $('#adventure-info-modal').modal('show');
                 }
-            }  
+            }
         });
     });
 
@@ -209,7 +212,7 @@ $(function() {
     $('.js-master-add').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#master-add-modal #user-name").text(name);
         $("#master-add-modal #uid").val(uid);
 
@@ -219,7 +222,7 @@ $(function() {
     $('.js-master-rm').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#master-rm-modal #user-name").text(name);
         $("#master-rm-modal #uid").val(uid);
 
@@ -229,7 +232,7 @@ $(function() {
     $('.js-admin-add').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#admin-add-modal #user-name").text(name);
         $("#admin-add-modal #uid").val(uid);
 
@@ -239,7 +242,7 @@ $(function() {
     $('.js-admin-rm').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#admin-rm-modal #user-name").text(name);
         $("#admin-rm-modal #uid").val(uid);
 
@@ -249,7 +252,7 @@ $(function() {
     $('.js-ban').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#ban-modal #user-name").text(name);
         $("#ban-modal #uid").val(uid);
 
@@ -259,7 +262,7 @@ $(function() {
     $('.js-unban').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $("#unban-modal #user-name").text(name);
         $("#unban-modal #uid").val(uid);
 
@@ -322,7 +325,7 @@ $(function() {
             $('#filtered-results-count').hide();
             return;
         }
-        
+
         let total = 0;
         $('.js-all-characters-search').each(function() {
             let query = $(this).data('query').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -412,10 +415,10 @@ $(function() {
             $(input).focus();
             return;
         }
-        
+
         $(this).hide();
         $(section).fadeIn(1000);
-        
+
         $([document.documentElement, document.body]).animate({
             scrollTop: $(section).offset().top
         }, 2000);
@@ -423,5 +426,19 @@ $(function() {
 
     $(document).on('input', '.input-error', function() {
         $(this).removeClass('input-error');
+    });
+
+    $(".s2-multi").select2({
+        allowClear: true
+    });
+
+    $('#logsheet-visual-control').on('change', function() {
+        let val = $(this).val();
+        if (val) {
+            $('.logsheet-row').hide();
+            $(`.${val}`).show();
+        } else {
+            $('.logsheet-row').show();
+        }
     });
 });

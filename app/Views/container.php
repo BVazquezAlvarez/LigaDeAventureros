@@ -33,6 +33,9 @@
 		<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
 		<script type="text/javascript" src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
 		<script>
 			baseUrl = "<?= base_url() ?>";
 		</script>
@@ -63,6 +66,7 @@
 										<li><a class="dropdown-item" href="<?= base_url('master/adventures') ?>">Aventuras y sesiones</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('master/new-session') ?>">Nueva sesión</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('master/publish') ?>">Publicar sesiones</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('master/logsheets') ?>">Logs pendientes</a></li>
 									</ul>
 								</li>
 							<? endif; ?>
