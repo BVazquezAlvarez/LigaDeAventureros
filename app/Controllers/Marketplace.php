@@ -75,7 +75,7 @@ class Marketplace extends BaseController {
         $item = $this->ItemModel->getItem($item_id);
         $merchant = $this->MerchantModel->getMerchant($merchant_id);
 
-        if ($character->treasure_points >= $item->cost && $this->MerchantModel->checkMerchantHasItem($item_id, $merchant_id)) {
+        if ($character->treasure_points >= $item->cost && $this->MerchantModel->checkMerchantHasItem($item_id, $merchant_id) && $this->_isMerchantActive($merchant)) {
             $this->CharacterModel->updateCharacter($character_uid, array(
                 'treasure_points' => $character->treasure_points - $item->cost
             ));
@@ -98,6 +98,16 @@ class Marketplace extends BaseController {
             session()->setFlashdata('error', 'No se ha podido finalizar la transacción.');
             return redirect()->to('marketplace');
         }
+    }
+
+    private function _isMerchantActive($merchant) {
+        if ($merchant->permanent) {
+            return true;
+        }
+        if (time() >= strtotime($merchant->timestamp_start) && time() <= strtotime($merchant->timestamp_end)) {
+            return true;
+        }
+        return false;
     }
 
 }
