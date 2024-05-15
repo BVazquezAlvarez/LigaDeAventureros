@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace App\Models;  
+namespace App\Models;
 use CodeIgniter\Model;
 
 class SessionModel extends Model {
@@ -90,7 +90,7 @@ class SessionModel extends Model {
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         $builder->where('session.published', 0);
         $builder->orderBy('session.date', 'ASC');
-        return $builder->get()->getResult();      
+        return $builder->get()->getResult();
     }
 
     public function getSessionPlayers($session_uid) {
@@ -151,6 +151,26 @@ class SessionModel extends Model {
         $builder->orderBy('total', 'DESC');
         $builder->groupBy('location');
         $builder->where('location !=', '');
+        return $builder->get()->getResult();
+    }
+
+    public function getMissingLogsheetsCount($master_uid) {
+        $builder = $this->db->table('session');
+        $builder->orderBy('date', 'ASC');
+        $builder->where('log_done', 0);
+        $builder->where('published', 1);
+        $builder->where('master_uid', $master_uid);
+        return $builder->countAllResults();
+    }
+
+    public function getMissingLogsheets($master_uid) {
+        $builder = $this->db->table('session');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank');
+        $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
+        $builder->orderBy('date', 'ASC');
+        $builder->where('log_done', 0);
+        $builder->where('published', 1);
+        $builder->where('master_uid', $master_uid);
         return $builder->get()->getResult();
     }
 

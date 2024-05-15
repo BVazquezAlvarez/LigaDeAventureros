@@ -31,6 +31,12 @@
         <a href="<?= base_url('master/publish') ?>" class="btn btn-primary btn-lg btn-block">
             Publicar sesiones
         </a>
+        <a href="<?= base_url('master/logsheets') ?>" class="btn btn-primary btn-lg btn-block">
+            Logs pendientes
+            <? if ($logs_missing_count) : ?>
+                <span class="badge badge-danger"><?= $logs_missing_count ?></span>
+            <? endif; ?>
+        </a>
     </div>
     <div class="col-md-6">
         <h2 class="text-center">Mis próximas sesiones</h2>

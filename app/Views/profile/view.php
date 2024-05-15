@@ -43,7 +43,7 @@
                                         <img src="<?= $char->image ? (base_url('img/characters').'/'.$char->image) : base_url('img/placeholder.png') ?>">
                                     </div>
                                 </a>
-                                <div><?= $char->class ?> <strong><?= $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</div>
+                                <div><?= $char->class ?> <strong><?= (int) $char->level ?></strong> (Rango <?= rank_name(rank_get($char->level)) ?>)</div>
                                 <div>
                                     <a href="<?= base_url('character') ?>/<?= $char->uid ?>">Detalles</a>
                                     <? if ($char->uploaded_sheet != $char->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>

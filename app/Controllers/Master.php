@@ -29,6 +29,7 @@ class Master extends BaseController {
         $this->AdventureModel = model('AdventureModel');
         $this->SessionModel = model('SessionModel');
         $this->WorldSettingModel = model('WorldSettingModel');
+        $this->ItemModel = model('ItemModel');
     }
 
     protected function setTitle(string $title) {
@@ -40,6 +41,7 @@ class Master extends BaseController {
 
         $this->setData('upcoming_sessions', $upcomingSessions);
         $this->setData('sheets_pending_count', $this->CharacterModel->getCharactersValidationPendingCount());
+        $this->setData('logs_missing_count', $this->SessionModel->getMissingLogsheetsCount(session('user_uid')));
         $this->setTitle('Panel de control');
         return $this->loadView('master/index');
     }
@@ -147,7 +149,7 @@ class Master extends BaseController {
 
     public function new_session_post() {
         $isNewAdventure = ($this->request->getVar('adventure') == '__new');
-    
+
         $validation = \Config\Services::validation();
         $validation->setRule('adventure', 'aventura', 'trim|required');
         if ($isNewAdventure) {
@@ -170,7 +172,7 @@ class Master extends BaseController {
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
 
-        if (!$validation->withRequest($this->request)->run()) {    
+        if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al crear la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
@@ -275,7 +277,7 @@ class Master extends BaseController {
             'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
             'w_setting_id' => $this->request->getVar('w_setting_id'),
         ];
-        
+
         if ($this->request->getVar('delete_thumbnail')) {
             $data['thumbnail'] = NULL;
         } else if ($_FILES['adventure_thumbnail']['name']) {
@@ -319,7 +321,7 @@ class Master extends BaseController {
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
 
-        if (!$validation->withRequest($this->request)->run()) {    
+        if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al editar la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
@@ -348,6 +350,151 @@ class Master extends BaseController {
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
         $this->email->player_kicked_session($user_uid, $session_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
+        return redirect()->back();
+    }
+
+    public function logsheets() {
+        $logsheets = $this->SessionModel->getMissingLogsheets(session('user_uid'));
+        foreach ($logsheets as $ls) {
+            $ls->session_players = $this->SessionModel->getSessionPlayers($ls->uid);
+        }
+        $this->setData('logsheets', $logsheets);
+        $this->setData('items', $this->ItemModel->getItems());
+        $this->setData('my_characters', $this->CharacterModel->getPlayerCharacters(session('user_uid'), true));
+        $this->setTitle('Realizar logs pendientes');
+        return $this->loadView('master/logsheets');
+    }
+
+    public function logsheet_create() {
+        $session_uid = $this->request->getVar('session_uid');
+        $session = $this->SessionModel->getSession($session_uid);
+        if ($session->log_done) {
+            session()->setFlashdata('error', 'Ya se ha realizado el log de esta sesión.');
+            return redirect()->back();
+        }
+
+        $characters_to_log = $this->request->getVar('log_character') ?? [];
+        $level = $this->request->getVar('level');
+        $gold = $this->request->getVar('gold');
+        $treasure_points = $this->request->getVar('treasure_points');
+        $items = $this->request->getVar('items') ?? [];
+        $death = $this->request->getVar('death') ?? [];
+
+        $notes = $this->request->getVar('notes');
+        $master_uid = session('user_uid');
+
+        foreach ($characters_to_log as $ctl) {
+            $character = $this->CharacterModel->getCharacter($ctl);
+            $character_death = in_array($ctl, $death);
+
+            $data = array(
+                'gold' => (int)$character->gold + (int)$gold[$ctl],
+                'treasure_points' => (int)$character->treasure_points + (int)$treasure_points[$ctl],
+            );
+            if (!$character->reject_level) {
+                $data['level'] = min(20, ((float)$character->level + (float)$level[$ctl]));
+            }
+            if ($character_death) {
+                $data['active'] = 0;
+            }
+            $this->CharacterModel->updateCharacter($ctl, $data);
+
+            if (isset($items[$ctl])) {
+                $data_items = array();
+                foreach ($items[$ctl] as $item) {
+                    $data_items[] = array(
+                        'player_character_uid' => $ctl,
+                        'item_id' => $item
+                    );
+                }
+                $this->CharacterModel->addItems($data_items);
+            }
+
+            $this->CharacterModel->createLogsheetEntry($ctl, $session_uid, $master_uid, $notes, $character_death);
+        }
+
+        $master_character = $this->request->getVar('master_character');
+        if ($master_character) {
+            $character = $this->CharacterModel->getCharacter($master_character);
+
+            $level_master = $this->request->getVar('level_master');
+            $gold_master = $this->request->getVar('gold_master');
+            $treasure_points_master = $this->request->getVar('treasure_points_master');
+            $items_master = $this->request->getVar('items_master') ?? [];
+
+            $data = array(
+                'gold' => (int)$character->gold + (int)$gold_master,
+                'treasure_points' => (int)$character->treasure_points + (int)$treasure_points_master,
+            );
+            if (!$character->reject_level) {
+                $data['level'] = min(20, ((float)$character->level + (float)$level_master));
+            }
+            $this->CharacterModel->updateCharacter($master_character, $data);
+
+            if ($items_master) {
+                $data_items = array();
+                foreach ($items_master as $item) {
+                    $data_items[] = array(
+                        'player_character_uid' => $master_character,
+                        'item_id' => $item
+                    );
+                }
+                $this->CharacterModel->addItems($data_items);
+            }
+
+            $this->CharacterModel->createLogsheetEntry($master_character, $session_uid, $master_uid, 'Partida como master. ' . $notes);
+        }
+
+        $this->SessionModel->updateSession($session_uid, [
+            'log_done' => 1,
+        ]);
+
+        session()->setFlashdata('success', 'Se ha realizado el log de la sesión.');
+        return redirect()->back();
+    }
+
+    public function logsheet_create_standalone() {
+        $character_uid = $this->request->getVar('character_uid');
+        $level = $this->request->getVar('level');
+        $gold = $this->request->getVar('gold');
+        $treasure_points = $this->request->getVar('treasure_points');
+        $magic_items_add = $this->request->getVar('magic_items_add') ?? [];
+        $magic_items_rm = $this->request->getVar('magic_items_rm') ?? [];
+        $notes = $this->request->getVar('notes');
+        $death = $this->request->getVar('death') ? 1 : 0;
+
+        $character = $this->CharacterModel->getCharacter($character_uid);
+
+        $data = array(
+            'gold' => (int)$character->gold + (int)$gold,
+            'treasure_points' => (int)$character->treasure_points + (int)$treasure_points,
+        );
+        if (!$character->reject_level) {
+            $data['level'] = min(20, ((float)$character->level + (float)$level));
+        }
+        if ($death) {
+            $data['active'] = 0;
+        }
+        $this->CharacterModel->updateCharacter($character_uid, $data);
+
+        if ($magic_items_add) {
+            $data_items = array();
+            foreach ($magic_items_add as $item) {
+                $data_items[] = array(
+                    'player_character_uid' => $character_uid,
+                    'item_id' => $item
+                );
+            }
+            $this->CharacterModel->addItems($data_items);
+        }
+
+        if ($magic_items_rm) {
+            $this->CharacterModel->rmItems($magic_items_rm);
+        }
+
+        $this->CharacterModel->createLogsheetEntry($character_uid, NULL, session('user_uid'), $notes, $death);
+
+        session()->setFlashdata('success', 'Se ha añadido el log.');
         return redirect()->back();
     }
 

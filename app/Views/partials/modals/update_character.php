@@ -34,16 +34,10 @@
                                 <input type="text" name="name" id="name" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="class">Clase <span class="text-danger">*</span></label>
                                 <input type="text" name="class" id="class" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="level">Nivel <span class="text-danger">*</span></label>
-                                <input type="number" min="1" max="20" name="level" id="level" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -80,6 +74,14 @@
                             <div class="form-group">
                                 <label for="wiki">Enlace Wiki</label>
                                 <input type="url" name="wiki" id="wiki" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="reject_level" name="reject_level" class="form-check-input">
+                                    <label class="form-check-label" for="reject_level">Bloquear nivel</label>
+                                </div>
                             </div>
                         </div>
                     </div>

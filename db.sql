@@ -177,7 +177,7 @@ ALTER TABLE `email_setting`
 
 ALTER TABLE `email_setting` ADD FOREIGN KEY (`user_uid`) REFERENCES `user`(`uid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `player_character` 
+ALTER TABLE `player_character`
   ADD COLUMN `image` VARCHAR(255) NULL,
   ADD COLUMN `wiki` VARCHAR(255) NULL,
   ADD COLUMN `logsheet` VARCHAR(255) NULL,
@@ -188,5 +188,75 @@ INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('whatsapp', 'Enlac
 ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enlace de Instagram', '');
+
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('discord', 'Enlace de Discord', '');
+
+ALTER TABLE `player_character` CHANGE `level` `level` FLOAT(10,2) NOT NULL;
+
+ALTER TABLE `player_character`
+  ADD COLUMN `gold` int(11) NOT NULL DEFAULT 0,
+  ADD COLUMN `treasure_points` int(11) NOT NULL DEFAULT 0;
+
+ALTER TABLE `session`
+  ADD COLUMN `log_done` tinyint(1) NOT NULL DEFAULT 0;
+
+ALTER TABLE `player_character`
+  ADD COLUMN `reject_level` tinyint(1) NOT NULL DEFAULT 0;
+
+CREATE TABLE `item` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `source` VARCHAR(255) NOT NULL,
+  `page` INT(1) NOT NULL,
+  `rarity` VARCHAR(255) NOT NULL,
+  `type` VARCHAR(255) NOT NULL,
+  `attunement` VARCHAR(255) NULL,
+  `full_description` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+CREATE TABLE `character_item` (
+  `id` int(11) NOT NULL,
+  `player_character_uid` char(11) NOT NULL,
+  `item_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `character_item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_character_uid` (`player_character_uid`),
+  ADD KEY `item_id` (`item_id`);
+
+ALTER TABLE `character_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `character_item`
+  ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`player_character_uid`) REFERENCES `player_character` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `character_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
+
+CREATE TABLE `logsheet` (
+  `character_uid` char(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `session_uid` char(11) DEFAULT NULL,
+  `master` char(11) DEFAULT NULL,
+  `level` float(10,2) NOT NULL,
+  `gold` int(11) NOT NULL,
+  `treasure_points` int(11) NOT NULL,
+  `total_items` INT(11) NOT NULL,
+  `items` TEXT NULL,
+  `notes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `logsheet`
+  ADD PRIMARY KEY (`character_uid`,`date`),
+  ADD KEY `master` (`master`),
+  ADD KEY `session_uid` (`session_uid`);
+
+ALTER TABLE `logsheet`
+  ADD CONSTRAINT `logsheet_ibfk_1` FOREIGN KEY (`character_uid`) REFERENCES `player_character` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `logsheet_ibfk_2` FOREIGN KEY (`master`) REFERENCES `user` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `logsheet_ibfk_3` FOREIGN KEY (`session_uid`) REFERENCES `session` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+ALTER TABLE `logsheet`
+  ADD COLUMN `death` TINYINT(1) NOT NULL DEFAULT 0;
 
 COMMIT;

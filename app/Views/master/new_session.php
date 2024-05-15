@@ -25,15 +25,15 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="adventure">Aventura <span class="text-danger">*</span></label>
-                    <select id="new-session-adventure" name="adventure" class="form-control" required>
+                    <select id="new-session-adventure" name="adventure" class="s2-simple" required style="width:100%">
                         <option value="__new">Nueva aventura</option>
                         <? foreach ($adventures as $adventure) : ?>
                             <option value="<?= $adventure->uid ?>"><?= $adventure->name ?> - <?= rank_full_text($adventure->rank) ?></option>
                         <? endforeach; ?>
-                        <? if (isset(session('validation_errors')['adventure'])) : ?>
-                            <small class="text-danger"><?= session('validation_errors')['adventure'] ?></small>
-                        <? endif; ?>
                     </select>
+                    <? if (isset(session('validation_errors')['adventure'])) : ?>
+                        <small class="text-danger"><?= session('validation_errors')['adventure'] ?></small>
+                    <? endif; ?>
                 </div>
                 <div id="adventure-form" style="display:block;">
                     <div class="form-group">

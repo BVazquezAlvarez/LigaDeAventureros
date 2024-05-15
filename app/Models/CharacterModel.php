@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace App\Models;  
+namespace App\Models;
 use CodeIgniter\Model;
 
 class CharacterModel extends Model {
@@ -38,7 +38,10 @@ class CharacterModel extends Model {
         'wiki',
         'logsheet',
         'description',
-        'w_setting_id'
+        'w_setting_id',
+        'gold',
+        'treasure_points',
+        'reject_level'
     ];
 
     public function getCharacter($uid) {
@@ -146,6 +149,60 @@ class CharacterModel extends Model {
         $builder = $this->db->table('player_character');
         $builder->where('uid', $uid);
         $builder->delete();
+    }
+
+    public function addItems($items) {
+        if (!empty($items)) {
+            $this->db->table('character_item')->insertBatch($items);
+        }
+    }
+
+    public function rmItems($items) {
+        if (!empty($items)) {
+            $builder = $this->db->table('character_item');
+            $builder->whereIn('id', $items);
+            $builder->delete();
+        }
+    }
+
+    public function getCharacterItems($character_uid) {
+        $builder = $this->db->table('character_item');
+        $builder->select('item.*, character_item.id AS unique_item_id');
+        $builder->join('item', 'character_item.item_id = item.id', 'left');
+        $builder->where('character_item.player_character_uid', $character_uid);
+        return $builder->get()->getResult();
+    }
+
+    public function createLogsheetEntry($character_uid, $session_uid = NULL, $master = NULL, $notes = NULL, $death = 0) {
+        $character = $this->getCharacter($character_uid);
+        $items = array();
+        foreach ($this->getCharacterItems($character_uid) as $i) {
+            $items[] = $i->name;
+        }
+        $data = array(
+            'character_uid' => $character_uid,
+            'session_uid' => $session_uid,
+            'master' => $master,
+            'level' => $character->level,
+            'gold' => $character->gold,
+            'treasure_points' => $character->treasure_points,
+            'total_items' => count($items),
+            'items' => implode(', ',$items),
+            'notes' => $notes,
+            'death' => $death,
+        );
+        $this->db->table('logsheet')->insert($data);
+    }
+
+    public function getLogsheet($character_uid) {
+        $builder = $this->db->table('logsheet');
+        $builder->select('logsheet.*, user.display_name AS master_name, adventure.name AS adventure');
+        $builder->join('user', 'logsheet.master = user.uid', 'left');
+        $builder->join('session', 'logsheet.session_uid = session.uid', 'left');
+        $builder->join('adventure', 'session.adventure_uid = adventure.uid', 'left');
+        $builder->where('logsheet.character_uid', $character_uid);
+        $builder->orderBy('logsheet.date', 'DESC');
+        return $builder->get()->getResult();
     }
 
 }

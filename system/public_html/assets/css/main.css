@@ -18,7 +18,7 @@ html, body {
     height: 100%;
     margin: 0;
 }
-  
+
 body {
     display: flex;
     flex-direction: column;
@@ -376,4 +376,18 @@ footer {
 .menu-icon {
     min-width: 1em;
     margin-right: 0.5em;
+}
+
+.w-limited {
+    width: 8em;
+}
+
+.link-dotted {
+    border-bottom: dotted 1px;
+    color: inherit;
+}
+
+a.link-dotted:hover {
+    color: inherit;
+    text-decoration: none;
 }
