@@ -39,12 +39,6 @@
                         <input type="number" step="1" name="gold" id="gold" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="treasure_points">PT</label>
-                        <input type="number" step="1" name="treasure_points" id="treasure_points" class="form-control">
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="magic_items_add">Añadir objetos mágicos</label>

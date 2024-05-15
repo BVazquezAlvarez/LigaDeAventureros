@@ -65,7 +65,6 @@
                                     <th scope="col">Personaje</th>
                                     <th scope="col">Nivel</th>
                                     <th scope="col">Oro</th>
-                                    <th scope="col">PT</th>
                                     <th scope="col">Objetos mágicos</th>
                                     <th scope="col">Muere</th>
                                 </tr>
@@ -87,9 +86,6 @@
                                         </td>
                                         <td class="w-limited">
                                             <input type="number" step="1" class="form-control" name="gold[<?= $sp->character_uid ?>]">
-                                        </td>
-                                        <td class="w-limited">
-                                            <input type="number" step="1" class="form-control" name="treasure_points[<?= $sp->character_uid ?>]">
                                         </td>
                                         <td class="w-50">
                                             <select class="s2-multi" name="items[<?= $sp->character_uid ?>][]" multiple style="width:100%">
@@ -123,9 +119,6 @@
                                     </td>
                                     <td class="w-limited">
                                         <input type="number" step="1" class="form-control" name="gold_master">
-                                    </td>
-                                    <td class="w-limited">
-                                        <input type="number" step="1" class="form-control" name="treasure_points_master">
                                     </td>
                                     <td class="w-50">
                                         <select class="s2-multi" name="items_master[]" multiple style="width:100%">

@@ -191,11 +191,10 @@ INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enla
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('discord', 'Enlace de Discord', '');
 
-ALTER TABLE `player_character` CHANGE `level` `level` FLOAT(10,2) NOT NULL;
 
 ALTER TABLE `player_character`
+  ADD COLUMN `adventure_points` int(11) NOT NULL DEFAULT 0,
   ADD COLUMN `gold` int(11) NOT NULL DEFAULT 0,
-  ADD COLUMN `treasure_points` int(11) NOT NULL DEFAULT 0;
 
 ALTER TABLE `session`
   ADD COLUMN `log_done` tinyint(1) NOT NULL DEFAULT 0;
@@ -240,7 +239,6 @@ CREATE TABLE `logsheet` (
   `master` char(11) DEFAULT NULL,
   `level` float(10,2) NOT NULL,
   `gold` int(11) NOT NULL,
-  `treasure_points` int(11) NOT NULL,
   `total_items` INT(11) NOT NULL,
   `items` TEXT NULL,
   `notes` text DEFAULT NULL

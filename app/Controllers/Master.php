@@ -376,7 +376,6 @@ class Master extends BaseController {
         $characters_to_log = $this->request->getVar('log_character') ?? [];
         $level = $this->request->getVar('level');
         $gold = $this->request->getVar('gold');
-        $treasure_points = $this->request->getVar('treasure_points');
         $items = $this->request->getVar('items') ?? [];
         $death = $this->request->getVar('death') ?? [];
 
@@ -389,7 +388,6 @@ class Master extends BaseController {
 
             $data = array(
                 'gold' => (int)$character->gold + (int)$gold[$ctl],
-                'treasure_points' => (int)$character->treasure_points + (int)$treasure_points[$ctl],
             );
             if (!$character->reject_level) {
                 $data['level'] = min(20, ((float)$character->level + (float)$level[$ctl]));
@@ -419,12 +417,10 @@ class Master extends BaseController {
 
             $level_master = $this->request->getVar('level_master');
             $gold_master = $this->request->getVar('gold_master');
-            $treasure_points_master = $this->request->getVar('treasure_points_master');
             $items_master = $this->request->getVar('items_master') ?? [];
 
             $data = array(
                 'gold' => (int)$character->gold + (int)$gold_master,
-                'treasure_points' => (int)$character->treasure_points + (int)$treasure_points_master,
             );
             if (!$character->reject_level) {
                 $data['level'] = min(20, ((float)$character->level + (float)$level_master));
@@ -457,7 +453,6 @@ class Master extends BaseController {
         $character_uid = $this->request->getVar('character_uid');
         $level = $this->request->getVar('level');
         $gold = $this->request->getVar('gold');
-        $treasure_points = $this->request->getVar('treasure_points');
         $magic_items_add = $this->request->getVar('magic_items_add') ?? [];
         $magic_items_rm = $this->request->getVar('magic_items_rm') ?? [];
         $notes = $this->request->getVar('notes');
@@ -467,7 +462,6 @@ class Master extends BaseController {
 
         $data = array(
             'gold' => (int)$character->gold + (int)$gold,
-            'treasure_points' => (int)$character->treasure_points + (int)$treasure_points,
         );
         if (!$character->reject_level) {
             $data['level'] = min(20, ((float)$character->level + (float)$level));

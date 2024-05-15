@@ -48,7 +48,6 @@
           <div>Progreso de nivel: <strong><?= $character->reject_level ? 'Nivel bloqueado' : 100 * fmod($character->level, 1) . '%' ?></strong></div>
         <? endif; ?>
         <div>Oro: <strong><?= $character->gold ?></strong></div>
-        <div>Puntos de Tesoro: <strong><?= $character->treasure_points ?></strong></div>
         <? if (count($items)) : ?>
           <a href="#" class="link-dotted" data-toggle="modal" data-target="#magic-items-modal"><?= count($items) ?> objeto<?= count($items) != 1 ? 's' : '' ?> mágico<?= count($items) != 1 ? 's' : '' ?></a>
         <? else : ?>
@@ -123,7 +122,6 @@
           <th scope="col">Master</th>
           <th scope="col">Nivel</th>
           <th scope="col">Oro</th>
-          <th scope="col"><span class="link-dotted" data-toggle="tooltip" data-placement="bottom" title="Puntos de Tesoro">PT</span></th>
           <th scope="col">Objetos mágicos</th>
           <th scope="col">Notas</th>
         </tr>
@@ -146,7 +144,6 @@
             </td>
             <td><?= (int) $ls->level ?> <? if (fmod($ls->level, 1)) : ?><span class="text-small">(+<?= fmod($ls->level, 1) ?>)</span><? endif; ?></td>
             <td><?= $ls->gold ?></td>
-            <td><?= $ls->treasure_points ?></td>
             <td>
               <? if ($ls->total_items) : ?>
                 <span class="link-dotted" data-toggle="tooltip" data-placement="bottom" title="<?= $ls->items ?>"><?= $ls->total_items ?> objeto<?= $ls->total_items != 1 ? 's' : '' ?> mágico<?= $ls->total_items != 1 ? 's' : '' ?></span>

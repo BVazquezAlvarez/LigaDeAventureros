@@ -40,7 +40,6 @@ class CharacterModel extends Model {
         'description',
         'w_setting_id',
         'gold',
-        'treasure_points',
         'reject_level'
     ];
 
@@ -185,7 +184,6 @@ class CharacterModel extends Model {
             'master' => $master,
             'level' => $character->level,
             'gold' => $character->gold,
-            'treasure_points' => $character->treasure_points,
             'total_items' => count($items),
             'items' => implode(', ',$items),
             'notes' => $notes,
