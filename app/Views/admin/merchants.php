@@ -28,7 +28,7 @@
                 <th scope="col">Mercader</th>
                 <th scope="col">Fecha de inicio</th>
                 <th scope="col">Fecha de fin</th>
-                <th scope="col">Automatización</th>
+                <th scope="col">Tipo</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -43,11 +43,7 @@
                         <td class="align-middle"><?= date('d/m/Y H:i', strtotime($merchant->timestamp_end)) ?></td>
                     <? endif; ?>
                     <td class="align-middle">
-                        <? if ($merchant->automatic_merchant_id) : ?>
-                            Automático - <?= $merchant->automatic_merchant_id ?>
-                        <? else : ?>
-                            Manual
-                        <? endif; ?>
+                        <?= $merchant->automatic_merchant_id ? 'Automático' : 'Manual' ?>
                     </td>
                     <td class="align-middle">
                         <a href="<?= base_url('admin/edit-merchant') ?>/<?= $merchant->id ?>" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
