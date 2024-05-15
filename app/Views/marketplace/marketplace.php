@@ -26,7 +26,7 @@
         <strong><?= $active_character->name ?></strong>
         <input type="hidden" id="active-character-uid" value="<?= $active_character->uid ?>">
         <? if (count($my_characters) > 1) : ?>
-            <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-toggle="modal" data-target="#change-character-modal"><i class="fa-solid fa-rotate"></i></button>
+            <button type="button" class="btn btn-outline-primary btn-sm ml-2" data-toggle="modal" data-target="#change-character-modal"><i class="fa-solid fa-rotate"></i> <span class="d-none d-md-inline">Cambiar</span></button>
         <? endif; ?>
     </div>
     <div class="pt-box d-flex align-items-center">
@@ -43,7 +43,9 @@
     <nav class="mb-3 mt-3">
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <? foreach ($merchants as $idx => $merchant) : ?>
-                <a class="nav-item nav-link <?= $idx == 0 ? 'active' : '' ?>" id="nav-<?= $merchant->id ?>-tab" data-toggle="tab" href="#nav-<?= $merchant->id ?>" role="tab"><?= $merchant->name ?></a>
+                <a class="nav-item nav-link <?= $idx == 0 ? 'active' : '' ?>" id="nav-<?= $merchant->id ?>-tab" data-toggle="tab" href="#nav-<?= $merchant->id ?>" role="tab">
+                    <?= $merchant->name ?>
+                </a>
             <? endforeach; ?>
         </div>
     </nav>
@@ -52,7 +54,11 @@
         <? foreach ($merchants as $idx => $merchant) : ?>
             <div class="tab-pane fade <?= $idx == 0 ? 'show active' : '' ?>" id="nav-<?= $merchant->id ?>" role="tabpanel">
                 <? if (!$merchant->permanent) : ?>
-                    <p class="merchant-ends text-center">Este mercader se irá el <?= date('d/m/Y', strtotime($merchant->timestamp_end)) ?> a las <?= date('H:i', strtotime($merchant->timestamp_end)) ?></p>
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="alert round-border alert-primary text-center js-time-remaining" role="alert" data-time="<?= $merchant->timestamp_end ?>">Tiempo restante: <strong class="js-timer"></strong></div>
+                        </div>
+                    </div>
                 <? endif; ?>
                 <div class="row">
                     <? foreach ($merchant->items as $item) : ?>

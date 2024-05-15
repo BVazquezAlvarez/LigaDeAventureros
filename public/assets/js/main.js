@@ -16,6 +16,12 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
 
+function pad(num, size) {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+}
+
 function loadAdventure(adventure) {
     if (adventure.thumbnail) {
         $('#loaded-adventure-image').attr('src', baseUrl + "img/adventures/" + adventure.thumbnail);
@@ -551,4 +557,41 @@ $(function() {
         $('body').append(form);
         form.submit();
     });
+
+    function updateTimers() {
+        $(".js-time-remaining").each(function() {
+            var timestampEnd = new Date($(this).data("time")).getTime();
+            var now = new Date().getTime();
+            var timeRemaining = timestampEnd - now;
+
+            var daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            var hoursRemaining = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutesRemaining = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            var secondsRemaining = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            var timeRemainingText = "";
+            if (daysRemaining > 1) {
+                timeRemainingText += `${daysRemaining} días, `;
+            } else if (daysRemaining > 0) {
+                timeRemainingText += `${daysRemaining} día, `;
+            }
+            timeRemainingText += `${pad(hoursRemaining,2)}:${pad(minutesRemaining,2)}:${pad(secondsRemaining,2)}`;
+            $(this).find('.js-timer').text(timeRemainingText);
+
+            if (daysRemaining <= 0) {
+                $(this).removeClass('alert-primary').addClass('alert-danger');
+                if (hoursRemaining < 2) {
+                    $(this).addClass('merchant-ending');
+                }
+            }
+
+            if (timeRemaining <= 0) {
+                window.location.reload();
+            }
+        });
+    }
+
+    if ($(".js-time-remaining").length > 0) {
+        setInterval(updateTimers, 1000);
+        updateTimers();
+    }
 });
