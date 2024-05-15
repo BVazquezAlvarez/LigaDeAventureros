@@ -46,7 +46,7 @@
                                         <td>
                                             <p>
                                                 <?= ucfirst($item->type) ?>,
-                                                <strong class="text-primary"><?= $item->rarity ?></strong><? if ($item->attunement) : ?>, <? endif; ?>
+                                                <strong class="color-rarity-<?= str_replace(' ', '-', $item->rarity) ?>"><?= $item->rarity ?></strong><? if ($item->attunement) : ?>, <? endif; ?>
                                                 <?= $item->attunement ?>
                                             </p>
                                             <p class="js-item-description-toggle">

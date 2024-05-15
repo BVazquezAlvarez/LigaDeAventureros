@@ -463,3 +463,27 @@ a.link-dotted:hover {
         box-shadow: inset 0 0 5px red;
     }
 }
+
+.merchant-card .tooltip-inner {
+    max-width: 75%;
+}
+
+.color-rarity-common {
+    color: #36454F;
+}
+
+.color-rarity-uncommon {
+    color: #1eff00;
+}
+
+.color-rarity-rare {
+    color: #0070dd;
+}
+
+.color-rarity-very-rare {
+    color: #a335ee;
+}
+
+.color-rarity-legendary {
+    color: #ff8000;
+}

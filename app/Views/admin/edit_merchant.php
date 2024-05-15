@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ?>
 
-<form class="card" method="post" enctype="multipart/form-data">
+<form class="card merchant-card" method="post" enctype="multipart/form-data">
     <div class="card-header text-center">
         <h2 class="d-inline-block mb-0">Editando mercader: <?= $merchant->name ?></h2>
     </div>
@@ -83,8 +83,11 @@
                         </thead>
                         <tbody>
                             <? foreach ($merchant_items as $item) : ?>
-                                <tr>
-                                    <td><?= $item->name ?></td>
+                                <tr data-toggle="tooltip" data-container=".card" data-placement="auto" data-boundary="window" data-title="<?= $item->full_description ?>">
+                                    <td>
+                                        <div><?= $item->name ?> <small>(<?= $item->source ?><? if($item->page) : ?>:<?= $item->page ?><? endif; ?>)</small></div>
+                                        <div><small><?= ucfirst($item->type) ?>, <strong class="color-rarity-<?= str_replace(' ', '-', $item->rarity) ?>"><?= $item->rarity ?></strong></small></div>
+                                    </td>
                                     <td><?= $item->cost ?> PTs</td>
                                     <td class="text-center">
                                         <input type="checkbox" name="rm_items[]" value="<?= $item->merchant_item_id ?>" class="form-check-input">

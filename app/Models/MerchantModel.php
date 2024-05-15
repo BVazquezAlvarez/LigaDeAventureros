@@ -97,6 +97,7 @@ class MerchantModel extends Model {
         $builder->select('item.*, merchant_item.merchant_item_id');
         $builder->join('item', 'merchant_item.item_id = item.id', 'left');
         $builder->where('merchant_item.merchant_id', $merchant_id);
+        $builder->orderBy('cost', 'DESC');
         return $builder->get()->getResult();
     }
 
