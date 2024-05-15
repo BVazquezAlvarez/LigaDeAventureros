@@ -49,7 +49,10 @@
                                                 <strong class="text-primary"><?= $item->rarity ?></strong><? if ($item->attunement) : ?>, <? endif; ?>
                                                 <?= $item->attunement ?>
                                             </p>
-                                            <p><?= $item->full_description ?></p>
+                                            <p class="js-item-description-toggle">
+                                                <span><?= trim(substr($item->full_description, 0, 100)) ?>...</span>
+                                                <span style="display:none"><?= $item->full_description ?></span>
+                                            </p>
                                         </td>
                                     <? endif; ?>
                                 </tr>
