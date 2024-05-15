@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2024 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,6 +23,9 @@
             <span class="badge badge-success"><?= $users_confirmed ?></span>
             <span class="badge badge-warning"><?= $users_unconfirmed ?></span>
             <span class="badge badge-danger"><?= $users_banned ?></span>
+        </a>
+        <a href="<?= base_url('admin/merchants') ?>" class="btn btn-primary btn-lg btn-block">
+            Administrar mercaderes
         </a>
         <a href="<?= base_url('admin/logs') ?>" class="btn btn-primary btn-lg btn-block">
             Comprobar logs

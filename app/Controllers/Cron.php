@@ -163,4 +163,83 @@ class Cron extends BaseController {
         echo "$count cuentas eliminadas.";
     }
 
+    public function automatic_merchants() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('automatic_merchant');
+        $builder->where('active', 1);
+        $automatic_merchants = $builder->get()->getResult();
+
+        foreach ($automatic_merchants as $am) {
+            $builder = $db->table('merchant');
+            $builder->where('automatic_merchant_id', $am->id);
+            $builder->orderBy('timestamp_end', 'DESC');
+            $last_merchant = $builder->get()->getRow();
+
+            if ($last_merchant) {
+                if (strtotime($last_merchant->timestamp_start) <  time()) {
+                    $this->generateMerchant($db, $am, $last_merchant->timestamp_end);
+                }
+            } else {
+                $this->generateMerchant($db, $am, $am->timestamp_start);
+            }
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('merchant');
+        $current_date = date('Y-m-d H:i:s');
+        $builder->where('timestamp_end <', $current_date);
+        $builder->where('automatic_merchant_id IS NOT NULL');
+        $builder->delete();
+        echo "Eliminados mercaderes antiguos" . PHP_EOL;
+    }
+
+    private function generateMerchant($db, $auto_merchant, $timestamp_start) {
+        $frequency_days = $auto_merchant->frequency_days;
+        do {
+            $start_date = new \DateTime($timestamp_start);
+            $start_date->modify("+$frequency_days days");
+            $timestamp_end = $start_date->format('Y-m-d H:i:s');
+            if ($start_date < new \DateTime()) {
+                $timestamp_start = $timestamp_end;
+            }
+        } while ($start_date < new \DateTime()); // Recalculamos las fechas hasta que la fecha de fin sea posterior a hoy
+
+        $merchant = array(
+            'name' => $auto_merchant->name,
+            'permanent' => 0,
+            'timestamp_start' => $timestamp_start,
+            'timestamp_end' => $timestamp_end,
+            'automatic_merchant_id' => $auto_merchant->id,
+        );
+
+        $db->table('merchant')->insert($merchant);
+		$merchant_id = $db->insertID();
+
+        $items = array();
+        $rarities = array(
+            'common' => 'common',
+            'uncommon' => 'uncommon',
+            'rare' => 'rare',
+            'very_rare' => 'very rare',
+            'legendary' => 'legendary',
+        );
+        foreach ($rarities as $r_k => $r_v) {
+            if ($auto_merchant->{$r_k}) {
+                $builder = $db->table('item');
+                $builder->where('rarity', $r_v);
+                $builder->limit($auto_merchant->{$r_k});
+                $builder->orderBy('RAND()');
+                $results = $builder->get()->getResult();
+                foreach ($results as $res) {
+                    $items[] = array(
+                        'merchant_id' => $merchant_id,
+                        'item_id' => $res->id
+                    );
+                }
+            }
+        }
+        $db->table('merchant_item')->insertBatch($items);
+        echo "Creado mercader: " .$auto_merchant->name . PHP_EOL;
+    }
+
 }

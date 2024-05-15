@@ -117,11 +117,29 @@ $routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
 $routes->post('admin/user-ban', 'Admin::user_ban');
 $routes->post('admin/user-unban', 'Admin::user_unban');
 
+$routes->get('admin/merchants', 'Admin::merchants');
+$routes->get('admin/merchants/(:segment)', 'Admin::merchants/$1');
+$routes->post('admin/new-merchant', 'Admin::new_merchant');
+$routes->post('admin/delete-merchant', 'Admin::delete_merchant');
+$routes->get('admin/edit-merchant/(:segment)', 'Admin::edit_merchant/$1');
+$routes->post('admin/edit-merchant/(:segment)', 'Admin::edit_merchant_post/$1');
+$routes->get('admin/merchants-auto', 'Admin::merchants_auto');
+$routes->get('admin/merchants-auto/(:segment)', 'Admin::merchants_auto/$1');
+$routes->post('admin/new-automatic-merchant', 'Admin::new_automatic_merchant');
+$routes->post('admin/edit-automatic-merchant', 'Admin::edit_automatic_merchant');
+$routes->post('admin/toggle-automatic-merchant', 'Admin::toggle_automatic_merchant');
+$routes->post('admin/delete-automatic-merchant', 'Admin::delete_automatic_merchant');
+
+$routes->get('marketplace', 'Marketplace::index');
+$routes->post('marketplace/change-active-character', 'Marketplace::change_active_character');
+$routes->post('marketplace/buy', 'Marketplace::buy');
+
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 $routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
 $routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
 $routes->get('cron/delete-character-images', 'Cron::delete_character_images');
+$routes->get('cron/automatic-merchants', 'Cron::automatic_merchants');
 
 /*
  * --------------------------------------------------------------------

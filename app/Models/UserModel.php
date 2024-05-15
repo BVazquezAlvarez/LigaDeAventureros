@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace App\Models;  
+namespace App\Models;
 use CodeIgniter\Model;
 
 class UserModel extends Model {
@@ -92,7 +92,7 @@ class UserModel extends Model {
         $builder->where('master', 1);
         return $builder->get()->getResult();
 	}
-	
+
 	public function checkEmailExists($email) {
 		$user = $this->where('email', $email)->first();
 		return isset($user);

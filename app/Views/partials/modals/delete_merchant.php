@@ -14,34 +14,19 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+?>
 
-namespace App\Models;
-use CodeIgniter\Model;
-
-class ItemModel extends Model {
-
-    protected $table = 'item';
-    protected $primaryKey = 'id';
-
-    protected $allowedFields = [
-        'name',
-        'source',
-        'page',
-        'rarity',
-        'type',
-        'attunement',
-        'full_description',
-    ];
-
-    public function getItems() {
-        $builder = $this->db->table('item');
-        return $builder->get()->getResult();
-    }
-
-    public function getItem($id) {
-        $builder = $this->db->table('item');
-        $builder->where('id', $id);
-        return $builder->get()->getRow();
-    }
-
-}
+<div class="modal fade" id="delete-merchant-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" method="post" action="<?= base_url('admin/delete-merchant') ?>">
+            <div class="modal-body">
+                <h5>¿Quieres borrar el mercader <span id="merchant-name"></span>?</h5>
+                <input type="hidden" id="id" name="id">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Sí</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+        </form>
+    </div>
+</div>

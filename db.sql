@@ -134,7 +134,7 @@ ALTER TABLE `session`
 ALTER TABLE `upload_log`
   ADD CONSTRAINT `upload_log_ibfk_1` FOREIGN KEY (`user_uid`) REFERENCES `user` (`uid`) ON DELETE SET NULL ON UPDATE SET NULL;
 
-ALTER TABLE `session` ADD `location` VARCHAR(255) NOT NULL AFTER `time`; 
+ALTER TABLE `session` ADD `location` VARCHAR(255) NOT NULL AFTER `time`;
 
 ALTER TABLE `user` ADD `delete_on` DATE NULL AFTER `banned`;
 
@@ -190,6 +190,8 @@ ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT C
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enlace de Instagram', '');
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('discord', 'Enlace de Discord', '');
+
+-- Actualización logsheets
 
 ALTER TABLE `player_character` CHANGE `level` `level` FLOAT(10,2) NOT NULL;
 
@@ -258,5 +260,74 @@ ALTER TABLE `logsheet`
 
 ALTER TABLE `logsheet`
   ADD COLUMN `death` TINYINT(1) NOT NULL DEFAULT 0;
+
+-- Actualización mercaderes
+
+ALTER TABLE `item` ADD `cost` INT(11) NULL AFTER `full_description`;
+
+UPDATE `item` SET `cost` = 2 WHERE `rarity` = 'common';
+UPDATE `item` SET `cost` = 4 WHERE `rarity` = 'uncommon';
+UPDATE `item` SET `cost` = 8 WHERE `rarity` = 'rare';
+UPDATE `item` SET `cost` = 16 WHERE `rarity` = 'very rare';
+UPDATE `item` SET `cost` = 32 WHERE `rarity` = 'legendary';
+
+CREATE TABLE `merchant` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `permanent` tinyint(1) NOT NULL,
+  `timestamp_start` timestamp NULL,
+  `timestamp_end` timestamp NULL,
+  `automatic_merchant_id` int(11) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `merchant`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `merchant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `merchant_item` (
+  `merchant_item_id` int(11) NOT NULL,
+  `merchant_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `merchant_item`
+  ADD PRIMARY KEY (`merchant_item_id`),
+  ADD KEY `merchant_id` (`merchant_id`),
+  ADD KEY `item_id` (`item_id`);
+
+ALTER TABLE `merchant_item`
+  MODIFY `merchant_item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `merchant_item`
+  ADD CONSTRAINT `merchant_item_ibfk_1` FOREIGN KEY (`merchant_id`) REFERENCES `merchant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `merchant_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
+
+ALTER TABLE `merchant` ADD INDEX(`timestamp_start`);
+ALTER TABLE `merchant` ADD INDEX(`timestamp_end`);
+
+CREATE TABLE `automatic_merchant` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `timestamp_start` timestamp NOT NULL DEFAULT current_timestamp(),
+  `frequency_days` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `common` int(11) NOT NULL DEFAULT 0,
+  `uncommon` int(11) NOT NULL DEFAULT 0,
+  `rare` int(11) NOT NULL DEFAULT 0,
+  `very_rare` int(11) NOT NULL DEFAULT 0,
+  `legendary` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `automatic_merchant`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `automatic_merchant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `merchant` ADD FOREIGN KEY (`automatic_merchant_id`) REFERENCES `automatic_merchant`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `item` ADD INDEX(`rarity`);
 
 COMMIT;

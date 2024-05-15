@@ -20,7 +20,7 @@ function loadAdventure(adventure) {
     if (adventure.thumbnail) {
         $('#loaded-adventure-image').attr('src', baseUrl + "img/adventures/" + adventure.thumbnail);
         $('#loaded-adventure-image').attr('alt', adventure.name);
-        $('#loaded-adventure-image').show(); 
+        $('#loaded-adventure-image').show();
     } else {
         $('#loaded-adventure-image').hide();
     }
@@ -33,14 +33,14 @@ function loadAdventure(adventure) {
     $('#loaded-adventure-duration span').text(adventure.duration);
     if (adventure.themes) {
         $('#loaded-adventure-themes span').text(adventure.themes);
-        $('#loaded-adventure-themes').show(); 
+        $('#loaded-adventure-themes').show();
     } else {
         $('#loaded-adventure-themes').hide();
     }
     $('#loaded-adventure-description i').html(adventure.description.replace(/\r\n/g, '<br>'));
     if (adventure.rewards) {
         $('#loaded-adventure-rewards').html(adventure.rewards.replace(/\r\n/g, '<br>'));
-        $('#loaded-adventure-rewards').show(); 
+        $('#loaded-adventure-rewards').show();
     } else {
         $('#loaded-adventure-rewards').hide();
     }
@@ -56,7 +56,7 @@ function preloadJoinSession() {
         let char_uid = $(this).val();
         let char_name = $(this).find('option:selected').data('char-name');
         let char_rank = $(this).find('option:selected').data('rank');
-    
+
         if (char_uid == '__cancel') {
             var modal = '#cancel-inscription-modal';
         } else if (joined) {
@@ -94,7 +94,7 @@ $(function() {
     $('.js-validate-btn').on('click', function() {
         let uid = $(this).data("uid");
         let name = $(this).data("name");
-        
+
         $('#validate-sheet-modal #modal-character-name').text(name);
         $('#validate-sheet-modal #modal-uid').val(uid);
 
@@ -306,7 +306,7 @@ $(function() {
                 $('#session-data').html(data);
                 $('#session-data').show();
                 preloadJoinSession();
-            }  
+            }
         });
     });
 
@@ -442,5 +442,113 @@ $(function() {
         } else {
             $('.logsheet-row').show();
         }
+    });
+
+    $('#merchant-permanent').on('change', function() {
+        if ($(this).prop('checked')) {
+            $('.js-merchant-permanent').hide();
+            $('.js-merchant-permanent input').prop('required', false);
+        } else {
+            $('.js-merchant-permanent').show();
+            $('.js-merchant-permanent input').prop('required', true);
+        }
+    });
+
+    $('.js-delete-merchant').on('click', function() {
+        let id = $(this).data("id");
+        let name = $(this).data("name");
+
+        $("#delete-merchant-modal #merchant-name").text(name);
+        $("#delete-merchant-modal #id").val(id);
+
+        $('#delete-merchant-modal').modal('show');
+    });
+
+    $('.js-toggle-automatic-merchant').on('change', function() {
+        let id = $(this).data("id");
+        let active = $(this).prop('checked') ? 1 : 0;
+        console.log(id,active);
+        $.ajax({
+            method: "POST",
+            url: baseUrl + "admin/toggle-automatic-merchant",
+            dataType:'json',
+            data: {
+                id: id,
+                active: active
+            }
+        });
+    });
+
+    $('.js-edit-automatic-merchant').on('click', function() {
+        let merchant = $(this).data("merchant");
+        $("#edit-automatic-merchant-modal #id").val(merchant.id);
+        $("#edit-automatic-merchant-modal #name").val(merchant.name);
+        $("#edit-automatic-merchant-modal #timestamp_start").val(merchant.timestamp_start);
+        $("#edit-automatic-merchant-modal #frequency_days").val(merchant.frequency_days);
+        $("#edit-automatic-merchant-modal #common").val(merchant.common);
+        $("#edit-automatic-merchant-modal #uncommon").val(merchant.uncommon);
+        $("#edit-automatic-merchant-modal #rare").val(merchant.rare);
+        $("#edit-automatic-merchant-modal #very_rare").val(merchant.very_rare);
+        $("#edit-automatic-merchant-modal #legendary").val(merchant.legendary);
+        $('#edit-automatic-merchant-modal').modal('show');
+    });
+
+    $('.js-delete-automatic-merchant').on('click', function() {
+        let id = $(this).data("id");
+        let name = $(this).data("name");
+
+        $("#delete-automatic-merchant-modal #merchant-name").text(name);
+        $("#delete-automatic-merchant-modal #id").val(id);
+
+        $('#delete-automatic-merchant-modal').modal('show');
+    });
+
+    $('.js-item-description-toggle').on('click', function() {
+        $(this).find('span').toggle();
+    });
+
+    $('#marketplace-change-character').on('click', function() {
+        let active = $('input[name="active_character"]:checked').val();
+        $.ajax({
+            method: "POST",
+            url: baseUrl + "marketplace/change-active-character",
+            dataType:'json',
+            data: {
+                active: active,
+            },
+            success: function(data) {
+                window.location.reload();
+            }
+        });
+    });
+
+    $('.js-btn-buy').on('click', function() {
+        let item_id = $(this).data('item');
+        let merchant_id = $(this).data('merchant');
+        let character_uid = $('#active-character-uid').val();
+
+        let form = $('<form>').attr({
+            method: 'POST',
+            action: 'marketplace/buy'
+        });
+        form.append(
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'item_id',
+                value: item_id
+            }),
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'merchant_id',
+                value: merchant_id
+            }),
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'character_uid',
+                value: character_uid
+            })
+        );
+        $('body').append(form);
+        form.submit();
     });
 });
