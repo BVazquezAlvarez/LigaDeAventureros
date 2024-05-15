@@ -575,6 +575,9 @@ $(function() {
                 timeRemainingText += `${daysRemaining} día, `;
             }
             timeRemainingText += `${pad(hoursRemaining,2)}:${pad(minutesRemaining,2)}:${pad(secondsRemaining,2)}`;
+            if (timeRemaining <= 0) {
+                timeRemainingText = '00:00:00';
+            }
             $(this).find('.js-timer').text(timeRemainingText);
 
             if (daysRemaining <= 0) {
@@ -582,10 +585,6 @@ $(function() {
                 if (hoursRemaining < 2) {
                     $(this).addClass('merchant-ending');
                 }
-            }
-
-            if (timeRemaining <= 0) {
-                window.location.reload();
             }
         });
     }

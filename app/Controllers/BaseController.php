@@ -66,6 +66,7 @@ abstract class BaseController extends Controller {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
         setlocale(LC_TIME, 'es_ES.UTF-8');
+        date_default_timezone_set("Europe/Madrid");
 
         $this->data = array();
 
