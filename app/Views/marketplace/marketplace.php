@@ -67,7 +67,7 @@
                                 <div class="card-header bg-rarity-<?= str_replace(' ', '-', $item->rarity) ?>">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h3 class="d-inline h5 mb-0"><?= $item->name ?></h3>
-                                    <button type="button" class="btn btn-<?= $item->cost > $active_character->treasure_points ? 'secondary' : 'light' ?> js-btn-buy text-nowrap ml-2" data-item="<?= $item->id ?>" data-merchant="<?= $merchant->id ?>" <?= $item->cost > $active_character->treasure_points ? 'disabled' : '' ?>><?= $item->cost ?><i class="fa-solid fa-coins ml-2"></i></button>
+                                    <button type="button" class="btn btn-<?= $item->cost > $active_character->treasure_points ? 'secondary' : 'light' ?> js-btn-buy text-nowrap ml-2" data-item="<?= $item->id ?>" data-merchant="<?= $merchant->id ?>" data-name="<?= $item->name ?>" data-cost="<?= $item->cost ?>" <?= $item->cost > $active_character->treasure_points ? 'disabled' : '' ?>><?= $item->cost ?><i class="fa-solid fa-coins ml-2"></i></button>
                                 </div>
                                 </div>
                                 <div class="card-body">
@@ -91,3 +91,4 @@
 <? endif; ?>
 
 <?= view('partials/modals/marketplace_change_character', ['characters' => $my_characters, 'active_character' => $active_character]) ?>
+<?= view('partials/modals/marketplace_confirm_buy') ?>

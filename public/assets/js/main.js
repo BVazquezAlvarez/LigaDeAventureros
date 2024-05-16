@@ -532,30 +532,16 @@ $(function() {
         let item_id = $(this).data('item');
         let merchant_id = $(this).data('merchant');
         let character_uid = $('#active-character-uid').val();
+        let item_name = $(this).data('name');
+        let item_cost = $(this).data('cost');
 
-        let form = $('<form>').attr({
-            method: 'POST',
-            action: 'marketplace/buy'
-        });
-        form.append(
-            $('<input>').attr({
-                type: 'hidden',
-                name: 'item_id',
-                value: item_id
-            }),
-            $('<input>').attr({
-                type: 'hidden',
-                name: 'merchant_id',
-                value: merchant_id
-            }),
-            $('<input>').attr({
-                type: 'hidden',
-                name: 'character_uid',
-                value: character_uid
-            })
-        );
-        $('body').append(form);
-        form.submit();
+        $("#confirm-buy-modal #item-name").text(item_name);
+        $("#confirm-buy-modal #item-cost").text(item_cost);
+        $("#confirm-buy-modal #item_id").val(item_id);
+        $("#confirm-buy-modal #merchant_id").val(merchant_id);
+        $("#confirm-buy-modal #character_uid").val(character_uid);
+
+        $('#confirm-buy-modal').modal('show');
     });
 
     function updateTimers() {
