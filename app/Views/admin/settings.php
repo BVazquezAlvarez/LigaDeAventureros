@@ -50,5 +50,6 @@
     <ul>
         <li>User UID: <strong><?= $userdata['uid'] ?></strong></li>
         <li>Dirección IP: <strong><?= $_SERVER['REMOTE_ADDR'] ?></strong></li>
+        <li>Hora del servidor: <strong><?= date('c') ?></strong></li>
     </ul>
 </div>
