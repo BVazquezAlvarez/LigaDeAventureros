@@ -26,6 +26,9 @@
                 </button>
             </div>
             <div class="modal-body row">
+                <div class="col-md-12 pb-3">
+                    <small class="text-muted"><em>Para realizar el log de una partida, ir al <a href="<?= base_url('master/logsheets') ?>">Área de masters</a></em></small>
+                </div>
                 <input type="hidden" name="character_uid" value="<?= $character->uid ?>">
                 <div class="col-md-4">
                     <div class="form-group">
