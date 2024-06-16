@@ -58,7 +58,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="session_uid" value="<?= $ls->uid ?>">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" style="min-width:1000px">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col"></th>
