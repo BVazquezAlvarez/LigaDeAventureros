@@ -30,7 +30,7 @@ class Home extends BaseController {
         
         $sessions = [
             'today' => $this->SessionModel->getSessions(date('Y-m-d'), date('Y-m-d')),
-            'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow')), date('Y-m-d', strtotime('+15 days'))),
+            'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow')), date('Y-m-d', strtotime('+20 days'))),
         ];
 
         foreach ($sessions as $session_block) {
