@@ -67,7 +67,7 @@
                     <td><?= $char->class ?></td>
                     <td><strong><?= $char->level ?></strong></td>
                     <td><?= rank_name(rank_get($char->level)) ?></td>
-                    <td><?= $char->w_setting_name ?> (<?= $char->timeline ?>)</td>
+                    <td><?= $char->w_setting_name ?></td>
                 </tr>
             <? endforeach; ?>
         </tbody>
