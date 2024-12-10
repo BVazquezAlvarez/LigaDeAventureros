@@ -70,9 +70,10 @@
                 <th scope="col">Duración</th>
                 <th scope="col">Jugadores</th>
                 <th scope="col">Modalidad</th>
-                <th scope="col">Sesiones jugadas</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">S. Jugadas</th>
                 <th scope="col">Última sesión</th>
-                <th scope="col">Sesiones programadas</th>
+                <th scope="col">S. programadas</th>
                 <th scope="col">Próxima sesión</th>
             </tr>
         </thead>
@@ -87,8 +88,11 @@
                         <? if ($adv->w_setting_id == 0) : ?>
                            Todas las modalidades
                         <? else : ?>
-                            <?= $adv->w_setting_name ?> (<?= $adv->timeline ?>)
+                            <?= $adv->w_setting_name ?>
                         <? endif; ?>
+                    </td>
+                    <td class="align-middle">
+                        <?= $adv->type_name ?>
                     </td>
                     <td class="align-middle"><?= $adv->total_past ?></td>
                     <td class="align-middle">

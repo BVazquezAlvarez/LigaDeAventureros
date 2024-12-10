@@ -22,12 +22,15 @@ class Adventure extends BaseController {
     public function __construct() {
         $this->AdventureModel = model('AdventureModel');
         $this->WorldSettingModel = model('WorldSettingModel');
+        $this->AdventureTypeModel = model('AdventureTypeModel');
+
     }
 
     public function data_ajax() {
         $uid = $this->request->getVar('uid');
         $adventure = $this->AdventureModel->getAdventure($uid);
         $world_settings = $this->WorldSettingModel->getWorldSettingList();
+        $adventure_type = $this->AdventureTypeModel->getAdventureTypeList();
 
         if ($adventure) {
             $adventure->rank_text = rank_full_text($adventure->rank);
@@ -36,7 +39,8 @@ class Adventure extends BaseController {
         echo json_encode([
             'error' => !$adventure,
             'adventure' => $adventure,
-            'world_settings' => $world_settings
+            'world_settings' => $world_settings,
+            'adventure_type' => $adventure_type
         ]);
     }
 

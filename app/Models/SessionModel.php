@@ -37,9 +37,10 @@ class SessionModel extends Model {
 
     public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false, $published_only = true) {
         $builder = $this->db->table('session');
-        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.thumbnail, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.thumbnail, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline, adventure.type AS type_id, adventure_type.name AS type_name');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         if ($published_only) {
             $builder->where('session.published', 1);
@@ -84,7 +85,7 @@ class SessionModel extends Model {
 
     public function getUnpublishedSessions() {
         $builder = $this->db->table('session');
-        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->select('session.*, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline, adventure.type as type_id, adventure_type.name AS type_name');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');

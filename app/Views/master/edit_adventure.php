@@ -27,18 +27,32 @@
                     <label for="adventure_name">Nombre <span class="text-danger">*</span></label>
                     <input type="text" name="adventure_name" id="adventure_name" class="form-control" value="<?= $adventure->name ?>" required>
                 </div>
-                <div class="form-group">
-                    <label for="adventure_rank">Rango</label>
-                    <select name="adventure_rank" id="adventure_rank" class="form-control">
-                        <option value=""><?= rank_full_text(0) ?></option>
-                        <option value="1" <?= $adventure->rank == '1' ? 'selected' : '' ?>><?= rank_full_text(1) ?></option>
-                        <option value="2" <?= $adventure->rank == '2' ? 'selected' : '' ?>><?= rank_full_text(2) ?></option>
-                        <option value="3" <?= $adventure->rank == '3' ? 'selected' : '' ?>><?= rank_full_text(3) ?></option>
-                        <option value="4" <?= $adventure->rank == '4' ? 'selected' : '' ?>><?= rank_full_text(4) ?></option>
-                    </select>
-                    <? if (isset(session('validation_errors')['adventure_rank'])) : ?>
-                        <small class="text-danger"><?= session('validation_errors')['adventure_rank'] ?></small>
-                    <? endif; ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="adventure_rank">Rango</label>
+                            <select name="adventure_rank" id="adventure_rank" class="form-control">
+                                <option value=""><?= rank_full_text(0) ?></option>
+                                <option value="1" <?= $adventure->rank == '1' ? 'selected' : '' ?>><?= rank_full_text(1) ?></option>
+                                <option value="2" <?= $adventure->rank == '2' ? 'selected' : '' ?>><?= rank_full_text(2) ?></option>
+                                <option value="3" <?= $adventure->rank == '3' ? 'selected' : '' ?>><?= rank_full_text(3) ?></option>
+                                <option value="4" <?= $adventure->rank == '4' ? 'selected' : '' ?>><?= rank_full_text(4) ?></option>
+                            </select>
+                            <? if (isset(session('validation_errors')['adventure_rank'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['adventure_rank'] ?></small>
+                            <? endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="type">Tipo <span class="text-danger">*</span></label>
+                            <select name="type" id="type" class="form-control">
+                            <? foreach ($adventure_type as $adv_type) : ?>
+                                <option value="<?=$adv_type->id ?>" <?= $adventure->type == $adv_type->id ? 'selected' : '' ?>><?=$adv_type->name ?></option>
+                            <? endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -79,7 +93,7 @@
                             <select name="w_setting_id" id="w_setting_id" class="form-control">
                                 <option value="0" <?= $adventure->w_setting_id == 0 ? 'selected' : '' ?>>Todas las modalidades</option>
                             <? foreach ($world_settings as $setting) : ?>
-                                <option value="<?=$setting->id ?>" <?= $adventure->w_setting_id == $setting->id ? 'selected' : '' ?>><?=$setting->name ?>  (<?= $setting->timeline ?>)</option>
+                                <option value="<?=$setting->id ?>" <?= $adventure->w_setting_id == $setting->id ? 'selected' : '' ?>><?=$setting->name ?></option>
                             <? endforeach; ?>
                             </select>
                         </div>

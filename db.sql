@@ -189,4 +189,9 @@ ALTER TABLE `player_character` MODIFY COLUMN `date_uploaded` TIMESTAMP DEFAULT C
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('instagram', 'Enlace de Instagram', '');
 
+CREATE TABLE `adventure_type` ( `id` INT NOT NULL , `name` VARCHAR(255) NOT NULL , `active` TINYINT NOT NULL ) ENGINE = InnoDB;
+
+ALTER TABLE `adventure` ADD `type` INT NOT NULL DEFAULT 0 AFTER `admin`;
+
+ALTER TABLE `adventure` ADD CONSTRAINT `adventure_type_ibfk` FOREIGN KEY (`type`) REFERENCES `adventure_type`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;

@@ -30,9 +30,9 @@
                     <? if ($adventure->w_setting_id == 0) : ?>
                         <h4>Todas las modalidades</h4>
                     <? else :?>
-                        <h4><?= $adventure->w_setting_name?> (<?= $adventure->timeline ?>)</h4>
+                        <h4><?= $adventure->w_setting_name?></h4>
                     <? endif; ?>
-                    <h4><?= $adventure->w_setting_name?> (<?= $adventure->timeline ?>)</h4>
+                        <h5><?= $adventure->type_name?></h5>
                     <p>
                         <div><strong>Jugadores:</strong> <?= $adventure->players_min_recommended ?>-<?= $adventure->players_max_recommended ?></div>
                         <div><strong>Duración:</strong> <?= $adventure->duration ?></div>

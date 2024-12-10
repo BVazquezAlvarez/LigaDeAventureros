@@ -34,13 +34,15 @@ class AdventureModel extends Model {
         'description',
         'rewards',
         'thumbnail', 
-        'w_setting_id'
+        'w_setting_id',
+        'type'
 	];
 
     public function getAdventureList() {
         $builder = $this->db->table('adventure');
-        $builder->select('adventure.*, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->select('adventure.*, world_setting.name AS w_setting_name, world_setting.timeline, adventure_type.name AS type_name');
         $builder->join('world_setting', 'adventure.w_setting_id = world_setting.id', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->orderBy('rank', 'ASC');
         $builder->orderBy('name', 'ASC');
         return $builder->get()->getResult();
@@ -49,7 +51,7 @@ class AdventureModel extends Model {
     public function getAdventuresWithSessionData($filters) {
         $builder = $this->db->table('adventure');
         $builder->select(
-            'adventure.*, world_setting.name AS w_setting_name, world_setting.timeline, 
+            'adventure.*, world_setting.name AS w_setting_name, world_setting.timeline, adventure_type.name AS type_name,
             COUNT(CASE WHEN TIMESTAMP(session.date, session.time) < NOW() THEN session.uid END) AS total_past,
             COUNT(CASE WHEN TIMESTAMP(session.date, session.time) > NOW() THEN session.uid END) AS total_future,
             MAX(CASE WHEN TIMESTAMP(session.date, session.time) < NOW() THEN TIMESTAMP(session.date, session.time) END) AS last_session_datetime,
@@ -57,6 +59,7 @@ class AdventureModel extends Model {
         );
         $builder->join('session', 'adventure.uid = session.adventure_uid', 'left');
         $builder->join('world_setting', 'adventure.w_setting_id = world_setting.id', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->groupBy('adventure.uid');
         $builder->orderBy('ISNULL(adventure.rank)', 'ASC');
         $builder->orderBy('adventure.rank', 'ASC');
@@ -89,8 +92,9 @@ class AdventureModel extends Model {
 
     public function getAdventure($uid) {
         $builder = $this->db->table('adventure');
-        $builder->select('adventure.*, world_setting.name AS w_setting_name, world_setting.timeline');
+        $builder->select('adventure.*, world_setting.name AS w_setting_name, world_setting.timeline, adventure_type.name AS type_name');
         $builder->join('world_setting', 'adventure.w_setting_id = world_setting.id', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->where('uid',$uid);
         return $builder->get()->getRow();
     }

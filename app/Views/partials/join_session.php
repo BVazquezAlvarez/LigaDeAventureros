@@ -3,9 +3,9 @@
         <div class="card-header text-center">
             <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h3>
              <? if ($session->w_setting_id != 0) : ?>
-            <h6 class="d-inline-block mb-0"><?= $session->w_setting_name ?> (<?=$session->timeline?>)</h6>
+            <h6 class="d-inline-block mb-0"><?= $session->w_setting_name ?> · <?= $session->type_name ?></h6>
             <? else: ?>
-            <h6 class="d-inline-block mb-0">Todas las modalidades </h6>
+            <h6 class="d-inline-block mb-0">Todas las modalidades · <?= $session->type_name ?></h6>
              <? endif; ?>
         </div>
         <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">

@@ -31,6 +31,7 @@
                         <th scope="col">Aventura</th>
                         <th scope="col">Rango</th>
                         <th scope="col">Modalidad</th>
+                        <th scope="col">Tipo</th>
                         <th scope="col">Master</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Hora</th>
@@ -45,10 +46,11 @@
                             <th class="align-middle" scope="row"><?= $session->adventure_name ?></th>
                             <td class="align-middle"><?= rank_full_text($session->rank) ?></td>
                             <? if (!$session->w_setting_id != 0) : ?>
-                                <td class="align-middle"><?= rank_full_text($session->w_setting_name) ?> (<?= $session->timeline ?>)</td>
+                                <td class="align-middle"><?= $session->w_setting_name ?></td>
                             <? else: ?>  
                                 <td>Todas las modalidades</td>  
                             <? endif; ?>
+                            <td class="align-middle"><?= $session->type_name ?></td>
                             <td class="align-middle"><?= $session->master ?></td>
                             <td class="align-middle"><?= date('d/m/Y', strtotime($session->date)) ?></td>
                             <td class="align-middle"><?= date('H:i', strtotime($session->time)) ?></td>

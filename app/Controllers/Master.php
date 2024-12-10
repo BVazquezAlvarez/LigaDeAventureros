@@ -29,6 +29,7 @@ class Master extends BaseController {
         $this->AdventureModel = model('AdventureModel');
         $this->SessionModel = model('SessionModel');
         $this->WorldSettingModel = model('WorldSettingModel');
+        $this->AdventureTypeModel = model('AdventureTypeModel');
     }
 
     protected function setTitle(string $title) {
@@ -141,6 +142,7 @@ class Master extends BaseController {
         $this->setData('masters', $this->UserModel->getMasters());
         $this->setData('locations', $this->SessionModel->getLocations());
         $this->setData('world_settings', $this->WorldSettingModel->getWorldSettingList());
+        $this->setData('adventure_type', $this->AdventureTypeModel->getAdventureTypeList());
         $this->setTitle('Nueva sesión');
         return $this->loadView('master/new_session');
     }
@@ -201,6 +203,7 @@ class Master extends BaseController {
                 'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
                 'thumbnail' => $thumbnailName,
                 'w_setting_id' => $this->request->getVar('w_setting_id'),
+                'type' => $this->request->getVar('type'),
             ]);
         } else {
             $adventureUid = $this->request->getVar('adventure');
@@ -240,6 +243,7 @@ class Master extends BaseController {
 
         $this->setData('adventure', $adventure);
         $this->setData('world_settings', $this->WorldSettingModel->getWorldSettingList());
+        $this->setData('adventure_type', $this->AdventureTypeModel->getAdventureTypeList());
         $this->setTitle('Editar '.$adventure->name);
         return $this->loadView('master/edit_adventure');
     }
@@ -274,6 +278,7 @@ class Master extends BaseController {
             'description' => $this->request->getVar('adventure_description'),
             'rewards' => $this->request->getVar('adventure_rewards') ?: NULL,
             'w_setting_id' => $this->request->getVar('w_setting_id'),
+            'type' => $this->request->getVar('type'),
         ];
         
         if ($this->request->getVar('delete_thumbnail')) {
