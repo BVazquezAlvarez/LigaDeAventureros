@@ -139,7 +139,8 @@ class Character extends BaseController {
             'active'         => 1,
             'wiki'           => $this->request->getVar('wiki'),
             'description'    => $this->request->getVar('description'),
-            'w_setting_id'    => $this->request->getVar('w_setting_id'),
+            'w_setting_id'   => $this->request->getVar('w_setting_id'),
+            'beyond'         => $this->request->getVar('beyond'),
         );
 
         $upload_errors = [];

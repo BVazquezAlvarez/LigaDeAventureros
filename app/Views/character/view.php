@@ -48,6 +48,11 @@
           <a href="<?= $character->wiki ?>" target="_blank">Ver página de Wiki</a>
         </p>
       <? endif; ?>
+      <? if ($character->beyond) : ?>
+        <p>
+          <a href="<?= $character->beyond ?>" target="_blank">Ver página de D&D Beyond</a>
+        </p>
+      <? endif; ?>
       <p>
         <a href="#" data-toggle="modal" data-target="#character-sheet-modal">Hoja de personaje</a>
         <? if ($character->uploaded_sheet != $character->validated_sheet && ($isOwner || ($userdata && $userdata['master']))) : ?>

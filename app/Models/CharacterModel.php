@@ -38,7 +38,8 @@ class CharacterModel extends Model {
         'wiki',
         'logsheet',
         'description',
-        'w_setting_id'
+        'w_setting_id',
+        'beyond'
     ];
 
     public function getCharacter($uid) {

@@ -82,6 +82,12 @@
                                 <input type="url" name="wiki" id="wiki" class="form-control">
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="wiki">Enlace D&D Beyond</label>
+                                <input type="url" name="beyond" id="beyond" class="form-control">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6">

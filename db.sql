@@ -194,4 +194,6 @@ CREATE TABLE `adventure_type` ( `id` INT NOT NULL , `name` VARCHAR(255) NOT NULL
 ALTER TABLE `adventure` ADD `type` INT NOT NULL DEFAULT 0 AFTER `admin`;
 
 ALTER TABLE `adventure` ADD CONSTRAINT `adventure_type_ibfk` FOREIGN KEY (`type`) REFERENCES `adventure_type`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `player_character` ADD `beyond` VARCHAR(255) NULL;
 COMMIT;
