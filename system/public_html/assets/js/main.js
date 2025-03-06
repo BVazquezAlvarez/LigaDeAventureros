@@ -67,7 +67,8 @@ function preloadJoinSession() {
 
         $(`${modal} #adventure-name`).text(adventure_name);
         $(`${modal} .js-char-name`).text(char_name);
-        $(`${modal} #adventure-rank`).text(adventure_rank);
+        $(`${modal} .adventure-rank`).text(adventure_rank);
+        $(`${modal} .adventure-rank`).val(adventure_rank);
         $(`${modal} #char-rank`).text(char_rank);
         if (adventure_rank == 'Todos' || adventure_rank == char_rank) {
             $(`${modal} .alert`).hide();
@@ -133,7 +134,7 @@ $(function() {
         $("#update-character-modal #level").val(character.level);
         $("#update-character-modal #wiki").val(character.wiki);
         $("#update-character-modal #description").val(character.description);
-
+        $("#update-character-modal #beyond").val(character.beyond);
         if (character.image) {
             $("#update-character-modal #delete_image_block").show();
         } else {

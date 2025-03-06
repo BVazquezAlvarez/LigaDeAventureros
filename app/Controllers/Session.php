@@ -125,11 +125,13 @@ class Session extends BaseController {
         $session_uid = $this->request->getVar('session-uid');
         $player_uid = session('user_uid');
         $character_uid = $this->request->getVar('character-uid');
-
+        $adventure_rank = $this->request->getVar('adventure-rank');
+        $priority = ($adventure_rank == "Bronce" && $this->CharacterModel->countAllCharacters($player_uid) == 1) ? 1 : 0;
         $this->SessionModel->addPlayerSession([
             'session_uid' => $session_uid,
             'player_uid' => $player_uid,
             'player_character_uid' => $character_uid,
+            'priority' => $priority
         ]);
         $this->email->player_join_session($player_uid, $session_uid, $character_uid);
 

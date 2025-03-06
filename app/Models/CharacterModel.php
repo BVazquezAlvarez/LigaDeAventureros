@@ -143,6 +143,15 @@ class CharacterModel extends Model {
         return $builder->countAllResults();
     }
 
+    public function countAllCharacters($player_uid = NULL) {
+        $builder = $this->db->table('player_character');
+        $builder->join('user', 'player_character.user_uid = user.uid', 'left');
+        $builder->where('user.banned', 0);
+        $builder->where('user_uid', $player_uid);
+        
+        return $builder->countAllResults();
+    }
+
     public function deleteCharacter($uid) {
         $builder = $this->db->table('player_character');
         $builder->where('uid', $uid);

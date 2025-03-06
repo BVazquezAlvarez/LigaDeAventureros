@@ -100,6 +100,7 @@ class SessionModel extends Model {
         $builder->join('user', 'player_session.player_uid = user.uid', 'left');
         $builder->join('player_character', 'player_session.player_character_uid = player_character.uid', 'left');
         $builder->where('player_session.session_uid', $session_uid);
+        $builder->orderBy('player_session.priority', 'DESC');
         $builder->orderBy('player_session.timestamp', 'ASC');
         return $builder->get()->getResult();
     }

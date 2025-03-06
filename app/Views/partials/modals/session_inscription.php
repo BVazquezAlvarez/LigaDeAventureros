@@ -22,10 +22,11 @@
             <div class="modal-body">
                 <div class="text-center">¿Estás seguro de que quieres inscribirte a <strong id="adventure-name"></strong> con <strong class="js-char-name"></strong>?</div>
                 <div class="alert alert-warning text-center mt-3 mb-0" id="modal-alert" role="alert">
-                    ¡Alerta! La aventura es de rango <strong id="adventure-rank"></strong> y <strong class="js-char-name"></strong> es de rango <strong id="char-rank"></strong>.
+                    ¡Alerta! La aventura es de rango <strong class="adventure-rank"></strong> y <strong class="js-char-name"></strong> es de rango <strong id="char-rank"></strong>.
                 </div>
                 <input type="hidden" id="session-uid" name="session-uid">
                 <input type="hidden" id="char-uid" name="character-uid">
+                <input type="hidden" class="adventure-rank" name="adventure-rank">
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Sí</button>
@@ -43,6 +44,7 @@
                 <div class="alert alert-warning text-center mt-3 mb-0" id="modal-alert" role="alert">
                     ¡Alerta! La aventura es de rango <strong id="adventure-rank"></strong> y <strong class="js-char-name"></strong> es de rango <strong id="char-rank"></strong>.
                 </div>
+                <input type="hidden" class="adventure-rank" name="adventure-rank">
                 <input type="hidden" id="session-uid" name="session-uid">
                 <input type="hidden" id="char-uid" name="character-uid">
             </div>
