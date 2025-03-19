@@ -46,10 +46,10 @@
                                 <label for="adventure_rank">Rango</label>
                                 <select name="adventure_rank" id="adventure_rank" class="form-control">
                                     <option value=""><?= rank_full_text(0) ?></option>
-                                    <option value="1" <?= $adventure->rank == '1' ? 'selected' : '' ?>><?= rank_full_text(1) ?></option>
-                                    <option value="2" <?= $adventure->rank == '2' ? 'selected' : '' ?>><?= rank_full_text(2) ?></option>
-                                    <option value="3" <?= $adventure->rank == '3' ? 'selected' : '' ?>><?= rank_full_text(3) ?></option>
-                                    <option value="4" <?= $adventure->rank == '4' ? 'selected' : '' ?>><?= rank_full_text(4) ?></option>
+                                    <option value="1" <?= isset($adventure) && $adventure->rank == '1' ? 'selected' : '' ?>><?= rank_full_text(1) ?></option>
+                                    <option value="2" <?= isset($adventure) && $adventure->rank == '2' ? 'selected' : '' ?>><?= rank_full_text(2) ?></option>
+                                    <option value="3" <?= isset($adventure) && $adventure->rank == '3' ? 'selected' : '' ?>><?= rank_full_text(3) ?></option>
+                                    <option value="4" <?= isset($adventure) && $adventure->rank == '4' ? 'selected' : '' ?>><?= rank_full_text(4) ?></option>
                                 </select>
                                 <? if (isset(session('validation_errors')['adventure_rank'])) : ?>
                                     <small class="text-danger"><?= session('validation_errors')['adventure_rank'] ?></small>
@@ -61,7 +61,7 @@
                                 <label for="type">Tipo <span class="text-danger">*</span></label>
                                 <select name="type" id="type" class="form-control">
                                 <? foreach ($adventure_type as $adv_type) : ?>
-                                    <option value="<?=$adv_type->id ?>" <?= $adventure->type == $adv_type->id ? 'selected' : '' ?>><?=$adv_type->name ?></option>
+                                    <option value="<?=$adv_type->id ?>" <?= isset($adventure) && $adventure->type == $adv_type->id ? 'selected' : '' ?>><?=$adv_type->name ?></option>
                                 <? endforeach; ?>
                                 </select>
                             </div>
