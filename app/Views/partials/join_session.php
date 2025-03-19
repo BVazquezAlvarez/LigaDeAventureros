@@ -16,6 +16,7 @@
                         <p>
                             <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?><br/>
                             <?= date('H:i', strtotime($session->time)) ?><br/>
+                            <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a>
                             <?= $session->location ?><br/>
                             <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                         </p>
@@ -38,7 +39,7 @@
                             <h6 class="mt-2 text-secondary">Lista de espera</h6>
                             <? foreach ($session->players['waitlist'] as $player) : ?>
                                 <?= view('partials/user_badge', ['player' => $player]) ?>
-                            <? endforeach; ?>                                           
+                            <? endforeach; ?>
                         <? endif; ?>
                     </div>
                 </div>

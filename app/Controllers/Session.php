@@ -168,4 +168,38 @@ class Session extends BaseController {
         return redirect()->back();
     }
 
+    public function add_to_calendar($uid) {
+        $session = $this->SessionModel->getSession($uid);
+        $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+
+        $PRODID = '-//'.setting('app_name')."//Partida $uid//ES";
+        $UID = $uid . "@" . parse_url(base_url())['host'];
+
+        $timestart = strtotime($session->date . ' ' . $session->time);
+        $timeend = $timestart + 4 * 3600;
+        $DTSTAMP = gmdate('Ymd\THis\Z');
+        $DTSTART = date('Ymd\THis\Z', $timestart);
+        $DTEND = date('Ymd\THis\Z', $timeend);
+
+        $ics = "BEGIN:VCALENDAR\r\n";
+        $ics .= "VERSION:2.0\r\n";
+        $ics .= "PRODID:$PRODID\r\n";
+        $ics .= "BEGIN:VEVENT\r\n";
+        $ics .= "UID:$UID\r\n";
+        $ics .= "DTSTAMP:$DTSTAMP\r\n"; // Fecha y hora actual en formato UTC
+        $ics .= "DTSTART:$DTSTART\r\n"; // Fecha y hora de inicio del evento
+        $ics .= "DTEND:$DTEND\r\n";   // Fecha y hora de fin del evento
+        $ics .= "SUMMARY:$adventure->name\r\n";
+        $ics .= "DESCRIPTION:$adventure->description\r\n";
+        $ics .= "LOCATION:$session->location\r\n";
+        $ics .= "URL:".base_url('session/view/'.$uid)."\r\n";
+        $ics .= "END:VEVENT\r\n";
+        $ics .= "END:VCALENDAR\r\n";
+
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename="evento.ics"');
+        echo $ics;
+        exit;
+    }
+
 }
