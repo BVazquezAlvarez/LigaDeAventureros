@@ -15,7 +15,7 @@
                         <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                         <p>
                             <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?> <span class="text-muted"><?= date('H:i', strtotime($session->time)) ?><br/></span>
-                            <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a>
+                            <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a><br/>
                             <?= $session->location ?><br/>
                             <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                         </p>

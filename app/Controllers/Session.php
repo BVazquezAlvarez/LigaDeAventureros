@@ -172,6 +172,39 @@ class Session extends BaseController {
         $session = $this->SessionModel->getSession($uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
 
+        // Detectar si el usuario está en Android
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $is_android = strpos($user_agent, 'Android') !== false;
+
+        if ($is_android) {
+            // Redirigir a Google Calendar
+            $google_calendar_url = $this->generate_google_calendar_link($session, $adventure, $uid);
+            header("Location: $google_calendar_url");
+            exit;
+        } else {
+            // Generar el archivo .ics para iOS y otros dispositivos
+            $this->generate_ics_file($session, $adventure, $uid);
+        }
+    }
+
+    private function generate_google_calendar_link($session, $adventure, $uid) {
+        $start_date = gmdate('Ymd\THis\Z', strtotime($session->date . ' ' . $session->time));
+        $end_date = gmdate('Ymd\THis\Z', strtotime($session->date . ' ' . $session->time) + 4 * 3600);
+
+        $params = [
+            'action' => 'TEMPLATE',
+            'text' => urlencode($adventure->name),
+            'dates' => "$start_date/$end_date",
+            'details' => urlencode($adventure->description),
+            'location' => urlencode($session->location),
+            'sprop' => 'name:' . urlencode(setting('app_name')),
+            'sprop' => 'website:' . urlencode(base_url()),
+        ];
+
+        return 'https://www.google.com/calendar/render?' . http_build_query($params);
+    }
+
+    private function generate_ics_file($session, $adventure, $uid) {
         $PRODID = '-//'.setting('app_name')."//Partida $uid//ES";
         $UID = $uid . "@" . parse_url(base_url())['host'];
 
@@ -186,9 +219,9 @@ class Session extends BaseController {
         $ics .= "PRODID:$PRODID\r\n";
         $ics .= "BEGIN:VEVENT\r\n";
         $ics .= "UID:$UID\r\n";
-        $ics .= "DTSTAMP:$DTSTAMP\r\n"; // Fecha y hora actual en formato UTC
-        $ics .= "DTSTART:$DTSTART\r\n"; // Fecha y hora de inicio del evento
-        $ics .= "DTEND:$DTEND\r\n";   // Fecha y hora de fin del evento
+        $ics .= "DTSTAMP:$DTSTAMP\r\n";
+        $ics .= "DTSTART:$DTSTART\r\n";
+        $ics .= "DTEND:$DTEND\r\n";
         $ics .= "SUMMARY:$adventure->name\r\n";
         $ics .= "DESCRIPTION:$adventure->description\r\n";
         $ics .= "LOCATION:$session->location\r\n";
