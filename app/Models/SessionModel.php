@@ -96,7 +96,7 @@ class SessionModel extends Model {
 
     public function getSessionPlayers($session_uid) {
         $builder = $this->db->table('player_session');
-        $builder->select('player_session.timestamp, user.uid, user.display_name, player_character.uid AS character_uid, player_character.name, player_character.level, player_character.uploaded_sheet');
+        $builder->select('player_session.timestamp, user.uid, user.display_name, player_character.uid AS character_uid, player_character.name, player_character.level, player_character.uploaded_sheet, player_session.priority');
         $builder->join('user', 'player_session.player_uid = user.uid', 'left');
         $builder->join('player_character', 'player_session.player_character_uid = player_character.uid', 'left');
         $builder->where('player_session.session_uid', $session_uid);
