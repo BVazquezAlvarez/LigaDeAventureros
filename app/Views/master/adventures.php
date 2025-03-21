@@ -114,7 +114,7 @@
             <? endforeach; ?>
             <? if (!$adventures) : ?>
                 <tr>
-                    <td class="text-center" colspan="8">No hay ninguna aventura que coincida con tus filtros</td>
+                    <td class="text-center" colspan="10">No hay ninguna aventura que coincida con tus filtros</td>
                 </tr>
             <? endif; ?>
         </tbody>

@@ -75,6 +75,7 @@ $routes->post('adventure/data-ajax', 'Adventure::data_ajax');
 $routes->get('calendar', 'Session::calendar');
 $routes->get('calendar/(:segment)/(:segment)', 'Session::calendar/$1/$2');
 $routes->get('session/view/(:segment)', 'Session::view/$1');
+$routes->get('session/add-to-calendar/(:segment)', 'Session::add_to_calendar/$1');
 
 $routes->post('session/join', 'Session::join');
 $routes->post('session/swap', 'Session::swap');
