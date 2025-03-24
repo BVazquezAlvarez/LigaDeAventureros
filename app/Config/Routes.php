@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2024 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -120,6 +120,8 @@ $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbna
 $routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
 $routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
 $routes->get('cron/delete-character-images', 'Cron::delete_character_images');
+
+$routes->get('api/characters', 'Api::characters');
 
 /*
  * --------------------------------------------------------------------
