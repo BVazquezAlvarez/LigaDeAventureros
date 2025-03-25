@@ -36,6 +36,7 @@ class Api extends BaseController {
     if ($setting) {
       $builder->where('player_character.w_setting_id', $setting);
     }
+    $builder->where('player_character.active', 1);
     $characters = $builder->get()->getResultArray();
 
     $this->_showJSON($characters);
