@@ -193,12 +193,12 @@ class Session extends BaseController {
 
         $params = [
             'action' => 'TEMPLATE',
-            'text' => urlencode($adventure->name),
+            'text' => $adventure->name,
             'dates' => "$start_date/$end_date",
-            'details' => urlencode($adventure->description),
-            'location' => urlencode($session->location),
-            'sprop' => 'name:' . urlencode(setting('app_name')),
-            'sprop' => 'website:' . urlencode(base_url()),
+            'details' => $adventure->description,
+            'location' => $session->location,
+            'sprop' => 'name:' . setting('app_name'),
+            'sprop' => 'website:' . base_url(),
         ];
 
         return 'https://www.google.com/calendar/render?' . http_build_query($params);
