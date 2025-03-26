@@ -89,6 +89,7 @@ class SessionModel extends Model {
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->where('session.published', 0);
         $builder->orderBy('session.date', 'ASC');
         return $builder->get()->getResult();      
