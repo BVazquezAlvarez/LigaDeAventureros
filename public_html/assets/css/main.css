@@ -61,6 +61,23 @@ footer {
     margin-bottom: 0.25em;
 }
 
+.badge-player.badge-me {
+    border-radius: 0;
+}
+.badge-player.badge-me.btn-success:not(:hover, :focus) {
+    border-color: #1b7a1b;
+    background-color: #1b7a1b;
+}
+.badge-player.badge-me.btn-danger:not(:hover, :focus) {
+    border-color: #7a1b1b;
+    background-color: #7a1b1b;
+}
+.badge-player.badge-me.btn-warning:not(:hover, :focus) {
+    border-color: #7a6b1b;
+    background-color: #7a6b1b;
+    color: white;
+}
+
 .card-join-session .card-footer {
     min-height: 4em;
     display: flex;
@@ -379,5 +396,5 @@ footer {
 }
 
 .border-priority {
-    border: 2px solid BLACK;
+    border: 2px solid BLACK !important;
 }
