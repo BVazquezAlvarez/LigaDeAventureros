@@ -188,8 +188,8 @@ class Session extends BaseController {
     }
 
     private function generate_google_calendar_link($session, $adventure, $uid) {
-        $start_date = gmdate('Ymd\THis\Z', strtotime($session->date . ' ' . $session->time));
-        $end_date = gmdate('Ymd\THis\Z', strtotime($session->date . ' ' . $session->time) + 4 * 3600);
+        $start_date = date('Ymd\THis', strtotime($session->date . ' ' . $session->time));
+        $end_date = date('Ymd\THis', strtotime($session->date . ' ' . $session->time) + 4 * 3600);
 
         $params = [
             'action' => 'TEMPLATE',
@@ -211,8 +211,8 @@ class Session extends BaseController {
         $timestart = strtotime($session->date . ' ' . $session->time);
         $timeend = $timestart + 4 * 3600;
         $DTSTAMP = gmdate('Ymd\THis\Z');
-        $DTSTART = date('Ymd\THis\Z', $timestart);
-        $DTEND = date('Ymd\THis\Z', $timeend);
+        $DTSTART = date('Ymd\THis', $timestart);
+        $DTEND = date('Ymd\THis', $timeend);
 
         $ics = "BEGIN:VCALENDAR\r\n";
         $ics .= "VERSION:2.0\r\n";
@@ -220,8 +220,8 @@ class Session extends BaseController {
         $ics .= "BEGIN:VEVENT\r\n";
         $ics .= "UID:$UID\r\n";
         $ics .= "DTSTAMP:$DTSTAMP\r\n";
-        $ics .= "DTSTART:$DTSTART\r\n";
-        $ics .= "DTEND:$DTEND\r\n";
+        $ics .= "DTSTART;TZID=" . date_default_timezone_get() . ":$DTSTART\r\n";
+        $ics .= "DTEND;TZID=" . date_default_timezone_get() . ":$DTEND\r\n";
         $ics .= "SUMMARY:$adventure->name\r\n";
         $ics .= "DESCRIPTION:$adventure->description\r\n";
         $ics .= "LOCATION:$session->location\r\n";
