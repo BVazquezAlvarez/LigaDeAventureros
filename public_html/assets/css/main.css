@@ -53,6 +53,13 @@ footer {
     text-decoration: none;
 }
 
+a.badge-player div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
 .badge-player a:hover {
     text-decoration: underline;
 }
