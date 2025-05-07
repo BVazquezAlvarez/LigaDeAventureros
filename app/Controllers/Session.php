@@ -115,7 +115,7 @@ class Session extends BaseController {
         $this->setData('session', $session);
         $this->setData('adventure', $adventure);
         $this->setData('players', $players);
-        $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid')));
+        $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid'), true, $session->w_setting_id, true));
 
         $this->setTitle('Información de partida ' . $adventure->name);
         return $this->loadView('sessions/session');

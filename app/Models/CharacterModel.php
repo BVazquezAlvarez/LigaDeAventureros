@@ -50,7 +50,7 @@ class CharacterModel extends Model {
         return $builder->get()->getRow();
     }
 
-    public function getPlayerCharacters($user_uid, $activeOnly = false, $w_setting_id = null) {
+    public function getPlayerCharacters($user_uid, $activeOnly = false, $w_setting_id = null, $validatedOnly = false) {
         $builder = $this->db->table('player_character');
         $builder->select('player_character.*, world_setting.name AS w_setting_name, world_setting.timeline');
         $builder->join('world_setting', 'player_character.w_setting_id = world_setting.id', 'left');
@@ -59,6 +59,9 @@ class CharacterModel extends Model {
         $builder->orderBy('level', 'DESC');
         if ($activeOnly) {
             $builder->where('player_character.active', 1);
+        }
+        if ($validatedOnly) {
+            $builder->where('player_character.validated_sheet IS NOT NULL');
         }
         if($w_setting_id && $w_setting_id != 0){
             $builder->where('w_setting_id', $w_setting_id);

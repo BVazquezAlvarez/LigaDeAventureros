@@ -66,7 +66,8 @@ class SessionModel extends Model {
 
     public function getSession($uid) {
         $builder = $this->db->table('session');
-        $builder->select('session.*, user.display_name AS master');
+        $builder->select('session.*, adventure.w_setting_id, user.display_name AS master');
+        $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         $builder->where('session.uid', $uid);
         return $builder->get()->getRow();
