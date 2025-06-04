@@ -199,4 +199,9 @@ ALTER TABLE `player_character` ADD `beyond` VARCHAR(255) NULL;
 
 ALTER TABLE `player_session` ADD `priority` TINYINT(1) NOT NULL DEFAULT '0' AFTER `timestamp`;
 
+ALTER TABLE `session` ADD `date_published` DATE NULL AFTER `published`;
+
+ALTER TABLE `player_session` CHANGE `priority` `priority` INT NOT NULL DEFAULT '0';
+
+
 COMMIT;

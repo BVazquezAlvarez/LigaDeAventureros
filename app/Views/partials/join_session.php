@@ -1,6 +1,13 @@
 <div class="col-md-6 col-lg-4 mb-3">
     <div class="card card-join-session h-100">
         <div class="card-header text-center">
+        <? if ($userdata && $session->priority_avaliable != 0) : ?>
+        <span class="position-absolute translate-middle badge rounded-pill bg-success" style="
+            top: -6px;
+            left: 38%;
+            color: white;
+            "><i class="fas fa-arrow-up"></i> Disponible</span>
+        <? endif; ?>
             <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h3>
              <? if ($session->w_setting_id != 0) : ?>
             <h6 class="d-inline-block mb-0"><?= $session->w_setting_name ?> · <?= $session->type_name ?></h6>
@@ -55,7 +62,7 @@
                 <? elseif (!$userdata['confirmed']) : ?>
                     <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
                 <? else : ?>
-                    <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $session->adventure_name ?>" data-joined="<?= $session->joined ?>" data-adventure-rank="<?= rank_name($session->rank) ?>" class="js-select-join-session form-control">
+                    <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $session->adventure_name ?>" data-joined="<?= $session->joined ?>" data-adventure-rank="<?= rank_name($session->rank) ?>" data-priority-avaliable="<?= $session->priority_avaliable ?>" class="js-select-join-session form-control">
                         <? if (!$session->joined) : ?>
                             <option selected disabled value="__default">¡Anótate!</option>
                         <? endif; ?>

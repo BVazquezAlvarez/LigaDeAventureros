@@ -79,7 +79,7 @@
                             <? elseif (!$userdata['confirmed']) : ?>
                                 <div class="text-center text-secondary">Necesitas verificación por parte de un master para poder anotarte.</div>
                             <? else : ?>
-                                <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $adventure->name ?>" data-joined="<?= $session->joined ?>" data-adventure-rank="<?= rank_name($adventure->rank) ?>" class="js-select-join-session form-control">
+                                <select id="select-session-<?= $session->uid ?>" data-session-uid="<?= $session->uid ?>" data-adventure-name="<?= $adventure->name ?>" data-joined="<?= $session->joined ?>"  data-adventure-rank="<?= rank_name($adventure->rank) ?>" class="js-select-join-session form-control">
                                     <? if (!$session->joined) : ?>
                                         <option selected disabled value="__default">¡Anótate!</option>
                                     <? endif; ?>

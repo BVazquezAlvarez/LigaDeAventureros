@@ -16,6 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace App\Controllers;
+use DateTime;
 
 class Home extends BaseController {
 
@@ -32,16 +33,22 @@ class Home extends BaseController {
             'today' => $this->SessionModel->getSessions(date('Y-m-d'), date('Y-m-d')),
             'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow')), date('Y-m-d', strtotime('+20 days'))),
         ];
+        $weeks_joined = $this->SessionModel->getWeeksJoined(session('user_uid'));
 
-        foreach ($sessions as $session_block) {
+        foreach ($sessions as $session_block) {      
             foreach ($session_block as $session) {
+                $dt_date_published = new DateTime($session->date_published);
+                $dt_date_published->modify('+1 day');
+                $today = new DateTime();
+                $priority_avaliable = in_array($session->week, $weeks_joined) || $today > $dt_date_published ? 0 : 1;
                 $players = $this->SessionModel->getSessionPlayers($session->uid);
 
                 $session->joined = false;
-        
+
                 foreach ($players as $player) {
                     if ($player->uid === session('user_uid')) {
-                        $session->joined = $player->character_uid;
+                        $session->joined = $player->character_uid;                
+                        $priority_avaliable = 0;
                     }
 
                     if (!$session->rank || $session->rank == rank_get($player->level)) {
@@ -52,12 +59,13 @@ class Home extends BaseController {
                         $player->badge_color = 'danger';
                     }
                 }
-    
+
                 $session->players = [
                     'playing' => array_pad(array_slice($players, 0, $session->players_max), $session->players_max, NULL),
                     'waitlist' => array_slice($players, $session->players_max),
                 ];
                 $session->player_characters = $this->CharacterModel->getPlayerCharacters(session('user_uid'), true, $session->w_setting_id, true);
+                $session->priority_avaliable = $priority_avaliable;
             }
         }
 

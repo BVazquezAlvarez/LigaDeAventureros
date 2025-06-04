@@ -17,6 +17,8 @@
 
 namespace App\Controllers;
 
+use DateTime;
+
 class Session extends BaseController {
 
     public function __construct() {
@@ -127,6 +129,23 @@ class Session extends BaseController {
         $character_uid = $this->request->getVar('character-uid');
         $adventure_rank = $this->request->getVar('adventure-rank');
         $priority = ($adventure_rank == "Bronce" && $this->CharacterModel->countAllCharacters($player_uid) == 1) ? 1 : 0;
+        $adventure_date = $this->SessionModel->getAdventureWeek($session_uid); 
+        $date_published = $this->SessionModel->getPublishedDate($session_uid);
+        $dt_date_published = new DateTime($date_published->date_published);     
+        $dt_date_published->modify('+1 day');
+        $weeks_joined = $this->SessionModel->getWeeksJoined(session('user_uid'));        
+        $today = new DateTime();
+        if($adventure_rank == "Bronce" && $this->CharacterModel->countAllCharacters($player_uid) == 1 ){
+           if(!in_array($adventure_date->week, $weeks_joined) && $today < $dt_date_published){
+            $priority = 3;
+           }else{
+            $priority = 2;
+           }      
+        }else if(!in_array($adventure_date->week, $weeks_joined) && $today < $dt_date_published){
+            $priority = 1;
+        }else{;
+            $priority = 0;
+        }
         $this->SessionModel->addPlayerSession([
             'session_uid' => $session_uid,
             'player_uid' => $player_uid,

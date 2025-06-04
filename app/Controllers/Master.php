@@ -219,6 +219,7 @@ class Master extends BaseController {
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
             'published' => $this->request->getVar('published') ? 1 : 0,
+            'date_published' =>$this->request->getVar('published') ? date("Y-m-d H:i:s") : null
         ]);
 
         session()->setFlashdata('success', 'Se ha creado una nueva sesión.');
@@ -338,6 +339,8 @@ class Master extends BaseController {
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
             'published' => $this->request->getVar('published') ? 1 : 0,
+            'date_published' =>$this->request->getVar('published') ? date("Y-m-d H:i:s") : null
+
         ]);
         $this->email->session_updated($uid);
 

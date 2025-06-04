@@ -75,7 +75,6 @@ function preloadJoinSession() {
         } else {
             $(`${modal} .alert`).show();
         }
-
         $(`${modal} #session-uid`).val(session_uid);
         $(`${modal} #char-uid`).val(char_uid);
 

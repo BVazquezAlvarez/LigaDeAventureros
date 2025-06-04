@@ -39,6 +39,7 @@ footer {
 }
 
 .badge-player {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,6 +101,7 @@ select option:disabled {
 .registered-players-block {
     max-height: 17.75em;
     overflow-y: auto;
+    padding-top: 3px;
 }
 
 @media (min-width: 576px) {
