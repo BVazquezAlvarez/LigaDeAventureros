@@ -188,7 +188,7 @@ class SessionModel extends Model {
         $builder->select("GROUP_CONCAT(WEEK(session.date,1) SEPARATOR ', ') AS week");
         $builder->join('session', 'player_session.session_uid = session.uid', 'left');
         $builder->where('player_session.player_uid', $player_uid);
-        $builder->where('session.date >=', date('Y-m-d'));
+        $builder->where('WEEK(session.date,1) >=', "WEEK(CURDATE(),1)");
         $row = $builder->get()->getRow();
         $weeksArray = [];
         if (!empty($row->week)) {

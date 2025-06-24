@@ -38,7 +38,7 @@ class Home extends BaseController {
         foreach ($sessions as $session_block) {      
             foreach ($session_block as $session) {
                 $dt_date_published = new DateTime($session->date_published);
-                $dt_date_published->modify('+1 day');
+                $dt_date_published->add(new DateInterval('PT18H'));
                 $today = new DateTime();
                 $priority_avaliable = in_array($session->week, $weeks_joined) || $today > $dt_date_published ? 0 : 1;
                 $players = $this->SessionModel->getSessionPlayers($session->uid);
