@@ -18,6 +18,7 @@
 namespace App\Controllers;
 
 use DateTime;
+use DateInterval;
 
 class Session extends BaseController {
 
