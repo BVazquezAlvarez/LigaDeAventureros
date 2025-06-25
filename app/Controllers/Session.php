@@ -133,7 +133,7 @@ class Session extends BaseController {
         $adventure_date = $this->SessionModel->getAdventureWeek($session_uid); 
         $date_published = $this->SessionModel->getPublishedDate($session_uid);
         $dt_date_published = new DateTime($date_published->date_published);     
-        $dt_date_published->add(new DateInterval('PT18H');
+        $dt_date_published->add(new DateInterval('PT18H'));
         $weeks_joined = $this->SessionModel->getWeeksJoined(session('user_uid'));        
         $today = new DateTime();
         if($adventure_rank == "Bronce" && $this->CharacterModel->countAllCharacters($player_uid) == 1 ){
