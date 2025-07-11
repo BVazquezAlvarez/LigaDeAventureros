@@ -147,7 +147,7 @@ class SessionModel extends Model {
     public function publishSessions($uids) {
         $builder = $this->db->table('session');
         $builder->whereIn('uid', $uids);
-        $builder->update(['published' => 1]);
+        $builder->update(['published' => 1, 'date_published' => date("Y-m-d H:i:s")]);
     }
 
     public function getLocations() {
