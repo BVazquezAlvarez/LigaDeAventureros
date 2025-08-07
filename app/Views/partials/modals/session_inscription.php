@@ -24,7 +24,6 @@
                 <div class="alert alert-warning text-center mt-3 mb-0" id="modal-alert" role="alert">
                     ¡Alerta! La aventura es de rango <strong class="adventure-rank"></strong> y <strong class="js-char-name"></strong> es de rango <strong id="char-rank"></strong>.
                 </div>
-                <? endif; ?>
                 <input type="hidden" id="session-uid" name="session-uid">
                 <input type="hidden" id="char-uid" name="character-uid">
                 <input type="hidden" class="adventure-rank" name="adventure-rank">

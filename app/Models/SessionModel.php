@@ -180,7 +180,7 @@ class SessionModel extends Model {
         $builder->select("GROUP_CONCAT(YEARWEEK(session.date,1) SEPARATOR ', ') AS week");
         $builder->join('session', 'player_session.session_uid = session.uid', 'left');
         $builder->where('player_session.player_uid', $player_uid);
-        $builder->where('YEARWEEK(session.date,1) =', "YEARWEEK(CURDATE(),1)");
+        // $builder->where('YEARWEEK(session.date,1) =', "YEARWEEK(CURDATE(),1)");
 
         $row = $builder->get()->getRow();
         $weeksArray = [];
