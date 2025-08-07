@@ -38,7 +38,7 @@ class SessionModel extends Model {
 
     public function getSessions($start = NULL, $end = NULL, $master_uid = NULL, $count_players = false, $published_only = true) {
         $builder = $this->db->table('session');
-        $builder->select('session.*, WEEK(session.date,1) AS week, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.thumbnail, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline, adventure.type AS type_id, adventure_type.name AS type_name');
+        $builder->select('session.*, YEARWEEK(session.date,1) AS week, adventure.name AS adventure_name, adventure.rank, user.display_name AS master, adventure.thumbnail, adventure.w_setting_id, world_setting.name AS w_setting_name, world_setting.timeline, adventure.type AS type_id, adventure_type.name AS type_name');
         $builder->join('adventure','session.adventure_uid = adventure.uid', 'left');
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
         $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
@@ -161,7 +161,7 @@ class SessionModel extends Model {
 
     public function getAdventureWeek($uid) {
         $builder = $this->db->table('session');
-        $builder->select('WEEK(date,1) AS week');
+        $builder->select('YEARWEEK(date,1) AS week');
         $builder->where('uid', $uid);
         return $builder->get()->getRow();
     }
@@ -173,22 +173,15 @@ class SessionModel extends Model {
         return $builder->get()->getRow();
     }
 
-    public function getJoinedSessions($player_uid, $week) {
-        $builder = $this->db->table('player_session');
-        $builder->select('COUNT(*) AS total');
-        $builder->join('session', 'player_session.session_uid = session.uid', 'left');
-        $builder->where('player_session.player_uid', $player_uid);
-        $builder->where('WEEK(session.date,1)', $week);
-        $builder->where('YEAR(session.date)', "YEAR(CURDATE())");
-        return $builder->get()->getRow();
-    }
+   
 
     public function getWeeksJoined($player_uid) {
         $builder = $this->db->table('player_session');
-        $builder->select("GROUP_CONCAT(WEEK(session.date,1) SEPARATOR ', ') AS week");
+        $builder->select("GROUP_CONCAT(YEARWEEK(session.date,1) SEPARATOR ', ') AS week");
         $builder->join('session', 'player_session.session_uid = session.uid', 'left');
         $builder->where('player_session.player_uid', $player_uid);
-        $builder->where('WEEK(session.date,1) >=', "WEEK(CURDATE(),1)");
+        $builder->where('YEARWEEK(session.date,1) =', "YEARWEEK(CURDATE(),1)");
+
         $row = $builder->get()->getRow();
         $weeksArray = [];
         if (!empty($row->week)) {
