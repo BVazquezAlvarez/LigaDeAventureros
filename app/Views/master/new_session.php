@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="adventure">Aventura <span class="text-danger">*</span></label>
-                    <select id="new-session-adventure" name="adventure" class="form-control" required>
+                    <!-- <select id="new-session-adventure" name="adventure" class="form-control" required>
                         <option value="__new">Nueva aventura</option>
                         <? foreach ($adventures as $adventure) : ?>
                             <option value="<?= $adventure->uid ?>"><?= $adventure->name ?> - <?= rank_full_text($adventure->rank) ?></option>
@@ -33,12 +33,24 @@
                         <? if (isset(session('validation_errors')['adventure'])) : ?>
                             <small class="text-danger"><?= session('validation_errors')['adventure'] ?></small>
                         <? endif; ?>
-                    </select>
+                    </select> -->
+                    <div class="row">
+                        <div class="col-3 pr-1">
+                            <button type="button" class="btn btn-outline-primary w-100 js-new-session-select-adventure" data-uid="__new">Nueva</button>
+                        </div>
+                        <div class="col-9 pl-1">
+                            <button type="button" class="btn btn-outline-primary w-100" id="btn-select-adventure" data-toggle="modal" data-target="#modal-select-adventure">Seleccionar aventura</a></button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="new-session-adventure" name="adventure" value="__new">
                 </div>
                 <div id="adventure-form" style="display:block;">
                     <div class="form-group">
                         <label for="adventure_name">Nombre <span class="text-danger">*</span></label>
-                        <input type="text" name="adventure_name" id="adventure_name" class="form-control js-required" required>
+                        <input type="text" name="adventure_name" id="adventure_name" class="form-control js-required js-new-session-adventure-name" autocomplete="off" required>
+                        <div id="adventure-name-suggestion" class="text-secondary" style="font-size:0.8em;display:none;">
+                            Tal vez quieras usar alguna de estas: <span></span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -235,3 +247,17 @@
         </div>
     </div>
 </form>
+
+<?= view('partials/modals/new_session_select_adventure') ?>
+
+<script>
+    const ADVENTURE_LIST = [
+        <? foreach ($adventures as $adventure) : ?>
+            {
+                uid: "<?= $adventure->uid ?>",
+                name: "<?= $adventure->name ?>",
+            },
+        <? endforeach; ?>
+    ];
+    console.log(ADVENTURE_LIST);
+</script>

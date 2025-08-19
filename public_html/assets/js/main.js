@@ -167,9 +167,106 @@ $(function() {
                         loadAdventure(data.adventure);
                         $('#adventure-data').show();
                     }
-                }  
+                }
             });
         }
+    });
+
+    $(document).on('click', '.js-new-session-select-adventure', function() {
+        let uid = $(this).data('uid');
+        $('#new-session-adventure').val(uid).trigger('change');
+        $('#modal-select-adventure').modal('hide');
+    });
+
+    function searchNewSessionAdventure() {
+        let name = $('#js-new-session-filter-adventure-name-search').val();
+        let rank = $('.js-new-session-filter-rank:checked').val();
+        let type = $('.js-new-session-filter-type:checked').val();
+        let wsetting = $('.js-new-session-filter-wsetting:checked').val();
+
+        if (name.length == 0 && rank == 0 && type == 0 && wsetting == 0) {
+            $('.js-new-session-filter-adventure').show();
+            return;
+        }
+
+        $('.js-new-session-filter-adventure').each(function() {
+            let show = true;
+
+            if (name.length > 0) {
+                let adventureName = $(this).data('name').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (!adventureName.includes(name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+                    show = false;
+                }
+            }
+
+            if (rank != 0) {
+                let adventureRank = $(this).data('rank');
+                if (adventureRank != rank) {
+                    show = false;
+                }
+            }
+
+            if (type != 0) {
+                let adventureType = $(this).data('type');
+                if (adventureType != type) {
+                    show = false;
+                }
+            }
+
+            if (wsetting != 0) {
+                let adventureWSetting = $(this).data('wsetting');
+                if (adventureWSetting != wsetting) {
+                    show = false;
+                }
+            }
+
+            if (show) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    $('.js-new-session-adventure-name').on('keyup', function() {
+        let input = $(this).val().toLowerCase();
+        let words = input.split(/\s+/).filter(word => word.trim() !== '').filter(word => word.length >= 4);
+
+        let exact_matches = [];
+        let suggestions = [];
+
+        if (words.length > 0) {
+            ADVENTURE_LIST.forEach(element => {
+                if (input == element.name.toLowerCase()) {
+                    exact_matches.push(element);
+                } else if (words.every(word => element.name.toLowerCase().includes(word))) {
+                    suggestions.push(element);
+                }
+            });
+        }
+
+        if (exact_matches.length > 0 || suggestions.length > 0) {
+            exact_matches = exact_matches.slice(0, 5);
+            suggestions = suggestions.slice(0, 5 - exact_matches.length);
+            $('#adventure-name-suggestion span').html('');
+            exact_matches.forEach(s => {
+                $('#adventure-name-suggestion span').append(`<a href="#" class="js-new-session-select-adventure font-weight-bold ml-1 mr-1" data-uid="${s.uid}" type="button">${s.name}</a>`);
+            });
+            suggestions.forEach(s => {
+                $('#adventure-name-suggestion span').append(`<a href="#" class="js-new-session-select-adventure ml-1 mr-1" data-uid="${s.uid}" type="button">${s.name}</a>`);
+            });
+            $('#adventure-name-suggestion').show();
+        } else {
+            $('#adventure-name-suggestion').hide();
+        }
+    });
+
+    $('#js-new-session-filter-adventure-name-search').on('keyup', function() {
+        searchNewSessionAdventure();
+    });
+
+    $('.js-new-session-filter-rank, .js-new-session-filter-type, .js-new-session-filter-wsetting').on('change', function() {
+        searchNewSessionAdventure();
     });
 
     $('#adventure_players_min_recommended').on('keyup', function() {
