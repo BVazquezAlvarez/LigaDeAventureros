@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -58,6 +58,11 @@
             </div>
         </form>
     </div>
+    <? if (isset($userdata) && $userdata['admin']) : ?>
+        <div class="col-md-6">
+            <a href="<?= base_url('admin/delete-unused-adventures') ?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar aventuras sin sesiones</a>
+        </div>
+    <? endif; ?>
 </div>
 
 

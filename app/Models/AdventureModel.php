@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -108,5 +108,23 @@ class AdventureModel extends Model {
         $builder = $this->db->table('adventure');
         $builder->where('uid', $uid);
         $builder->update($data);
+    }
+
+    public function getUnusedAdventures() {
+        $builder = $this->db->table('adventure');
+        $builder->select('adventure.*, world_setting.name AS w_setting_name, world_setting.timeline, adventure_type.name AS type_name');
+        $builder->join('world_setting', 'adventure.w_setting_id = world_setting.id', 'left');
+        $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
+        $builder->where('adventure.uid NOT IN (SELECT adventure_uid FROM session)', NULL, FALSE);
+        $builder->orderBy('rank', 'ASC');
+        $builder->orderBy('name', 'ASC');
+        return $builder->get()->getResult();
+    }
+
+    public function deleteAdventureBatch($uids) {
+        $builder = $this->db->table('adventure');
+        $builder->whereIn('uid', $uids);
+        $builder->where('uid NOT IN (SELECT adventure_uid FROM session)', NULL, FALSE); // Si algún día se añade la posibilidad de eliminar aventuras con sesiones, eliminar esta línea
+        $builder->delete();
     }
 }

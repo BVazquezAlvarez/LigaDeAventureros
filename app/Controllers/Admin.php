@@ -21,10 +21,13 @@ class Admin extends BaseController {
 
     public function __construct() {
         if (!$this->isAdmin()) {
+            session()->setFlashdata('error', 'No tienes permisos para acceder a esta sección.');
             header("Location: /");
             exit();
         }
         $this->UserModel = model('UserModel');
+        $this->AdventureModel = model('AdventureModel');
+        $this->SessionModel = model('SessionModel');
         $this->UploadLogModel = model('UploadLogModel');
     }
 
@@ -151,6 +154,43 @@ class Admin extends BaseController {
 
         session()->setFlashdata('success', "Se ha actualizado la configuración $id.");
         return redirect()->to('admin/settings');
+    }
+
+    public function delete_unused_adventures() {
+        $adventures = $this->AdventureModel->getUnusedAdventures();
+        if (!$adventures) {
+            session()->setFlashdata('error', 'No hay aventuras sin sesiones para eliminar.');
+            return redirect()->to('master/adventures');
+        }
+        $this->setData('adventures', $adventures);
+        $this->setTitle('Eliminar aventuras');
+        return $this->loadView('admin/delete_unused');
+    }
+
+    public function delete_unused_adventures_post() {
+        $adventures = $this->request->getPost('adventures');
+        if ($adventures) {
+            $this->AdventureModel->deleteAdventureBatch($adventures);
+            session()->setFlashdata('success', 'Se han eliminado las aventuras seleccionadas.');
+        } else {
+            session()->setFlashdata('error', 'No se han seleccionado aventuras para eliminar.');
+        }
+        return redirect()->to('master/adventures');
+    }
+
+    public function set_adventure_duplicate() {
+        $current = $this->request->getPost('current_adventure');
+        $base = $this->request->getPost('base_adventure');
+
+        if ($current && $base && $current != $base) {
+            $this->SessionModel->transferSessions($current, $base);
+            $this->AdventureModel->deleteAdventureBatch([$current]);
+            session()->setFlashdata('success', 'Se han transferido las sesiones y se ha eliminado el duplicado.');
+            return redirect()->to('master/adventures');
+        } else {
+            session()->setFlashdata('error', 'No se ha podido marcar como duplicada.');
+            return redirect()->back();
+        }
     }
 
 }

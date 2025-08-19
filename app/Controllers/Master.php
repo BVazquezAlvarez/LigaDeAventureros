@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ class Master extends BaseController {
 
     public function __construct() {
         if (!$this->isMaster()) {
+            session()->setFlashdata('error', 'No tienes permisos para acceder a esta sección.');
             header("Location: /");
             exit();
         }
@@ -131,8 +132,14 @@ class Master extends BaseController {
     public function adventure($uid) {
         $adventure = $this->AdventureModel->getAdventure($uid);
 
+        if (!$adventure) {
+            session()->setFlashdata('error', 'Aventura no encontrada.');
+            return redirect()->to('master/adventures');
+        }
+
         $this->setData('adventure', $adventure);
         $this->setData('sessions', $this->SessionModel->getAdventureSessions($uid));
+        $this->setData('adventures', $this->AdventureModel->getAdventureList());
         $this->setTitle($adventure->name);
         return $this->loadView('master/view_adventure');
     }
@@ -149,7 +156,7 @@ class Master extends BaseController {
 
     public function new_session_post() {
         $isNewAdventure = ($this->request->getVar('adventure') == '__new');
-    
+
         $validation = \Config\Services::validation();
         $validation->setRule('adventure', 'aventura', 'trim|required');
         if ($isNewAdventure) {
@@ -172,7 +179,7 @@ class Master extends BaseController {
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
 
-        if (!$validation->withRequest($this->request)->run()) {    
+        if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al crear la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
@@ -281,7 +288,7 @@ class Master extends BaseController {
             'w_setting_id' => $this->request->getVar('w_setting_id'),
             'type' => $this->request->getVar('type'),
         ];
-        
+
         if ($this->request->getVar('delete_thumbnail')) {
             $data['thumbnail'] = NULL;
         } else if ($_FILES['adventure_thumbnail']['name']) {
@@ -325,7 +332,7 @@ class Master extends BaseController {
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
 
-        if (!$validation->withRequest($this->request)->run()) {    
+        if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al editar la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();

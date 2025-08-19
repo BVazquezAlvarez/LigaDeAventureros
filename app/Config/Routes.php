@@ -114,6 +114,9 @@ $routes->post('admin/user-toggle-master', 'Admin::user_toggle_master');
 $routes->post('admin/user-toggle-admin', 'Admin::user_toggle_admin');
 $routes->post('admin/user-ban', 'Admin::user_ban');
 $routes->post('admin/user-unban', 'Admin::user_unban');
+$routes->get('admin/delete-unused-adventures', 'Admin::delete_unused_adventures');
+$routes->post('admin/delete-unused-adventures', 'Admin::delete_unused_adventures_post');
+$routes->post('admin/set-adventure-duplicate', 'Admin::set_adventure_duplicate');
 
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');

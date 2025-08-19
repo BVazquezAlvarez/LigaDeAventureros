@@ -1,6 +1,6 @@
 /*!
   * LigaDeAventureros
-  * Copyright (C) 2023-2024 Santiago González Lago
+  * Copyright (C) 2023-2025 Santiago González Lago
 
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -179,15 +179,18 @@ $(function() {
     });
 
     function searchNewSessionAdventure() {
+        console.log('searchNewSessionAdventure');
         let name = $('#js-new-session-filter-adventure-name-search').val();
         let rank = $('.js-new-session-filter-rank:checked').val();
         let type = $('.js-new-session-filter-type:checked').val();
         let wsetting = $('.js-new-session-filter-wsetting:checked').val();
+        console.log(name, rank, type, wsetting);
 
         if (name.length == 0 && rank == 0 && type == 0 && wsetting == 0) {
             $('.js-new-session-filter-adventure').show();
             return;
         }
+        console.log('estamos aqui!');
 
         $('.js-new-session-filter-adventure').each(function() {
             let show = true;

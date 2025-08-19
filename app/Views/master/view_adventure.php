@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,6 +43,9 @@
                     <p><i><?= str_replace("\r\n", '<br>', $adventure->description) ?></i></p>
                     <p><?= str_replace("\r\n", '<br>', $adventure->rewards) ?></p>
                     <a href="<?= base_url('master/edit-adventure') ?>/<?= $adventure->uid ?>" class="btn btn-primary"><i class="fa-solid fa-pen"></i> Editar</a>
+                    <? if (isset($userdata) && $userdata['admin']) : ?>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-set-adventure-duplicate">Marcar como duplicada</button>
+                    <? endif; ?>
                 </div>
             </div>
             <div class="col-md-6">
@@ -81,3 +84,4 @@
 </div>
 
 <?= view('partials/modals/session_remove') ?>
+<? if (isset($userdata) && $userdata['admin']) echo view('partials/modals/set_adventure_duplicate') ?>

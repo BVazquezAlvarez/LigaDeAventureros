@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2025 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace App\Models;  
+namespace App\Models;
 use CodeIgniter\Model;
 
 class SessionModel extends Model {
@@ -94,7 +94,7 @@ class SessionModel extends Model {
         $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->where('session.published', 0);
         $builder->orderBy('session.date', 'ASC');
-        return $builder->get()->getResult();      
+        return $builder->get()->getResult();
     }
 
     public function getSessionPlayers($session_uid) {
@@ -173,8 +173,6 @@ class SessionModel extends Model {
         return $builder->get()->getRow();
     }
 
-   
-
     public function getWeeksJoined($player_uid) {
         $builder = $this->db->table('player_session');
         $builder->select("GROUP_CONCAT(YEARWEEK(session.date,1) SEPARATOR ', ') AS week");
@@ -190,5 +188,11 @@ class SessionModel extends Model {
         return $weeksArray;
     }
 
+    public function transferSessions($original_adventure, $new_adventure) {
+        $builder = $this->db->table('session');
+        $builder->where('adventure_uid', $original_adventure);
+        $builder->update(['adventure_uid' => $new_adventure]);
+        return $this->db->affectedRows();
+    }
 
 }
