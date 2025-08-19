@@ -26,6 +26,8 @@
         </button>
       </div>
       <form method="post" action="<?= base_url('admin/set-adventure-duplicate') ?>" class="modal-body">
+        <div class="alert alert-info mb-0">Todas las sesiones se transferirán a la aventura seleccionada. Esta aventura será <strong class="text-danger">eliminada</strong>.</div>
+        <div class="alert alert-danger">Esta acción no se puede deshacer. Asegúrate de que deseas continuar.</div>
         <input type="hidden" name="current_adventure" value="<?= $adventure->uid ?>">
         <div class="row mb-1">
             <div class="col-12">
