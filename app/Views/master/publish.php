@@ -45,7 +45,7 @@
                             </td>
                             <th class="align-middle" scope="row"><?= $session->adventure_name ?></th>
                             <td class="align-middle"><?= rank_full_text($session->rank) ?></td>
-                            <? if (!$session->w_setting_id != 0) : ?>
+                            <? if ($session->w_setting_id != 0) : ?>
                                 <td class="align-middle"><?= $session->w_setting_name ?></td>
                             <? else: ?>  
                                 <td>Todas las modalidades</td>  
