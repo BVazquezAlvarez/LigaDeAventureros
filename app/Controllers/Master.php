@@ -391,4 +391,11 @@ class Master extends BaseController {
         return redirect()->back();
     }
 
+    public function toggle_priority() {
+        $session_uid = $this->request->getVar('session-uid');
+        $user_uid = $this->request->getVar('player-uid');
+        $priority = $this->request->getVar('priority');
+        $this->SessionModel->togglePriority($session_uid, $user_uid, $priority);
+    }
+
 }

@@ -138,12 +138,12 @@ class Session extends BaseController {
         $today = new DateTime();
         if($adventure_rank == "Bronce" && $this->CharacterModel->countAllCharacters($player_uid) == 1 ){
            if(!in_array($adventure_date->week, $weeks_joined) && $today < $dt_date_published){
-            $priority = 3;
+            $priority = PRIORITY_STANDARD + PRIORITY_NEW_PLAYER;
            }else{
-            $priority = 2;
-           }      
+            $priority = PRIORITY_NEW_PLAYER;
+           }
         }else if(!in_array($adventure_date->week, $weeks_joined) && $today < $dt_date_published){
-            $priority = 1;
+            $priority = PRIORITY_STANDARD;
         }else{;
             $priority = 0;
         }

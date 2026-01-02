@@ -1,6 +1,6 @@
 /*!
   * LigaDeAventureros
-  * Copyright (C) 2023-2025 Santiago González Lago
+  * Copyright (C) 2023-2026 Santiago González Lago
 
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -390,6 +390,22 @@ $(function() {
         $("#session-kick-modal #player-uid").val(uid);
         $("#session-kick-modal #character-name").text(name);
         $('#session-kick-modal').modal('show');
+    });
+
+    $('.js-toggle-priority').on('change', function() {
+        let session = $(this).data("session-uid");
+        let uid = $(this).data("uid");
+        let priority = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            method: "POST",
+            url: baseUrl + "master/toggle-priority",
+            data: {
+                'session-uid': session,
+                'player-uid': uid,
+                'priority': priority
+            }
+        });
     });
 
 

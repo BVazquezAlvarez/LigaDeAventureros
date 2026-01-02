@@ -229,4 +229,29 @@ class SessionModel extends Model {
         return $builder->get()->getResult();
     }
 
+    public function togglePriority($session_uid, $player_uid, $priority) {
+        $builder = $this->db->table('player_session');
+        $builder->select('priority');
+        $builder->where('session_uid', $session_uid);
+        $builder->where('player_uid', $player_uid);
+        $row = $builder->get()->getRow();
+
+        if (!$row) {
+            return;
+        }
+
+        if (!$priority && $row->priority >= PRIORITY_MASTER) {
+            $new_priority = $row->priority - PRIORITY_MASTER;
+        } else if ($priority && $row->priority < PRIORITY_MASTER) {
+            $new_priority = $row->priority + PRIORITY_MASTER;
+        }
+
+        if (isset($new_priority)) {
+            $builder = $this->db->table('player_session');
+            $builder->where('session_uid', $session_uid);
+            $builder->where('player_uid', $player_uid);
+            $builder->update(['priority' => $new_priority]);
+        }
+    }
+
 }

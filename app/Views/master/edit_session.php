@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -131,7 +131,11 @@
                                     </td>
                                     <td class="align-middle"><?= date('d/m/Y H:i:s', strtotime($player->timestamp)) ?></td>
                                     <td class="align-middle">
-                                        <button class="btn btn-danger js-session-kick" data-uid="<?= $player->uid ?>" data-name="<?= $player->name ?>">Expulsar</button>
+                                        <button class="btn btn-danger mb-1 js-session-kick" data-uid="<?= $player->uid ?>" data-name="<?= $player->name ?>">Expulsar</button>
+                                        <div class="form-check">
+                                            <input type="checkbox" id="priority-<?= $player->uid ?>" class="form-check-input js-toggle-priority" data-uid="<?= $player->uid ?>" data-session-uid="<?= $session->uid ?>" <?= $player->priority >= PRIORITY_MASTER ? 'checked' : '' ?>>
+                                            <label class="form-check-label" for="priority-<?= $player->uid ?>">Prioridad</label>
+                                        </div>
                                     </td>
                                 </tr>
                             <? endforeach; ?>

@@ -83,6 +83,7 @@ $routes->post('session/cancel', 'Session::cancel');
 
 $routes->get('master', 'Master::index');
 $routes->post('master/kick', 'Master::kick');
+$routes->post('master/toggle-priority', 'Master::toggle_priority');
 $routes->get('master/sheets', 'Master::sheets');
 $routes->post('master/validate-sheet', 'Master::validate_sheet');
 $routes->post('master/reject-sheet', 'Master::reject_sheet');
