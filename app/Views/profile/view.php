@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2024 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -68,30 +68,35 @@
             <? endif; ?>
         <? endif; ?>
     </div>
-    <? if ($userdata && $userdata['admin']) : ?>
+    <? if ($userdata && ($userdata['admin'] || $userdata['master'])) : ?>
         <div class="card-footer">
-            <? if (!$isOwner && !$user->banned) : ?>
-                <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary mt-1 mr-3">Suplantar</a>
+            <? if ($userdata['master']) : ?>
+                <a href="<?= base_url('master/player-log') ?>/<?= $user->uid ?>" class="btn btn-primary mt-1 mr-3">Log</a>
             <? endif; ?>
-            <? if ($user->confirmed && !$user->banned) : ?>
-                <? if ($user->master) : ?>
-                    <button class="btn btn-outline-primary mt-1 mr-1 js-master-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Master</span>
-                <? else : ?>
-                    <button class="btn btn-primary mt-1 mr-1 js-master-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Master</span>
+            <? if ($userdata['admin']) : ?>
+                <? if (!$isOwner && !$user->banned) : ?>
+                    <a href="<?= base_url('admin/user_login') ?>/<?= $user->uid ?>" class="btn btn-primary mt-1 mr-3">Suplantar</a>
                 <? endif; ?>
-                <? if (!$isOwner) : ?>
-                    <? if ($user->admin) : ?>
-                        <button class="btn btn-outline-primary mt-1 mr-1 js-admin-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Administrador</span>
+                <? if ($user->confirmed && !$user->banned) : ?>
+                    <? if ($user->master) : ?>
+                        <button class="btn btn-outline-primary mt-1 mr-1 js-master-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Master</span>
                     <? else : ?>
-                        <button class="btn btn-primary mt-1 mr-1 js-admin-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Administrador</span>
+                        <button class="btn btn-primary mt-1 mr-1 js-master-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Master</span>
+                    <? endif; ?>
+                    <? if (!$isOwner) : ?>
+                        <? if ($user->admin) : ?>
+                            <button class="btn btn-outline-primary mt-1 mr-1 js-admin-rm" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Eliminar Administrador</span>
+                        <? else : ?>
+                            <button class="btn btn-primary mt-1 mr-1 js-admin-add" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Hacer Administrador</span>
+                        <? endif; ?>
                     <? endif; ?>
                 <? endif; ?>
-            <? endif; ?>
-            <? if (!$isOwner && !$user->banned) : ?>
-                <button class="btn btn-danger mt-1 mr-1 js-ban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Bloquear</span>
-            <? endif; ?>
-            <? if ($user->banned) : ?>
-                <button class="btn btn-outline-danger mt-1 mr-1 js-unban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Desbloquear</span>
+                <? if (!$isOwner && !$user->banned) : ?>
+                    <button class="btn btn-danger mt-1 mr-1 js-ban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Bloquear</span>
+                <? endif; ?>
+                <? if ($user->banned) : ?>
+                    <button class="btn btn-outline-danger mt-1 mr-1 js-unban" data-uid="<?= $user->uid ?>" data-name="<?= $user->display_name ?>">Desbloquear</span>
+                <? endif; ?>
             <? endif; ?>
         </div>
     <? endif; ?>

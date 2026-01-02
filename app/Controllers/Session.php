@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -153,6 +153,7 @@ class Session extends BaseController {
             'player_character_uid' => $character_uid,
             'priority' => $priority
         ]);
+        $this->SessionModel->logEvent($session_uid, 'join', $player_uid, $character_uid);
         $this->email->player_join_session($player_uid, $session_uid, $character_uid);
 
         session()->setFlashdata('success', 'Te has anotado a una partida');
@@ -168,6 +169,7 @@ class Session extends BaseController {
         $this->SessionModel->updatePlayerSession($session_uid, $player_uid, [
             'player_character_uid' => $character_uid,
         ]);
+        $this->SessionModel->logEvent($session_uid, 'swap', $player_uid, $character_uid);
         $this->email->player_swap_session($player_uid, $session_uid, $character_uid);
 
         session()->setFlashdata('success', 'Se ha cambiado el personaje con el que estabas anotado');
@@ -181,6 +183,7 @@ class Session extends BaseController {
         $player_uid = session('user_uid');
 
         $this->SessionModel->deletePlayerSession($session_uid, $player_uid);
+        $this->SessionModel->logEvent($session_uid, 'cancel', $player_uid);
         $this->email->player_cancel_session($player_uid, $session_uid);
 
         session()->setFlashdata('success', 'Se ha cancelado tu inscripción.');

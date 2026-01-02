@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2025 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -357,10 +357,35 @@ class Master extends BaseController {
         return redirect()->to('master/adventure/'.$session->adventure_uid);
     }
 
+    public function session_log($uid) {
+        $session = $this->SessionModel->getSession($uid);
+        $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
+        $logs = $this->SessionModel->getSessionLogs($uid);
+
+        $this->setData('session', $session);
+        $this->setData('adventure', $adventure);
+        $this->setData('logs', $logs);
+
+        $this->setTitle('Historial de la Sesión');
+        return $this->loadView('master/session_log');
+    }
+
+    public function player_log($uid) {
+        $user = $this->UserModel->getUser($uid);
+        $logs = $this->SessionModel->getPlayerLogs($uid);
+
+        $this->setData('user', $user);
+        $this->setData('logs', $logs);
+
+        $this->setTitle('Historial del Jugador');
+        return $this->loadView('master/player_log');
+    }
+
     public function kick() {
         $session_uid = $this->request->getVar('session-uid');
         $user_uid = $this->request->getVar('player-uid');
         $this->SessionModel->deletePlayerSession($session_uid, $user_uid);
+        $this->SessionModel->logEvent($session_uid, 'kick', $user_uid);
         $this->email->player_kicked_session($user_uid, $session_uid);
         session()->setFlashdata('success', 'Se han eliminado al jugador de la sesión.');
         return redirect()->back();

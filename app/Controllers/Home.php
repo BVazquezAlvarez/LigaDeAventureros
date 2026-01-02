@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2024 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ class Home extends BaseController {
         
         $sessions = [
             'today' => $this->SessionModel->getSessions(date('Y-m-d'), date('Y-m-d')),
-            'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow')), date('Y-m-d', strtotime('+20 days'))),
+            'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow'))),
         ];
         $weeks_joined = $this->SessionModel->getWeeksJoined(session('user_uid'));
 

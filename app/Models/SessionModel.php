@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2025 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -193,6 +193,40 @@ class SessionModel extends Model {
         $builder->where('adventure_uid', $original_adventure);
         $builder->update(['adventure_uid' => $new_adventure]);
         return $this->db->affectedRows();
+    }
+
+    public function logEvent($session_uid, $event, $player_uid, $player_character_uid = null) {
+        $data = [
+            'session_uid' => $session_uid,
+            'event' => $event,
+            'player_uid' => $player_uid,
+            'player_character_uid' => $player_character_uid,
+        ];
+
+        $builder = $this->db->table('session_log');
+        $builder->insert($data);
+    }
+
+    public function getSessionLogs($session_uid) {
+        $builder = $this->db->table('session_log');
+        $builder->where('session_log.session_uid', $session_uid);
+        $builder->select('session_log.*, user.display_name AS player_name, user.banned, player_character.name AS character_name');
+        $builder->join('user', 'session_log.player_uid = user.uid', 'left');
+        $builder->join('player_character', 'session_log.player_character_uid = player_character.uid', 'left');
+        $builder->orderBy('session_log.timestamp', 'ASC');
+        return $builder->get()->getResult();
+    }
+
+    public function getPlayerLogs($player_uid) {
+        $builder = $this->db->table('session_log');
+        $builder->where('session_log.player_uid', $player_uid);
+        $builder->select('session_log.*, user.display_name AS player_name, player_character.name AS character_name, adventure.name AS adventure_name, session.date AS session_date');
+        $builder->join('user', 'session_log.player_uid = user.uid', 'left');
+        $builder->join('player_character', 'session_log.player_character_uid = player_character.uid', 'left');
+        $builder->join('session', 'session_log.session_uid = session.uid', 'left');
+        $builder->join('adventure', 'session.adventure_uid = adventure.uid', 'left');
+        $builder->orderBy('session_log.timestamp', 'DESC');
+        return $builder->get()->getResult();
     }
 
 }

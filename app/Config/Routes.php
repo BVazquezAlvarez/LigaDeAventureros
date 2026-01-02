@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2025 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -99,6 +99,8 @@ $routes->post('master/publish', 'Master::publish_post');
 $routes->post('master/delete-session', 'Master::delete_session');
 $routes->get('master/edit-session/(:segment)', 'Master::edit_session/$1');
 $routes->post('master/edit-session/(:segment)', 'Master::edit_session_post/$1');
+$routes->get('master/session-log/(:segment)', 'Master::session_log/$1');
+$routes->get('master/player-log/(:segment)', 'Master::player_log/$1');
 
 $routes->get('admin', 'Admin::index');
 $routes->get('admin/logs', 'Admin::logs');

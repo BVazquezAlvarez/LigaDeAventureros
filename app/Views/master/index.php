@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@
                                 <td class="align-middle"><?= $session->players_min ?>-<?= $session->players_max ?> (<?= $session->registered_players ?>)</td>
                                 <td class="align-middle">
                                     <a href="<?= base_url('master/edit-session') ?>/<?= $session->uid ?>" class="btn btn-primary mb-1">Editar</a>
+                                    <a href="<?= base_url('master/session-log') ?>/<?= $session->uid ?>" class="btn btn-primary mb-1">Log</a>
                                     <? if ($session->master_uid == $userdata['uid']) : ?>
                                         <button class="btn btn-danger mb-1 js-session-rm" data-uid="<?= $session->uid ?>">Eliminar</button>
                                     <? endif; ?>

@@ -1,0 +1,75 @@
+<?php
+// LigaDeAventureros
+// Copyright (C) 2026 Santiago González Lago
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+?>
+
+<div class="card">
+  <div class="card-header text-center">
+      <h2 class="d-inline-block mb-0">Registro de eventos del jugador <?= $user->display_name ?></h2>
+  </div>
+  <div class="card-body">
+      <? if (empty($logs)) : ?>
+          <p>No hay eventos registrados para esta sesión.</p>
+      <? else : ?>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Sesión</th>
+                <th scope="col">Personaje</th>
+                <th scope="col">Evento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <? foreach ($logs as $log) : ?>
+                <tr>
+                  <td class="align-middle"><?= date('d/m/Y H:i', strtotime($log->timestamp)) ?></td>
+                  <td class="align-middle">
+                    <? if ($log->session_uid) : ?>
+                      <a href="<?= base_url('session/view/' . $log->session_uid) ?>"><strong><?= esc($log->adventure_name) ?></strong></a>
+                      <br/>
+                      <small><?= date('d/m/Y', strtotime($log->session_date)) ?></small>
+                    <? else : ?>
+                      <em>Sesión eliminada</em>
+                    <? endif; ?>
+                  </td>
+                  <td class="align-middle">
+                    <? if ($log->player_character_uid) : ?>
+                      <a href="<?= base_url('character/' . $log->player_character_uid) ?>"><?= esc($log->character_name) ?></a>
+                    <? else : ?>
+                      <em>Sin personaje</em>
+                    <? endif; ?>
+                  </td>
+                  <td class="align-middle">
+                    <? if ($log->event == 'join') : ?>
+                      <span class="badge badge-primary">Se ha inscrito en la sesión</span>
+                    <? elseif ($log->event == 'cancel') : ?>
+                      <span class="badge badge-danger">Ha cancelado su inscripción</span>
+                    <? elseif ($log->event == 'swap') : ?>
+                      <span class="badge badge-info">Ha cambiado el personaje con el que estaba inscrito</span>
+                    <? elseif ($log->event == 'kick') : ?>
+                      <span class="badge badge-warning">Ha sido expulsado de la sesión</span>
+                    <? endif; ?>
+                  </td>
+                </tr>
+              <? endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      <? endif; ?>
+  </div>
+</div>

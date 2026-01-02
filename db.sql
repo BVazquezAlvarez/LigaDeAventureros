@@ -203,5 +203,22 @@ ALTER TABLE `session` ADD `date_published` DATE NULL AFTER `published`;
 
 ALTER TABLE `player_session` CHANGE `priority` `priority` INT NOT NULL DEFAULT '0';
 
+-- Registro de eventos en las sesiones
+CREATE TABLE session_log (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_uid VARCHAR(255) NULL,
+  event ENUM('join', 'swap', 'cancel', 'kick') NOT NULL,
+  player_uid VARCHAR(255) NULL,
+  player_character_uid VARCHAR(255) NULL,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE session_log ADD CONSTRAINT fk_session_log_session_uid FOREIGN KEY (session_uid) REFERENCES session(uid) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE session_log ADD CONSTRAINT fk_session_log_player_uid FOREIGN KEY (player_uid) REFERENCES user(uid) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE session_log ADD CONSTRAINT fk_session_log_player_character_uid FOREIGN KEY (player_character_uid) REFERENCES player_character(uid) ON UPDATE CASCADE ON DELETE SET NULL;
+
+ALTER TABLE session_log ADD INDEX idx_session_uid (session_uid);
+ALTER TABLE session_log ADD INDEX idx_player_uid (player_uid);
+ALTER TABLE session_log ADD INDEX idx_player_character_uid (player_character_uid);
 
 COMMIT;
