@@ -21,7 +21,7 @@
 <? endif; ?>
 
 <div class="row">
-    <div class="col-md-6 offset-md-3 mb-3 buttons-ranks">
+    <div class="col-md-6 offset-md-3 mb-3 buttons-wsetting-home">
         <? foreach ($world_settings as $setting) : ?>
             <button class="js-button-wsetting-home <?= $setting->visible_default ? 'active' : '' ?>" data-wsetting="<?= $setting->id ?>"><?= $setting->name ?></button>
         <? endforeach; ?>
