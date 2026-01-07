@@ -25,18 +25,19 @@ class Home extends BaseController {
         $this->CharacterModel = model('CharacterModel');
         $this->SessionModel = model('SessionModel');
         $this->UserModel = model('UserModel');
+        $this->WorldSettingModel = model('WorldSettingModel');
     }
 
     public function index() {
         setlocale(LC_TIME, 'es_ES');
-        
+
         $sessions = [
             'today' => $this->SessionModel->getSessions(date('Y-m-d'), date('Y-m-d')),
             'upcoming' => $this->SessionModel->getSessions(date('Y-m-d', strtotime('tomorrow'))),
         ];
         $weeks_joined = $this->SessionModel->getWeeksJoined(session('user_uid'));
 
-        foreach ($sessions as $session_block) {      
+        foreach ($sessions as $session_block) {
             foreach ($session_block as $session) {
                 $dt_date_published = new DateTime($session->date_published);
                 $dt_date_published->add(new DateInterval('PT18H'));
@@ -48,7 +49,7 @@ class Home extends BaseController {
 
                 foreach ($players as $player) {
                     if ($player->uid === session('user_uid')) {
-                        $session->joined = $player->character_uid;                
+                        $session->joined = $player->character_uid;
                         $priority_avaliable = 0;
                     }
 
@@ -70,8 +71,23 @@ class Home extends BaseController {
             }
         }
 
+        $world_settings = $this->WorldSettingModel->getWorldSettingList();
+        $visible_world_settings = array_map(function($setting) {
+            return $setting->id;
+        }, array_filter($world_settings, function($setting) {
+            return $setting->visible_default;
+        }));
+
+        $this->setData('world_settings', $world_settings);
+        $this->setData('visible_world_settings', $visible_world_settings);
         $this->setData('sessions_today', $sessions['today']);
+        $this->setData('visible_today', count(array_filter($sessions['today'], function($session) use ($visible_world_settings) {
+            return in_array($session->w_setting_id, $visible_world_settings);
+        })));
         $this->setData('sessions_upcoming', $sessions['upcoming']);
+        $this->setData('visible_upcoming', count(array_filter($sessions['upcoming'], function($session) use ($visible_world_settings) {
+            return in_array($session->w_setting_id, $visible_world_settings);
+        })));
         $this->setData('characters', $this->CharacterModel->getPlayerCharacters(session('user_uid'), true));
         return $this->loadView('home');
     }
@@ -93,7 +109,7 @@ class Home extends BaseController {
             $this->setData('email', NULL);
         }
 
-        return $this->loadView('contact');       
+        return $this->loadView('contact');
     }
 
 
@@ -128,6 +144,6 @@ class Home extends BaseController {
         $email->send();
 
         $this->setTitle('Contacto enviado');
-        return $this->loadView('contact_sent');  
+        return $this->loadView('contact_sent');
     }
 }

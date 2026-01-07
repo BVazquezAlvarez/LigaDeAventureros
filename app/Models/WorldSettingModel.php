@@ -1,6 +1,7 @@
 <?php
 // LigaDeAventureros
 // Copyright (C) 2023 Borja Vázquez Álvarez
+// Copyright (C) 2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace App\Models;  
+namespace App\Models;
 use CodeIgniter\Model;
 
 class WorldSettingModel extends Model {
@@ -28,6 +29,7 @@ class WorldSettingModel extends Model {
         'name',
         'timeline',
         'active',
+        'visible_default'
 	];
 
     public function getWorldSettingList() {

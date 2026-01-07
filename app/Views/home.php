@@ -20,37 +20,41 @@
     <?= view('partials/new_player_banner' , ['character_count' => count($characters)]) ?>
 <? endif; ?>
 
-<? if ($sessions_today) : ?>
-    <div class="card mt-3 mb-3">
-        <div class="card-header text-center">
-            <h2 class="d-inline-block mb-0">¡Hoy!</h2>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <? foreach ($sessions_today as $session) : ?>
-                    <?= view('partials/join_session', ['session' => $session]) ?>
-                <? endforeach; ?>
-            </div>
+<div class="row">
+    <div class="col-md-6 offset-md-3 mb-3 buttons-ranks">
+        <? foreach ($world_settings as $setting) : ?>
+            <button class="js-button-wsetting-home <?= $setting->visible_default ? 'active' : '' ?>" data-wsetting="<?= $setting->id ?>"><?= $setting->name ?></button>
+        <? endforeach; ?>
+    </div>
+</div>
+
+<div class="card mt-3 mb-3 js-sessions-today <?= $visible_today ? '' : 'd-none' ?>">
+    <div class="card-header text-center">
+        <h2 class="d-inline-block mb-0">¡Hoy!</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <? foreach ($sessions_today as $session) : ?>
+                <?= view('partials/join_session', ['session' => $session, 'visible' => in_array($session->w_setting_id, $visible_world_settings)]) ?>
+            <? endforeach; ?>
         </div>
     </div>
-<? endif; ?>
+</div>
 
 <div class="text-center">
     <a href="<?= base_url('calendar') ?>" class="btn btn-primary btn-lg"><i class="fa-solid fa-calendar"></i> Calendario</a>
 </div>
 
-<div class="card mt-3">
+<div class="card mt-3 js-sessions-upcoming">
     <div class="card-header text-center">
         <h2 class="d-inline-block mb-0">Próximas partidas</h2>
     </div>
     <div class="card-body">
         <div class="row">
             <? foreach ($sessions_upcoming as $session) : ?>
-                <?= view('partials/join_session', ['session' => $session]) ?>
+                <?= view('partials/join_session', ['session' => $session, 'visible' => in_array($session->w_setting_id, $visible_world_settings)]) ?>
             <? endforeach; ?>
-            <? if (!$sessions_upcoming) : ?>
-                <div class="col-12 text-center">Todavía no hay partidas programadas para los próximos días...</div>
-            <? endif; ?>
+            <div class="col-12 text-center js-no-upcoming <?= $visible_upcoming ? 'd-none' : '' ?>">Todavía no hay partidas programadas para los próximos días...</div>
         </div>
     </div>
 </div>

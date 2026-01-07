@@ -1,4 +1,4 @@
-<div class="col-md-6 col-lg-4 mb-3">
+<div class="col-md-6 col-lg-4 mb-3 js-wsetting-home-show <?= $visible ? '' : 'd-none' ?>" data-wsetting="<?= $session->w_setting_id ?>">
     <div class="card card-join-session h-100">
         <div class="card-header text-center">
         <? if ($userdata && $session->priority_avaliable != 0) : ?>

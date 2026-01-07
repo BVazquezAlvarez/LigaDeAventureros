@@ -221,4 +221,7 @@ ALTER TABLE session_log ADD INDEX idx_session_uid (session_uid);
 ALTER TABLE session_log ADD INDEX idx_player_uid (player_uid);
 ALTER TABLE session_log ADD INDEX idx_player_character_uid (player_character_uid);
 
+-- Ocultar bloques de mundo en la página de inicio
+ALTER TABLE world_setting ADD COLUMN visible_default TINYINT(1) NOT NULL DEFAULT 1;
+
 COMMIT;

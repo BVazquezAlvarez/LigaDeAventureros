@@ -491,6 +491,42 @@ $(function() {
         searchAllCharacters();
     });
 
+    $(document).on("click",'.js-button-wsetting-home', function() {
+        $(this).toggleClass('active');
+        let wsetting = $(this).data('wsetting');
+        if ($(this).hasClass('active')) {
+            $(`.js-wsetting-home-show[data-wsetting='${wsetting}']`).removeClass('d-none');
+        } else {
+            $(`.js-wsetting-home-show[data-wsetting='${wsetting}']`).addClass('d-none');
+        }
+
+        let anyVisibleToday = false;
+        $('.js-sessions-today .js-wsetting-home-show').each(function() {
+            if (!$(this).hasClass('d-none')) {
+                anyVisibleToday = true;
+                return false; // salir del bucle each
+            }
+        });
+        if (anyVisibleToday) {
+            $('.js-sessions-today').removeClass('d-none');
+        } else {
+            $('.js-sessions-today').addClass('d-none');
+        }
+
+        let anyVisibleUpcoming = false;
+        $('.js-sessions-upcoming .js-wsetting-home-show').each(function() {
+            if (!$(this).hasClass('d-none')) {
+                anyVisibleUpcoming = true;
+                return false; // salir del bucle each
+            }
+        });
+        if (anyVisibleUpcoming) {
+            $('.js-no-upcoming').addClass('d-none');
+        } else {
+            $('.js-no-upcoming').removeClass('d-none');
+        }
+    });
+
     let intervalRunning = false;
     $('#delete-character-modal').on('show.bs.modal', function () {
         var submitBtn = $('#delete-character-modal button[type="submit"]');
@@ -533,10 +569,10 @@ $(function() {
             $(input).focus();
             return;
         }
-        
+
         $(this).hide();
         $(section).fadeIn(1000);
-        
+
         $([document.documentElement, document.body]).animate({
             scrollTop: $(section).offset().top
         }, 2000);
