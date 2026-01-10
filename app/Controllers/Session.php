@@ -191,22 +191,28 @@ class Session extends BaseController {
         return redirect()->back();
     }
 
-    public function add_to_calendar($uid) {
+    public function add_to_calendar($uid, $platform = null) {
         $session = $this->SessionModel->getSession($uid);
         $adventure = $this->AdventureModel->getAdventure($session->adventure_uid);
 
-        // Detectar si el usuario está en Android
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $is_android = strpos($user_agent, 'Android') !== false;
-
-        if ($is_android) {
+        if ($platform == 'google') {
             // Redirigir a Google Calendar
-            $google_calendar_url = $this->generate_google_calendar_link($session, $adventure, $uid);
-            header("Location: $google_calendar_url");
-            exit;
-        } else {
-            // Generar el archivo .ics para iOS y otros dispositivos
+            $this->generate_google_calendar_link($session, $adventure, $uid);
+        } else if (in_array($platform, ['outlook', 'ical'])) {
+            // Generar fichero .ics
             $this->generate_ics_file($session, $adventure, $uid);
+        } else {
+            // Detectar si el usuario está en Android
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $is_android = strpos($user_agent, 'Android') !== false;
+
+            if ($is_android) {
+                // Redirigir a Google Calendar
+                $this->generate_google_calendar_link($session, $adventure, $uid);
+            } else {
+                // Generar el archivo .ics para iOS y otros dispositivos
+                $this->generate_ics_file($session, $adventure, $uid);
+            }
         }
     }
 
@@ -224,7 +230,9 @@ class Session extends BaseController {
             'sprop' => 'website:' . base_url(),
         ];
 
-        return 'https://www.google.com/calendar/render?' . http_build_query($params);
+        $url = 'https://www.google.com/calendar/render?' . http_build_query($params);
+        header("Location: $url");
+        exit;
     }
 
     private function generate_ics_file($session, $adventure, $uid) {

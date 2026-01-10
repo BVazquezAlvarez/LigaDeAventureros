@@ -22,7 +22,20 @@
                         <p><strong><?= rank_full_text($session->rank) ?></strong></p>
                         <p>
                             <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?> <span class="text-muted"><?= date('H:i', strtotime($session->time)) ?><br/></span>
-                            <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a><br/>
+                            <? if (is_mobile()) : ?>
+                                <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a><br/>
+                            <? else : ?>
+                                <span class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="calendarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa-solid fa-calendar"></i> Añadir
+                                    </button>
+                                    <span class="dropdown-menu" aria-labelledby="calendarDropdown">
+                                        <a class="dropdown-item" href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>/google">Google Calendar</a>
+                                        <a class="dropdown-item" href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>/outlook">Outlook</a>
+                                        <a class="dropdown-item" href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>/ical">iCalendar</a>
+                                    </span>
+                                </span>
+                            <? endif; ?>
                             <?= $session->location ?><br/>
                             <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                         </p>

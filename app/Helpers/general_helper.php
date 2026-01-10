@@ -30,3 +30,14 @@ function safe_text_links($text) {
     $regex = '/\b(?:https?|ftp):\/\/\S+|www\.\S+\b/i';
     return preg_replace($regex, '<a href="$0" target="_blank">$0</a>', strip_tags($text));
 }
+
+function is_mobile() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $mobile_agents = ['Mobile', 'Android', 'Silk/', 'Kindle', 'BlackBerry', 'Opera Mini', 'Opera Mobi'];
+    foreach ($mobile_agents as $agent) {
+        if (strpos($user_agent, $agent) !== false) {
+            return true;
+        }
+    }
+    return false;
+}
