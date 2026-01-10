@@ -163,4 +163,34 @@ class Cron extends BaseController {
         echo "$count cuentas eliminadas.";
     }
 
+    public function delete_unlinked_resources() {
+        $db = \Config\Database::connect();
+        $builder = $db->table('resource');
+        $builder->where('type', 'file');
+        $resources = $builder->get()->getResult();
+
+        $files = array();
+        foreach ($resources as $resource) {
+            $files[] = $resource->location;
+        }
+
+        $folderPath = ROOTPATH . 'public_html/files';
+        $filesInFolder = array_filter(scandir($folderPath), function($fileInFolder) {
+            return (strpos($fileInFolder, '.') !== 0);
+        });
+        $filesToDelete = array_diff($filesInFolder, $files);
+
+        $count = 0;
+        foreach ($filesToDelete as $fileToDelete) {
+            $filePathToDelete = $folderPath . DIRECTORY_SEPARATOR . $fileToDelete;
+            if (file_exists($filePathToDelete)) {
+                unlink($filePathToDelete);
+                echo "Eliminado: $fileToDelete.".PHP_EOL;
+                $count++;
+            }
+        }
+
+        echo "$count recursos no vinculados eliminados.";
+    }
+
 }

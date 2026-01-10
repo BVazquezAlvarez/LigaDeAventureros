@@ -24,6 +24,10 @@
             <span class="badge badge-warning"><?= $users_unconfirmed ?></span>
             <span class="badge badge-danger"><?= $users_banned ?></span>
         </a>
+        <a href="<?= base_url('admin/resources') ?>" class="btn btn-primary btn-lg btn-block">
+            Administrar recursos
+            <span class="badge badge-light"><?= $resources ?></span>
+        </a>
         <a href="<?= base_url('admin/logs') ?>" class="btn btn-primary btn-lg btn-block">
             Comprobar logs
             <span class="badge badge-light"><?= $logs ?></span>

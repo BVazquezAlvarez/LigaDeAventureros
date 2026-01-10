@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ class Admin extends BaseController {
         $this->AdventureModel = model('AdventureModel');
         $this->SessionModel = model('SessionModel');
         $this->UploadLogModel = model('UploadLogModel');
+        $this->ResourceModel = model('ResourceModel');
     }
 
     protected function setTitle(string $title) {
@@ -39,6 +40,7 @@ class Admin extends BaseController {
         $this->setData('users_confirmed', $this->UserModel->getTotalUsersConfirmed());
         $this->setData('users_unconfirmed', $this->UserModel->getTotalUsersUnconfirmed());
         $this->setData('users_banned', $this->UserModel->getTotalUsersBanned());
+        $this->setData('resources', $this->ResourceModel->getTotalResources('', 0));
         $this->setData('logs', $this->UploadLogModel->getTotalLogs());
         $this->setTitle('Panel de control');
         return $this->loadView('admin/index');
@@ -191,6 +193,124 @@ class Admin extends BaseController {
             session()->setFlashdata('error', 'No se ha podido marcar como duplicada.');
             return redirect()->back();
         }
+    }
+
+    public function resources($page = 1) {
+        $limit = 20;
+        $start = $limit * ($page - 1);
+
+        $q = $this->request->getGet('q');
+
+        $resources = $this->ResourceModel->getResources($start, $limit, $q, 0);
+        $total = $this->ResourceModel->getTotalResources($q, 0);
+
+        if ($total > 0 && $start >= $total) {
+            $redirect_url = '/resources';
+            if ($q) {
+                $redirect_url .= '?q=' . urlencode($q);
+            }
+            return redirect()->to($redirect_url);
+        }
+
+        $pager = service('pager');
+        $pagination = $pager->makeLinks($page, $limit, $total, 'liga', 3);
+
+        foreach ($resources as $resource) {
+            if ($resource->type == 'file') {
+                $resource->location = base_url('files/' . $resource->location);
+            }
+        }
+
+        $this->setData('resources', $resources);
+        $this->setData('total', $total);
+        $this->setData('q', $q);
+        $this->setData('pagination', $pagination);
+        $this->setTitle('Administrar Recursos');
+        return $this->loadView('admin/resources');
+    }
+
+    public function update_resource() {
+        $id = $this->request->getVar('id');
+
+        $validation = \Config\Services::validation();
+        $validation->setRule('title', 'título', 'trim|required');
+        $validation->setRule('description', 'descripción', 'trim');
+        $validation->setRule('type', 'tipo', 'trim|required|in_list[file,url]');
+        if ($this->request->getVar('type') == 'file') {
+            if ($id) {
+                $isUploadingFile = $this->request->getFile('location') && $this->request->getFile('location')->isValid();
+                if ($isUploadingFile) {
+                    $validation->setRule('location', 'localización', 'uploaded[location]|max_size[location,10240]');
+                }
+            } else {
+                $validation->setRule('location', 'localización', 'uploaded[location]|max_size[location,10240]');
+            }
+        } else {
+            $validation->setRule('location', 'localización', 'trim|required|valid_url');
+        }
+        $validation->setRule('position', 'orden', 'required|integer|min_length[0]');
+
+        if ($validation->withRequest($this->request)->run()) {
+            $data = [
+                'title' => $this->request->getVar('title'),
+                'description' => $this->request->getVar('description'),
+                'type' => $this->request->getVar('type'),
+                'position' => $this->request->getVar('position'),
+                'active' => $this->request->getVar('active') ? 1 : 0,
+            ];
+
+            if ($data['type'] == 'file') {
+                $file = $this->request->getFile('location');
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $file_name = $file->getName();
+                    $extension = $file->getClientExtension();
+                    $base_name = pathinfo($file_name, PATHINFO_FILENAME);
+                    $upload_path = ROOTPATH . 'public_html/files';
+                    $counter = 1;
+                    while (file_exists($upload_path . '/' . $file_name)) {
+                        $file_name = $base_name . '_' . $counter . '.' . $extension;
+                        $counter++;
+                    }
+                    if ($file->move($upload_path, $file_name)) {
+                        upload_log('public_html/files', $file_name);
+                        $data['location'] = $file_name;
+                    } else {
+                        $errors = $file->getErrorString();
+                        session()->setFlashdata('error', 'Error al subir el archivo: ' . $errors);
+                        return redirect()->back();
+                    }
+                } else if (!$id) {
+                    session()->setFlashdata('error', 'Archivo no válido o no se pudo subir.');
+                    return redirect()->back();
+                }
+            } else {
+                $data['location'] = $this->request->getVar('location');
+            }
+
+            if ($id) {
+                $this->ResourceModel->update($id, $data);
+                session()->setFlashdata('success', 'Recurso actualizado correctamente.');
+            } else {
+                $this->ResourceModel->insert($data);
+                session()->setFlashdata('success', 'Recurso creado correctamente.');
+            }
+            return redirect()->to('admin/resources');
+        } else {
+            if ($id) {
+                session()->setFlashdata('error', 'No se ha podido actualizar el recurso.');
+            } else {
+                session()->setFlashdata('error', 'No se ha podido crear el recurso.');
+            }
+            session()->setFlashdata('validation_errors', $validation->getErrors());
+            return redirect()->back();
+        }
+    }
+
+    public function toggle_resource_active() {
+        $id = $this->request->getVar('id');
+        $active = $this->request->getVar('active') ? 1 : 0;
+
+        $this->ResourceModel->update($id, ['active' => $active]);
     }
 
 }

@@ -224,4 +224,16 @@ ALTER TABLE session_log ADD INDEX idx_player_character_uid (player_character_uid
 -- Ocultar bloques de mundo en la página de inicio
 ALTER TABLE world_setting ADD COLUMN visible_default TINYINT(1) NOT NULL DEFAULT 1;
 
+--Tabla de recursos compartidos
+CREATE TABLE `resource` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `title` varchar(255) NOT NULL,
+ `description` varchar(255) DEFAULT NULL,
+ `type` enum('file','url') NOT NULL,
+ `location` varchar(255) NOT NULL,
+ `position` int(11) NOT NULL DEFAULT 0,
+ `active` tinyint(1) NOT NULL DEFAULT 1,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci
+
 COMMIT;

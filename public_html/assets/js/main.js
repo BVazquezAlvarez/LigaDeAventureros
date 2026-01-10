@@ -581,4 +581,97 @@ $(function() {
     $(document).on('input', '.input-error', function() {
         $(this).removeClass('input-error');
     });
+
+    $('.js-update-resource-active').on('change', function() {
+        let id = $(this).data("id");
+        let active = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            method: "POST",
+            url: baseUrl + "admin/toggle-resource-active",
+            data: {
+                'id': id,
+                'active': active
+            }
+        });
+    });
+
+    // Función para actualizar el campo de localización según el tipo seleccionado
+    function updateLocationField(new_res = false) {
+        const selectedType = $('#type').val();
+        const locationContainer = $('#location-field-container');
+        const locationHelp = $('#location-help');
+        const form = $('#createOrUpdateResourceModal form');
+
+        locationContainer.empty();
+
+        if (selectedType === 'file') {
+            // Campo para subir archivo
+            //  Solo es required cuando new_res es true (nuevo recurso)
+            locationContainer.html(`
+                <input type="file" class="form-control-file" id="location" name="location" ${new_res ? 'required' : ''}>
+            `);
+            locationHelp.text('Seleccione un archivo para subir');
+
+            // Cambiar el enctype del formulario para permitir subida de archivos
+            form.attr('enctype', 'multipart/form-data');
+
+        } else if (selectedType === 'url') {
+            // Campo para escribir URL
+            locationContainer.html(`
+                <input type="url" class="form-control" id="location" name="location" required>
+            `);
+            locationHelp.text('Ingrese la URL completa del recurso');
+
+            // Cambiar el enctype del formulario
+            form.attr('enctype', 'application/x-www-form-urlencoded');
+
+            } else {
+            // Mensaje cuando no hay tipo seleccionado
+            locationContainer.html(`
+                <div class="alert alert-info">
+                Seleccione un tipo para continuar
+                </div>
+            `);
+            locationHelp.text('');
+        }
+    }
+
+    // Event listener para cambios en el select de tipo
+    $('#createOrUpdateResourceModal #type').on('change', updateLocationField);
+
+    // Resetear el formulario cuando se cierra el modal
+    $('#createOrUpdateResourceModal').on('hidden.bs.modal', function() {
+        $('#createOrUpdateResourceModal .modal-title').text('Nuevo Recurso');
+        $('#createOrUpdateResourceModal #id').val('');
+        $('#createOrUpdateResourceModal form')[0].reset();
+        updateLocationField();
+    });
+
+    $('.js-edit-resource').on('click', function(e) {
+        e.preventDefault();
+        let resource = $(this).data('info');
+
+        // Rellenar el formulario con los datos del recurso
+        $('#createOrUpdateResourceModal #id').val(resource.id);
+        $('#createOrUpdateResourceModal #title').val(resource.title);
+        $('#createOrUpdateResourceModal #description').val(resource.description);
+        $('#createOrUpdateResourceModal #type').val(resource.type);
+        $('#createOrUpdateResourceModal #position').val(resource.position);
+        $('#createOrUpdateResourceModal #active').prop('checked', resource.active == 1);
+
+        // Actualizar el campo de localización según el tipo
+        updateLocationField();
+
+        // Si el tipo es 'url', rellenar el campo de localización
+        if (resource.type === 'url') {
+            $('#createOrUpdateResourceModal #location').val(resource.location);
+        }
+
+        // Cambiar el título del modal
+        $('#createOrUpdateResourceModal .modal-title').text('Editar Recurso');
+
+        // Mostrar el modal
+        $('#createOrUpdateResourceModal').modal('show');
+    });
 });

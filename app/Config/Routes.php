@@ -104,6 +104,9 @@ $routes->post('master/edit-session/(:segment)', 'Master::edit_session_post/$1');
 $routes->get('master/session-log/(:segment)', 'Master::session_log/$1');
 $routes->get('master/player-log/(:segment)', 'Master::player_log/$1');
 
+$routes->get('resources', 'Resources::index');
+$routes->get('resources/(:segment)', 'Resources::index/$1');
+
 $routes->get('admin', 'Admin::index');
 $routes->get('admin/logs', 'Admin::logs');
 $routes->get('admin/logs/(:segment)', 'Admin::logs/$1');
@@ -121,12 +124,17 @@ $routes->post('admin/user-unban', 'Admin::user_unban');
 $routes->get('admin/delete-unused-adventures', 'Admin::delete_unused_adventures');
 $routes->post('admin/delete-unused-adventures', 'Admin::delete_unused_adventures_post');
 $routes->post('admin/set-adventure-duplicate', 'Admin::set_adventure_duplicate');
+$routes->get('admin/resources', 'Admin::resources');
+$routes->get('admin/resources/(:segment)', 'Admin::resources/$1');
+$routes->post('admin/update-resource', 'Admin::update_resource');
+$routes->post('admin/toggle-resource-active', 'Admin::toggle_resource_active');
 
 $routes->get('cron/delete-sheets', 'Cron::delete_sheets');
 $routes->get('cron/delete-adventure-thumbnails', 'Cron::delete_adventure_thumbnails');
 $routes->get('cron/delete-accounts-requested', 'Cron::delete_accounts_requested');
 $routes->get('cron/delete-accounts-inactive', 'Cron::delete_accounts_inactive');
 $routes->get('cron/delete-character-images', 'Cron::delete_character_images');
+$routes->get('cron/delete-unlinked-resources', 'Cron::delete_unlinked_resources');
 
 $routes->get('api/characters', 'Api::characters');
 

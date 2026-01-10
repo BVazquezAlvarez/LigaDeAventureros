@@ -75,12 +75,14 @@
 										<li><a class="dropdown-item" href="<?= base_url('admin') ?>">Panel de Control</a></li>
 										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item" href="<?= base_url('admin/users') ?>">Administrar usuarios</a></li>
+										<li><a class="dropdown-item" href="<?= base_url('admin/resources') ?>">Administrar recursos</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('admin/logs') ?>">Comprobar logs</a></li>
 										<li><a class="dropdown-item" href="<?= base_url('admin/settings') ?>">Configuraciones del servidor</a></li>
 									</ul>
 								</li>
 							<? endif; ?>
 							<li class="nav-item"><a class="nav-link" href="<?= base_url('all-characters') ?>">Todos los personajes</a></li>
+							<li class="nav-item"><a class="nav-link" href="<?= base_url('resources') ?>">Recursos</a></li>
 							<? foreach (links_menu() as $link) : ?>
 								<li class="nav-item"><a class="nav-link" href="<?= $link->url ?>" <?= $link->new_tab ? 'target="_blank"' : '' ?>><?= $link->text ?></a></li>
 							<? endforeach; ?>
