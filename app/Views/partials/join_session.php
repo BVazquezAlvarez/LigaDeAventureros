@@ -23,7 +23,7 @@
                         <p>
                             <?= weekday(date('N', strtotime($session->date))) ?> <?= date('j', strtotime($session->date)) ?> <span class="text-muted"><?= date('H:i', strtotime($session->time)) ?><br/></span>
                             <? if (is_mobile()) : ?>
-                                <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a><br/>
+                                <a href="<?= base_url('session/add-to-calendar')?>/<?= $session->uid ?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-calendar"></i> Añadir</a>
                             <? else : ?>
                                 <span class="dropdown">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="calendarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,6 +36,7 @@
                                     </span>
                                 </span>
                             <? endif; ?>
+                            <br/>
                             <?= $session->location ?><br/>
                             <span class="<?= count(array_filter($session->players['playing'], function($element) { return $element !== NULL; })) >= $session->players_min ? 'text-secondary' : 'text-danger' ?>"><?= $session->players_min ?>-<?= $session->players_max ?> jugadores</span>
                         </p>
