@@ -236,4 +236,7 @@ CREATE TABLE `resource` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci
 
+-- Colores de settings
+ALTER TABLE `world_setting` ADD `color` VARCHAR(7) NULL;
+
 COMMIT;

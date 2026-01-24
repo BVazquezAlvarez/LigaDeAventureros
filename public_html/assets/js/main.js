@@ -16,6 +16,55 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
 
+const COOKIE_PREFIX = 'LDA_';
+
+// ---------- UTILIDADES DE COOKIE ----------
+function setCookie(name, value, days = 30) {
+    name = COOKIE_PREFIX + name;
+    const payload = {
+        value: value,
+        durationDays: days,
+        createdAt: Date.now()
+    };
+
+    const expiresDate = new Date();
+    expiresDate.setTime(expiresDate.getTime() + (days * 24 * 60 * 60 * 1000));
+
+    document.cookie =
+        name + "=" + encodeURIComponent(JSON.stringify(payload)) +
+        "; expires=" + expiresDate.toUTCString() +
+        "; path=/";
+}
+
+function getCookie(name) {
+    name = COOKIE_PREFIX + name;
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+
+        if (c.indexOf(nameEQ) === 0) {
+            try {
+                const payload = JSON.parse(
+                    decodeURIComponent(c.substring(nameEQ.length))
+                );
+
+                // Renovar expiración usando la duración original
+                if (payload.durationDays) {
+                    setCookie(name, payload.value, payload.durationDays);
+                }
+
+                return payload.value;
+
+            } catch (e) {
+                return null;
+            }
+        }
+    }
+    return null;
+}
+
 function loadAdventure(adventure) {
     if (adventure.thumbnail) {
         $('#loaded-adventure-image').attr('src', baseUrl + "img/adventures/" + adventure.thumbnail);
@@ -491,41 +540,71 @@ $(function() {
         searchAllCharacters();
     });
 
-    $(document).on("click",'.js-button-wsetting-home', function() {
-        $(this).toggleClass('active');
-        let wsetting = $(this).data('wsetting');
-        if ($(this).hasClass('active')) {
-            $(`.js-wsetting-home-show[data-wsetting='${wsetting}']`).removeClass('d-none');
-        } else {
-            $(`.js-wsetting-home-show[data-wsetting='${wsetting}']`).addClass('d-none');
-        }
+    function updateSettingsVisibility() {
+        const $activeButtons = $('.js-button-wsetting-home.active');
+        const showAll = $activeButtons.length === 0;
 
-        let anyVisibleToday = false;
-        $('.js-sessions-today .js-wsetting-home-show').each(function() {
-            if (!$(this).hasClass('d-none')) {
-                anyVisibleToday = true;
-                return false; // salir del bucle each
-            }
-        });
-        if (anyVisibleToday) {
-            $('.js-sessions-today').removeClass('d-none');
-        } else {
-            $('.js-sessions-today').addClass('d-none');
-        }
+        // Mostrar / ocultar cards
+        $('.js-wsetting-home-show').each(function () {
+            const wsetting = $(this).data('wsetting');
 
-        let anyVisibleUpcoming = false;
-        $('.js-sessions-upcoming .js-wsetting-home-show').each(function() {
-            if (!$(this).hasClass('d-none')) {
-                anyVisibleUpcoming = true;
-                return false; // salir del bucle each
+            if (showAll) {
+                $(this).removeClass('d-none');
+                return;
             }
+
+            const isActive = $activeButtons.filter('[data-wsetting="' + wsetting + '"]').length > 0;
+
+            $(this).toggleClass('d-none', !isActive);
         });
-        if (anyVisibleUpcoming) {
-            $('.js-no-upcoming').addClass('d-none');
-        } else {
-            $('.js-no-upcoming').removeClass('d-none');
-        }
+
+        // TODAY
+        const anyVisibleToday = $('.js-sessions-today .js-wsetting-home-show:not(.d-none)').length > 0;
+        $('.js-sessions-today').toggleClass('d-none', !anyVisibleToday);
+
+        // UPCOMING
+        const anyVisibleUpcoming = $('.js-sessions-upcoming .js-wsetting-home-show:not(.d-none)').length > 0;
+        $('.js-no-upcoming').toggleClass('d-none', anyVisibleUpcoming);
+    }
+
+    $(document).on("click", '.js-button-wsetting-home', function () {
+
+        const $btn = $(this);
+        $btn.toggleClass('active');
+
+        let activeSettings = [];
+
+        $('.js-button-wsetting-home.active').each(function () {
+            activeSettings.push($(this).data('wsetting'));
+        });
+
+        setCookie('visible_settings_home', JSON.stringify(activeSettings));
+
+        updateSettingsVisibility();
     });
+
+
+    function onLoadSettingsVisibility() {
+        if (!$('.js-button-wsetting-home').length) return;
+
+        const cookie = getCookie('visible_settings_home');
+        if (!cookie) return;
+
+        let activeSettings;
+        try {
+            activeSettings = JSON.parse(cookie);
+        } catch (e) {
+            return;
+        }
+
+        $('.js-button-wsetting-home').each(function () {
+            const wsetting = $(this).data('wsetting');
+            $(this).toggleClass('active', activeSettings.includes(wsetting));
+        });
+
+        updateSettingsVisibility();
+    }
+    onLoadSettingsVisibility();
 
     let intervalRunning = false;
     $('#delete-character-modal').on('show.bs.modal', function () {

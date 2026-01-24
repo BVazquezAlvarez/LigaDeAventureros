@@ -29,7 +29,8 @@ class WorldSettingModel extends Model {
         'name',
         'timeline',
         'active',
-        'visible_default'
+        'visible_default',
+        'color'
 	];
 
     public function getWorldSettingList() {

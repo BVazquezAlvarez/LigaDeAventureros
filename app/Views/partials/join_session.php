@@ -1,5 +1,23 @@
+<?php
+// LigaDeAventureros
+// Copyright (C) 2024-2026 Santiago González Lago
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+?>
+
 <div class="col-md-6 col-lg-4 mb-3 js-wsetting-home-show <?= $visible ? '' : 'd-none' ?>" data-wsetting="<?= $session->w_setting_id ?>">
-    <div class="card card-join-session h-100">
+    <div class="card card-join-session h-100" style="box-shadow: 2px 2px 2px <?= $session->w_setting_color ?: 'rgba(0,0,0,.125)' ?>;">
         <div class="card-header text-center">
         <? if ($userdata && $session->priority_avaliable != 0) : ?>
         <span class="position-absolute translate-middle badge rounded-pill bg-success" style="
@@ -9,11 +27,7 @@
             "><i class="fas fa-arrow-up"></i> Disponible</span>
         <? endif; ?>
             <h3 class="d-inline-block mb-0"><?= $session->adventure_name ?></h3>
-             <? if ($session->w_setting_id != 0) : ?>
-            <h6 class="d-inline-block mb-0"><?= $session->w_setting_name ?> · <?= $session->type_name ?></h6>
-            <? else: ?>
-            <h6 class="d-inline-block mb-0">Todas las modalidades · <?= $session->type_name ?></h6>
-             <? endif; ?>
+            <h6 class="d-inline-block mb-0"><span style="color:<?= $session->w_setting_color ?: 'black' ?>"><?= ($session->w_setting_id != 0) ? $session->w_setting_name : 'Todas las modalidades' ?></span> · <?= $session->type_name ?></h6>
         </div>
         <div class="card-body py-0 card-session" style="<?= $session->thumbnail ? "background-image:url('".base_url('img/adventures')."/".$session->thumbnail."')" : '' ?>">
             <div class="row h-100">
