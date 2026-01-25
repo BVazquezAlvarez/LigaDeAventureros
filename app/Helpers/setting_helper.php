@@ -41,10 +41,44 @@ function setting_update($id, $value) {
     $settings[$id] = $value;
 }
 
+// function links_menu() {
+//     $db = \Config\Database::connect();
+//     $builder = $db->table('link_menu');
+//     $builder->where('active', 1);
+//     $builder->orderBy('position', 'ASC');
+//     $links = $builder->get()->getResult();
+//     foreach ($links as $link) {
+//         $link->children = [];
+//     }
+//     return $links;
+// }
+
 function links_menu() {
     $db = \Config\Database::connect();
     $builder = $db->table('link_menu');
     $builder->where('active', 1);
     $builder->orderBy('position', 'ASC');
-    return $builder->get()->getResult();
+    $links = $builder->get()->getResult();
+
+    $organizedLinks = [];
+    foreach ($links as $link) {
+        $link->children = [];
+        $parentId = $link->parent ?? null;
+        $organizedLinks[$parentId][] = $link;
+    }
+
+    $buildTree = function($parentId = null) use (&$buildTree, $organizedLinks) {
+        $tree = [];
+
+        if (isset($organizedLinks[$parentId])) {
+            foreach ($organizedLinks[$parentId] as $link) {
+                $link->children = $buildTree($link->link_menu_id);
+                $tree[] = $link;
+            }
+        }
+
+        return $tree;
+    };
+
+    return $buildTree(null);
 }

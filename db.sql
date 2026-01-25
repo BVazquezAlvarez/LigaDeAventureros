@@ -239,4 +239,7 @@ CREATE TABLE `resource` (
 -- Colores de settings
 ALTER TABLE `world_setting` ADD `color` VARCHAR(7) NULL;
 
+--Submenús
+ALTER TABLE `link_menu` ADD `parent` INT(11) NULL DEFAULT NULL AFTER `position`; 
+
 COMMIT;

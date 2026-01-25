@@ -1,6 +1,6 @@
 <?php
 // LigaDeAventureros
-// Copyright (C) 2023-2024 Santiago González Lago
+// Copyright (C) 2023-2026 Santiago González Lago
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -83,9 +83,7 @@
 							<? endif; ?>
 							<li class="nav-item"><a class="nav-link" href="<?= base_url('all-characters') ?>">Todos los personajes</a></li>
 							<li class="nav-item"><a class="nav-link" href="<?= base_url('resources') ?>">Recursos</a></li>
-							<? foreach (links_menu() as $link) : ?>
-								<li class="nav-item"><a class="nav-link" href="<?= $link->url ?>" <?= $link->new_tab ? 'target="_blank"' : '' ?>><?= $link->text ?></a></li>
-							<? endforeach; ?>
+							<?= view('partials/menu/main') ?>
 						</ul>
 						<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 							<? if ($userdata) : ?>
