@@ -19,50 +19,29 @@
 const COOKIE_PREFIX = 'LDA_';
 
 // ---------- UTILIDADES DE COOKIE ----------
-function setCookie(name, value, days = 30) {
-    name = COOKIE_PREFIX + name;
-    const payload = {
-        value: value,
-        durationDays: days,
-        createdAt: Date.now()
-    };
-
-    const expiresDate = new Date();
-    expiresDate.setTime(expiresDate.getTime() + (days * 24 * 60 * 60 * 1000));
-
-    document.cookie =
-        name + "=" + encodeURIComponent(JSON.stringify(payload)) +
-        "; expires=" + expiresDate.toUTCString() +
-        "; path=/";
+function setCookie(cname, cvalue, exdays = 30) {
+    cname = COOKIE_PREFIX + cname;
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function getCookie(name) {
-    name = COOKIE_PREFIX + name;
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-
-        if (c.indexOf(nameEQ) === 0) {
-            try {
-                const payload = JSON.parse(
-                    decodeURIComponent(c.substring(nameEQ.length))
-                );
-
-                // Renovar expiración usando la duración original
-                if (payload.durationDays) {
-                    setCookie(name, payload.value, payload.durationDays);
-                }
-
-                return payload.value;
-
-            } catch (e) {
-                return null;
-            }
+function getCookie(cname) {
+    cname = COOKIE_PREFIX + cname;
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
         }
     }
-    return null;
+    return "";
 }
 
 function loadAdventure(adventure) {
@@ -578,7 +557,7 @@ $(function() {
             activeSettings.push($(this).data('wsetting'));
         });
 
-        setCookie('visible_settings_home', JSON.stringify(activeSettings));
+        setCookie('visible_settings_home', JSON.stringify(activeSettings), 360);
 
         updateSettingsVisibility();
     });

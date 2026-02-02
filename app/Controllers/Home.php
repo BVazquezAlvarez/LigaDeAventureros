@@ -97,6 +97,11 @@ class Home extends BaseController {
         return $this->loadView('privacy');
     }
 
+    public function cookies() {
+        $this->setTitle('Política de cookies');
+        return $this->loadView('cookies');
+    }
+
     public function contact() {
         $this->setTitle('Contacto');
 

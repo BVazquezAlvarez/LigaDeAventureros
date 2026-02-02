@@ -159,7 +159,9 @@
 		<footer class="text-center">
 			<?= setting('app_name') ?>
 			<div class="footer-links">
-				<small><a href="<?= base_url('privacy') ?>">Política de privacidad</a></small>
+				<small><a href="<?= base_url('privacy') ?>">Privacidad</a></small>
+				<span class="separator">|</span>
+				<small><a href="<?= base_url('cookies') ?>">Cookies</a></small>
 				<span class="separator">|</span>
 				<small><a href="<?= base_url('contact') ?>">Contacto</a></small>
 			</div>
@@ -177,3 +179,5 @@
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 	<? endif; ?>
 </html>
+
+<?= view('partials/cookie_banner') ?>
