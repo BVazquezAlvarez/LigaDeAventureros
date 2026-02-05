@@ -310,6 +310,21 @@ $(function() {
 
     preloadJoinSession();
 
+    $('.js-session-publish').on('change', function() {
+        const value = $(this).val();
+        if (value === 'later') {
+            $('#publish-date-container').show();
+            $('#publish-time-container').show();
+            $('#publish_date').prop('required', true);
+            $('#publish_time').prop('required', true);
+        } else {
+            $('#publish-date-container').hide();
+            $('#publish-time-container').hide();
+            $('#publish_date').prop('required', false);
+            $('#publish_time').prop('required', false);
+        }
+    });
+
     $('.js-adventure-info').on('click', function() {
         let uid = $(this).data('uid');
         $.ajax({
@@ -731,5 +746,37 @@ $(function() {
 
         // Mostrar el modal
         $('#createOrUpdateResourceModal').modal('show');
+    });
+
+    // Validación de selección en formulario de publicación
+    $('.js-publish-submit').on('click', function(e) {
+        const checkedSessions = $('#publish-sessions-form input[name="session[]"]:checked').length;
+
+        if (checkedSessions === 0) {
+            e.preventDefault();
+            alert('Por favor, selecciona al menos una sesión para publicar.');
+            return false;
+        }
+    });
+
+    // Programar publicación de sesiones seleccionadas
+    $('#publish-later').on('click', function() {
+        const checkedSessions = $('#publish-sessions-form input[name="session[]"]:checked');
+
+        if (checkedSessions.length === 0) {
+            alert('Por favor, selecciona al menos una sesión para programar.');
+            return;
+        }
+
+        // Recopilar UIDs de sesiones seleccionadas
+        const sessionUids = checkedSessions.map(function() {
+            return $(this).val();
+        }).get();
+
+        // Establecer los valores en el input oculto del modal
+        $('#sessions-to-schedule').val(sessionUids.join(';'));
+
+        // Mostrar el modal
+        $('#schedule-publish-modal').modal('show');
     });
 });

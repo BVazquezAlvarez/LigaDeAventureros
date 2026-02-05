@@ -240,6 +240,13 @@ CREATE TABLE `resource` (
 ALTER TABLE `world_setting` ADD `color` VARCHAR(7) NULL;
 
 --Submenús
-ALTER TABLE `link_menu` ADD `parent` INT(11) NULL DEFAULT NULL AFTER `position`; 
+ALTER TABLE `link_menu` ADD `parent` INT(11) NULL DEFAULT NULL AFTER `position`;
+
+--Publicar sesiones automáticamente
+ALTER TABLE `session` CHANGE `published` `published` TINYINT(1) NULL COMMENT 'DEPRECATED: Use date_published instead';
+ALTER TABLE `session` CHANGE `date_published` `date_published` TIMESTAMP NULL;
+UPDATE `session` SET `date_published` = NULL WHERE `published` = 0;
+
+INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('timezone', 'Zona horaria del sistema', 'Europe/Madrid');
 
 COMMIT;

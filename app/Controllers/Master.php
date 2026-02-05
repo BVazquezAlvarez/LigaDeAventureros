@@ -178,11 +178,31 @@ class Master extends BaseController {
         $validation->setRule('location', 'ubicación', 'trim|required');
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
+        $published = $this->request->getVar('published');
+        if ($published === 'later') {
+            $validation->setRule('publish_date', 'fecha de publicación', 'trim|required');
+            $validation->setRule('publish_time', 'hora de publicación', 'trim|required');
+        }
 
         if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al crear la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
+        }
+
+        // Validación adicional: no permitir programar publicación en el pasado
+        if ($published === 'later') {
+            $publishDate = $this->request->getVar('publish_date');
+            $publishTime = $this->request->getVar('publish_time');
+            $datePublishedStr = $publishDate . ' ' . $publishTime . ':00';
+            $datePublishedTimestamp = strtotime($datePublishedStr);
+            $nowTimestamp = time();
+
+            if ($datePublishedTimestamp <= $nowTimestamp) {
+                session()->setFlashdata('error', 'No se puede programar una publicación para una fecha anterior a la actual.');
+                session()->setFlashdata('validation_errors', ['publish_date' => 'La fecha de publicación debe ser posterior a ahora']);
+                return redirect()->back();
+            }
         }
 
         if ($isNewAdventure) {
@@ -216,6 +236,17 @@ class Master extends BaseController {
             $adventureUid = $this->request->getVar('adventure');
         }
 
+        $datePublished = null;
+        $published = $this->request->getVar('published');
+
+        if ($published === 'y') {
+            $datePublished = date("Y-m-d H:i:s");
+        } else if ($published === 'later') {
+            $publishDate = $this->request->getVar('publish_date');
+            $publishTime = $this->request->getVar('publish_time');
+            $datePublished = $publishDate . ' ' . $publishTime . ':00';
+        }
+
         $this->SessionModel->addSession([
             'uid' => uid_generate_unique('session'),
             'adventure_uid' => $adventureUid,
@@ -225,8 +256,7 @@ class Master extends BaseController {
             'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
-            'published' => $this->request->getVar('published') ? 1 : 0,
-            'date_published' =>$this->request->getVar('published') ? date("Y-m-d H:i:s") : null
+            'date_published' => $datePublished
         ]);
 
         session()->setFlashdata('success', 'Se ha creado una nueva sesión.');
@@ -243,6 +273,26 @@ class Master extends BaseController {
         $sessions = $this->request->getVar('session');
         $this->SessionModel->publishSessions($sessions);
         session()->setFlashdata('success', 'Se han publicado las sesiones seleccionadas.');
+        return redirect()->to('master/publish');
+    }
+
+    public function publish_later() {
+        $sessions = explode(';', $this->request->getVar('sessions'));
+        $publishDate = $this->request->getVar('schedule_date');
+        $publishTime = $this->request->getVar('schedule_time');
+        $datePublished = $publishDate . ' ' . $publishTime . ':00';
+
+        // Validación adicional: no permitir programar publicación en el pasado
+        $datePublishedTimestamp = strtotime($datePublished);
+        $nowTimestamp = time();
+
+        if ($datePublishedTimestamp <= $nowTimestamp) {
+            session()->setFlashdata('error', 'No se puede programar una publicación para una fecha anterior a la actual.');
+            return redirect()->to('master/publish');
+        }
+
+        $this->SessionModel->scheduleSessionsPublication($sessions, $datePublished);
+        session()->setFlashdata('success', 'Se han programado las sesiones seleccionadas.');
         return redirect()->to('master/publish');
     }
 
@@ -331,11 +381,48 @@ class Master extends BaseController {
         $validation->setRule('location', 'ubicación', 'trim|required');
         $validation->setRule('session_min_players', 'mínimo de jugadores', 'trim|required');
         $validation->setRule('session_max_players', 'máximo de jugadores', 'trim|required');
+        $published = $this->request->getVar('published');
+        if ($published === 'later') {
+            $validation->setRule('publish_date', 'fecha de publicación', 'trim|required');
+            $validation->setRule('publish_time', 'hora de publicación', 'trim|required');
+        }
 
         if (!$validation->withRequest($this->request)->run()) {
             session()->setFlashdata('error', 'Se ha producido un error al editar la sesión.');
             session()->setFlashdata('validation_errors', $validation->getErrors());
             return redirect()->back();
+        }
+
+        // Validación adicional: no permitir programar publicación en el pasado
+        if ($published === 'later') {
+            $publishDate = $this->request->getVar('publish_date');
+            $publishTime = $this->request->getVar('publish_time');
+            $datePublished = $publishDate . ' ' . $publishTime . ':00';
+            $datePublishedTimestamp = strtotime($datePublished);
+            $nowTimestamp = time();
+
+            if ($datePublishedTimestamp <= $nowTimestamp) {
+                session()->setFlashdata('error', 'No se puede programar una publicación para una fecha anterior a la actual.');
+                session()->setFlashdata('validation_errors', ['publish_date' => 'La fecha de publicación debe ser posterior a ahora']);
+                return redirect()->back();
+            }
+        }
+
+        $datePublished = null;
+        $published = $this->request->getVar('published');
+        if ($published === 'y') {
+            // Obtener la sesión actual para verificar si ya estaba publicada
+            $currentSession = $this->SessionModel->getSession($uid);
+            // Si ya estaba publicada, mantener la fecha original
+            if ($currentSession->date_published && $currentSession->date_published <= date("Y-m-d H:i:s")) {
+                $datePublished = $currentSession->date_published;
+            } else {
+                $datePublished = date("Y-m-d H:i:s");
+            }
+        } else if ($published === 'later') {
+            $publishDate = $this->request->getVar('publish_date');
+            $publishTime = $this->request->getVar('publish_time');
+            $datePublished = $publishDate . ' ' . $publishTime . ':00';
         }
 
         $this->SessionModel->updateSession($uid, [
@@ -345,9 +432,7 @@ class Master extends BaseController {
             'location' => $this->request->getVar('location'),
             'players_min' => $this->request->getVar('session_min_players'),
             'players_max' => $this->request->getVar('session_max_players'),
-            'published' => $this->request->getVar('published') ? 1 : 0,
-            'date_published' =>$this->request->getVar('published') ? date("Y-m-d H:i:s") : null
-
+            'date_published' => $datePublished
         ]);
         $this->email->session_updated($uid);
 

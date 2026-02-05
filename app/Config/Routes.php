@@ -99,6 +99,7 @@ $routes->get('master/new-session', 'Master::new_session');
 $routes->post('master/new-session', 'Master::new_session_post');
 $routes->get('master/publish', 'Master::publish');
 $routes->post('master/publish', 'Master::publish_post');
+$routes->post('master/publish-later', 'Master::publish_later');
 $routes->post('master/delete-session', 'Master::delete_session');
 $routes->get('master/edit-session/(:segment)', 'Master::edit_session/$1');
 $routes->post('master/edit-session/(:segment)', 'Master::edit_session_post/$1');

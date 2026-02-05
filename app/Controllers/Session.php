@@ -93,7 +93,7 @@ class Session extends BaseController {
     public function view($uid) {
         $session = $this->SessionModel->getSession($uid);
 
-        if (!$session || !$session->published) {
+        if (!$session || !$session->date_published || $session->date_published > date("Y-m-d H:i:s")) {
             session()->setFlashdata('error', 'No se ha encontrado la partida.');
             return redirect()->to(base_url());
         }

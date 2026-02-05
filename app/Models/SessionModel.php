@@ -32,7 +32,7 @@ class SessionModel extends Model {
         'players_min',
         'players_max',
         'location',
-        'published',
+        'published', // DEPRECATED: Use date_published instead
         'date_published',
     ];
 
@@ -44,7 +44,8 @@ class SessionModel extends Model {
         $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         if ($published_only) {
-            $builder->where('session.published', 1);
+            // $builder->where('session.published', 1);
+            $builder->where('session.date_published <=', date("Y-m-d H:i:s"));
         }
         if ($start) {
             $builder->where('session.date >=', $start);
@@ -92,7 +93,9 @@ class SessionModel extends Model {
         $builder->join('world_setting','adventure.w_setting_id = world_setting.id', 'left');
         $builder->join('user', 'session.master_uid = user.uid', 'left');
         $builder->join('adventure_type', 'adventure.type = adventure_type.id', 'left');
-        $builder->where('session.published', 0);
+        // $builder->where('session.published', 0);
+        $builder->where('session.date_published >', date("Y-m-d H:i:s"));
+        $builder->orWhere('session.date_published IS NULL');
         $builder->orderBy('session.date', 'ASC');
         return $builder->get()->getResult();
     }
@@ -147,7 +150,13 @@ class SessionModel extends Model {
     public function publishSessions($uids) {
         $builder = $this->db->table('session');
         $builder->whereIn('uid', $uids);
-        $builder->update(['published' => 1, 'date_published' => date("Y-m-d H:i:s")]);
+        $builder->update(['date_published' => date("Y-m-d H:i:s")]);
+    }
+
+    public function scheduleSessionsPublication($uids, $datePublished) {
+        $builder = $this->db->table('session');
+        $builder->whereIn('uid', $uids);
+        $builder->update(['date_published' => $datePublished]);
     }
 
     public function getLocations() {

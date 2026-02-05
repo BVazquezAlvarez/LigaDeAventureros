@@ -228,12 +228,32 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <div class="form-check">
-                                <input type="checkbox" name="published" id="published" class="form-check-input">
-                                <label class="form-check-label" for="published">Publicar inmediatamente</label>
-                            </div>
+                            <label for="published">Opciones de publicación</label>
+                            <select name="published" id="published" class="form-control js-session-publish">
+                                <option value="n">No publicar</option>
+                                <option value="y">Publicar inmediatamente</option>
+                                <option value="later">Programar publicación</option>
+                            </select>
                             <? if (isset(session('validation_errors')['published'])) : ?>
                                 <small class="text-danger"><?= session('validation_errors')['published'] ?></small>
+                            <? endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="publish-date-container" style="display:none;">
+                        <div class="form-group">
+                            <label for="publish_date">Fecha publicación <span class="text-danger">*</span></label>
+                            <input type="date" name="publish_date" id="publish_date" class="form-control">
+                            <? if (isset(session('validation_errors')['publish_date'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['publish_date'] ?></small>
+                            <? endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="publish-time-container" style="display:none;">
+                        <div class="form-group">
+                            <label for="publish_time">Hora publicación <span class="text-danger">*</span></label>
+                            <input type="time" name="publish_time" id="publish_time" class="form-control">
+                            <? if (isset(session('validation_errors')['publish_time'])) : ?>
+                                <small class="text-danger"><?= session('validation_errors')['publish_time'] ?></small>
                             <? endif; ?>
                         </div>
                     </div>
