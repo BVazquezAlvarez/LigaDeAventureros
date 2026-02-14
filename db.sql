@@ -221,6 +221,13 @@ ALTER TABLE session_log ADD INDEX idx_session_uid (session_uid);
 ALTER TABLE session_log ADD INDEX idx_player_uid (player_uid);
 ALTER TABLE session_log ADD INDEX idx_player_character_uid (player_character_uid);
 
+CREATE TABLE `world_setting` (
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `timeline` VARCHAR(255) NULL,
+  `active` TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
 -- Ocultar bloques de mundo en la página de inicio
 ALTER TABLE world_setting ADD COLUMN visible_default TINYINT(1) NOT NULL DEFAULT 1;
 
@@ -248,5 +255,8 @@ ALTER TABLE `session` CHANGE `date_published` `date_published` TIMESTAMP NULL;
 UPDATE `session` SET `date_published` = NULL WHERE `published` = 0;
 
 INSERT INTO `settings` (`id`, `description`, `value`) VALUES ('timezone', 'Zona horaria del sistema', 'Europe/Madrid');
+
+--Tiers según setting
+ALTER TABLE `world_setting` ADD `setting` ENUM('dnd','daggerheart') NOT NULL;
 
 COMMIT;
