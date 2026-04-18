@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>5MB</strong>) <span class="text-danger">*</span></label>
+                        <label for="character_sheet">Hoja de personaje (Tamaño máximo: <strong>2MB</strong>) <span class="text-danger">*</span></label>
                         <input type="file" name="character_sheet" id="character_sheet" class="form-control-file" accept=".pdf" required>
                     </div>
                     <? if (isset(session('validation_errors')['character_sheet'])) : ?>
