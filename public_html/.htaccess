@@ -8,6 +8,10 @@
 	Options +FollowSymlinks
 	RewriteEngine On
 
+	# Redirección de HTTP a HTTPS
+	RewriteCond %{HTTPS} off
+	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 	# If you installed CodeIgniter in a subfolder, you will need to
 	# change the following line to match the subfolder you need.
 	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
@@ -28,7 +32,7 @@
 	# request to the front controller, index.php
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^([\s\S]*)$ index.php?/$1 [L,NC,QSA]
+	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
 
 	# Ensure Authorization header is passed along
 	RewriteCond %{HTTP:Authorization} .
@@ -45,4 +49,4 @@
 # Disable server signature start
 	ServerSignature Off
 # Disable server signature end
-AddHandler application/x-httpd-php82 .php .php5 .php4 .php3
+# AddHandler application/x-httpd-php82 .php .php5 .php4 .php3

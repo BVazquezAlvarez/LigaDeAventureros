@@ -73,7 +73,7 @@ class Character extends BaseController {
         $validation->setRule('name', 'nombre', 'trim|required');
         $validation->setRule('class', 'clase', 'trim|required');
         $validation->setRule('level', 'Nivel', 'trim|required|greater_than_equal_to[1]|less_than_equal_to[20]');
-        $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,5120]');
+        $validation->setRule('character_sheet', 'Hoja de personaje', 'uploaded[character_sheet]|ext_in[character_sheet,pdf]|max_size[character_sheet,2048]');
 
         if ($validation->withRequest($this->request)->run()) {
             $uid = uid_generate_unique('player_character');
@@ -146,8 +146,8 @@ class Character extends BaseController {
         $upload_errors = [];
         if ($this->request->getFile('character_sheet')->isValid() && $this->request->getFile('character_sheet')->getSize() > 0) {
             $characterSheet = $this->request->getFile('character_sheet');
-            if ($characterSheet->getSize() > (5 * 1024 * 1024)) {
-                $upload_errors[] = "El tamaño de la hoja de personaje supera el límite permitido de 5MB.";
+            if ($characterSheet->getSize() > (2 * 1024 * 1024)) {
+                $upload_errors[] = "El tamaño de la hoja de personaje supera el límite permitido de 2MB.";
             } else if ($characterSheet->getMimeType() != 'application/pdf') {
                 $upload_errors[] = "La hoja de personaje debe estar en PDF.";
             } else {
@@ -162,8 +162,8 @@ class Character extends BaseController {
             $data['image'] = NULL;
         } else if ($this->request->getFile('character_image')->isValid() && $this->request->getFile('character_image')->getSize() > 0) {
             $characterImg = $this->request->getFile('character_image');
-            if ($characterImg->getSize() > (5 * 1024 * 1024)) {
-                $upload_errors[] = "El tamaño de la imagen supera el límite permitido de 5MB.";
+            if ($characterImg->getSize() > (2 * 1024 * 1024)) {
+                $upload_errors[] = "El tamaño de la imagen supera el límite permitido de 2MB.";
             } else if (!is_array(getimagesize($characterImg))) {
                 $upload_errors[] = "La imagen debe ser un formato de imagen válido.";
             } else {

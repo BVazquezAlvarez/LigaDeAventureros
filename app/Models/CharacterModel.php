@@ -124,6 +124,7 @@ class CharacterModel extends Model {
 			$builder->orLike('user.display_name', $q);
         }
         $builder->orderBy('player_character.level', 'DESC');
+        $builder->orderBy('player_character.name', 'ASC');
 		if ($limit) {
 			$builder->limit($limit, $offset);
 		}
